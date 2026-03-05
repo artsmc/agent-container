@@ -9,6 +9,7 @@ import { buildUserLoader } from './middleware/load-user';
 import { errorHandler } from './middleware/error-handler';
 import { healthRoutes } from './routes/health';
 import { meRoutes } from './routes/me';
+import { clientRoutes } from './routes/clients';
 import { NotFoundError } from './errors/api-errors';
 
 export interface AppDependencies {
@@ -87,12 +88,12 @@ export async function createApp(deps: AppDependencies): Promise<FastifyInstance>
 
       // Register protected routes
       await scope.register(meRoutes);
+      await scope.register(clientRoutes, { db });
 
       // -----------------------------------------------------------------------
       // Downstream features (08-16) will register additional route plugins
       // within this protected scope. Example:
       //
-      //   await scope.register(clientRoutes, { db });
       //   await scope.register(taskRoutes, { db });
       //   await scope.register(agendaRoutes, { db });
       // -----------------------------------------------------------------------
