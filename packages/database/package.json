@@ -1,0 +1,33 @@
+{
+  "name": "@iexcel/database",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Product database schema, migrations, and client for the iExcel automation system",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts",
+    "./client": "./src/client.ts"
+  },
+  "scripts": {
+    "migrate:generate": "drizzle-kit generate",
+    "migrate:up": "tsx src/migrate.ts",
+    "migrate:down": "tsx src/migrate.ts --down",
+    "migrate:status": "tsx src/migrate.ts --status",
+    "seed": "tsx seeds/001_seed_dev_data.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.38.0",
+    "pg": "^8.13.0",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.30.0",
+    "@types/pg": "^8.11.0",
+    "typescript": "~5.7.0",
+    "tsx": "^4.19.0"
+  },
+  "keywords": [],
+  "license": "UNLICENSED"
+}

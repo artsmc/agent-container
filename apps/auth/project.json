@@ -1,0 +1,42 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "auth",
+  "projectType": "application",
+  "root": "apps/auth",
+  "sourceRoot": "apps/auth/src",
+  "tags": ["scope:auth", "type:app"],
+  "implicitDependencies": ["auth-database"],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "options": {
+        "outputPath": "dist/apps/auth",
+        "main": "apps/auth/src/index.ts",
+        "tsConfig": "apps/auth/tsconfig.json",
+        "format": ["cjs"],
+        "bundle": true,
+        "platform": "node",
+        "target": "node22",
+        "external": ["argon2"]
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "auth:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["apps/auth/**/*.ts"]
+      }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p apps/auth/tsconfig.json"
+      }
+    }
+  }
+}

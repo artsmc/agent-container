@@ -1,0 +1,45 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "database",
+  "projectType": "library",
+  "root": "packages/database",
+  "sourceRoot": "packages/database/src",
+  "tags": ["scope:database", "type:migrations"],
+  "targets": {
+    "migrate:up": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsx src/migrate.ts",
+        "cwd": "packages/database"
+      }
+    },
+    "migrate:down": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsx src/migrate.ts --down",
+        "cwd": "packages/database"
+      }
+    },
+    "migrate:status": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsx src/migrate.ts --status",
+        "cwd": "packages/database"
+      }
+    },
+    "migrate:generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "drizzle-kit generate",
+        "cwd": "packages/database"
+      }
+    },
+    "seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsx seeds/001_seed_dev_data.ts",
+        "cwd": "packages/database"
+      }
+    }
+  }
+}

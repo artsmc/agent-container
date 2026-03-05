@@ -1,0 +1,9 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "ui",
+  "projectType": "application",
+  "root": "apps/ui",
+  "sourceRoot": "apps/ui/src",
+  "tags": ["scope:ui", "type:app"],
+  "targets": {}
+}

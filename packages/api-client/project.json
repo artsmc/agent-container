@@ -1,0 +1,10 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "api-client",
+  "projectType": "library",
+  "root": "packages/api-client",
+  "sourceRoot": "packages/api-client/src",
+  "tags": ["scope:shared", "type:client"],
+  "implicitDependencies": ["shared-types"],
+  "targets": {}
+}

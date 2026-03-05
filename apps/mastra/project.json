@@ -1,0 +1,9 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "mastra",
+  "projectType": "application",
+  "root": "apps/mastra",
+  "sourceRoot": "apps/mastra/src",
+  "tags": ["scope:mastra", "type:app"],
+  "targets": {}
+}

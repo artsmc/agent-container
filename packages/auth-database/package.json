@@ -1,0 +1,12 @@
+{
+  "name": "@iexcel/auth-database",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "migrate:up": "migrate -path ./migrations -database $DATABASE_URL up",
+    "migrate:down": "migrate -path ./migrations -database $DATABASE_URL down 1",
+    "migrate:status": "migrate -path ./migrations -database $DATABASE_URL version",
+    "migrate:reset": "migrate -path ./migrations -database $DATABASE_URL drop -f"
+  },
+  "devDependencies": {}
+}

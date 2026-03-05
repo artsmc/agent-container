@@ -1,0 +1,9 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "auth-database",
+  "projectType": "library",
+  "root": "packages/auth-database",
+  "sourceRoot": "packages/auth-database",
+  "tags": ["scope:auth", "type:migrations"],
+  "targets": {}
+}

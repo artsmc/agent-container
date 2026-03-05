@@ -1,0 +1,9 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "auth-client",
+  "projectType": "library",
+  "root": "packages/auth-client",
+  "sourceRoot": "packages/auth-client/src",
+  "tags": ["scope:auth", "type:client"],
+  "targets": {}
+}

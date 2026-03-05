@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "target": "ES2022",
+    "lib": ["ES2022", "dom"],
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "useDefineForClassFields": true,
+    "paths": {
+      "@iexcel/shared-types": ["packages/shared-types/src/index.ts"],
+      "@iexcel/shared-types/*": ["packages/shared-types/src/*"],
+      "@iexcel/api-client": ["packages/api-client/src/index.ts"],
+      "@iexcel/api-client/*": ["packages/api-client/src/*"],
+      "@iexcel/auth-client": ["packages/auth-client/src/index.ts"],
+      "@iexcel/auth-client/*": ["packages/auth-client/src/*"],
+      "@iexcel/database": ["packages/database/src/index.ts"],
+      "@iexcel/database/*": ["packages/database/src/*"],
+      "@iexcel/auth-database": ["packages/auth-database/src/index.ts"],
+      "@iexcel/auth-database/*": ["packages/auth-database/src/*"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

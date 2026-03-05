@@ -1,0 +1,9 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "infra",
+  "projectType": "library",
+  "root": "infra/terraform",
+  "sourceRoot": "infra/terraform",
+  "tags": ["scope:infra", "type:terraform"],
+  "targets": {}
+}

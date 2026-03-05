@@ -4,11 +4,11 @@
 
 | ID | Feature | Phase | Source PRDs | Blocked By | Blocks | Status | Spec Status | Conflicts |
 |---|---|---|---|---|---|---|---|---|
-| 00 | nx-monorepo-scaffolding | 0: Monorepo & Tooling | infra-prd | — | 01,02,03,04,05,06,07,08,09,18,22,23,34,35 | pending | done | — |
-| 01 | shared-types-package | 0: Monorepo & Tooling | infra-prd, database-prd, api-prd | 00 | 04,08,12,19,20,22 | pending | done | — |
+| 00 | nx-monorepo-scaffolding | 0: Monorepo & Tooling | infra-prd | — | 01,02,03,04,05,06,07,08,09,18,22,23,34,35 | done | done | — |
+| 01 | shared-types-package | 0: Monorepo & Tooling | infra-prd, database-prd, api-prd | 00 | 04,08,12,19,20,22 | done | done | — |
 | 02 | terraform-base-infra | 1: Infrastructure | infra-prd | 00 | 36 | pending | done | — |
-| 03 | auth-database-schema | 1: Infrastructure | auth-prd, database-prd | 00 | 05 | pending | done | — |
-| 04 | product-database-schema | 1: Infrastructure | database-prd | 00,01 | 07 | pending | done | — |
+| 03 | auth-database-schema | 1: Infrastructure | auth-prd, database-prd | 00 | 05 | done | done | — |
+| 04 | product-database-schema | 1: Infrastructure | database-prd | 00,01 | 07 | done | done | — |
 | 05 | auth-service | 2: Auth | auth-prd | 00,03 | 06 | pending | done | — |
 | 06 | auth-client-package | 2: Auth | auth-prd, infra-prd | 00,05 | 07,24,32 | pending | done | — |
 | 07 | api-scaffolding | 3: API Core | api-prd, auth-prd | 00,04,06 | 08,09,10,11,12,14,15,16,22 | pending | done | — |
@@ -38,7 +38,7 @@
 | 31 | ui-admin-settings | 6: Web UI | ui-prd | 25,22 | — | pending | done | — |
 | 32 | terminal-device-auth | 7: Terminal | terminal-prd, auth-prd | 06 | 33 | pending | done | — |
 | 33 | terminal-mcp-tools | 7: Terminal | terminal-prd, mastra-prd | 21,22,32 | — | pending | done | — |
-| 34 | cicd-pipeline | 8: CI/CD & Deployment | infra-prd | 00 | 35 | pending | done | — |
+| 34 | cicd-pipeline | 8: CI/CD & Deployment | infra-prd | 00 | 35 | done | done | — |
 | 35 | container-builds | 8: CI/CD & Deployment | infra-prd | 00,34 | 36 | pending | done | — |
 | 36 | terraform-app-deployment | 8: CI/CD & Deployment | infra-prd | 02,35 | — | pending | done | — |
 | 37 | input-normalizer-grain | 9: V2 Enhancements | api-prd, mastra-prd | 08,10 | — | pending | done | — |
@@ -421,3 +421,153 @@ All actions have been resolved and propagated into the affected spec files.
 | MEDIUM | Resolve Asana credential storage mechanism | ✅ Resolved: encrypted in DB |
 | LOW | Add database constraint for `priority` enum values | ✅ Resolved |
 | LOW | Align `EmailRecipient` type with database schema (role field, nullability) | ✅ Resolved |
+
+---
+
+## Execution Schedule — Parallel Wave Plan
+
+Each wave represents a set of phases that can run concurrently via `/start-phase-execute`. A phase only starts when ALL of its dependencies are complete.
+
+### Wave 1 — Foundation (no dependencies)
+
+| Phase | Name | Team | Status |
+|-------|------|------|--------|
+| 00 | Nx Monorepo Scaffolding | Infra | done |
+
+### Wave 2 — After 00 completes (4 parallel teams)
+
+| Phase | Name | Team | Status |
+|-------|------|------|--------|
+| 01 | Shared Types Package | Core | done |
+| 02 | Terraform Base Infra | Infra | pending |
+| 03 | Auth Database Schema | DB | done |
+| 34 | CI/CD Pipeline | DevOps | done |
+
+### Wave 3 — Mixed deps from Wave 2 (up to 4 parallel)
+
+| Phase | Name | Depends On | Team | Status |
+|-------|------|------------|------|--------|
+| 04 | Product Database Schema | 01 | DB | pending |
+| 05 | Auth Service | 03 | Auth | pending |
+| 35 | Container Builds | 34 | DevOps | pending |
+| 18 | Mastra Runtime Setup | 01, 06 | Mastra | blocked (waiting for 06) |
+
+### Wave 4 — Auth chain + infra tail (up to 3 parallel)
+
+| Phase | Name | Depends On | Team | Status |
+|-------|------|------------|------|--------|
+| 06 | Auth Client Package | 05 | Auth | pending |
+| 36 | Terraform App Deployment | 02, 35 | Infra | pending |
+| 23 | UI Scaffolding | 00, 01, 22 | UI | blocked (waiting for 22) |
+
+### Wave 5 — API foundation + Mastra start (up to 3 parallel)
+
+| Phase | Name | Depends On | Team | Status |
+|-------|------|------------|------|--------|
+| 07 | API Scaffolding | 04, 06 | Core | pending |
+| 18 | Mastra Runtime Setup | 01, 06 | Mastra | pending (unblocked) |
+| 32 | Terminal Device Auth | 05, 06 | Terminal | pending |
+
+### Wave 6 — API features fan-out (3 parallel)
+
+| Phase | Name | Depends On | Team | Status |
+|-------|------|------------|------|--------|
+| 08 | Input Normalizer — Text | 07 | Core | pending |
+| 09 | Client Management | 07, 04 | API | pending |
+| 22 | API Client Package | 01, 07 | UI | pending |
+
+### Wave 7 — API endpoints + UI scaffold (3 parallel)
+
+| Phase | Name | Depends On | Team | Status |
+|-------|------|------------|------|--------|
+| 10 | Transcript Endpoints | 07, 08, 09 | API | pending |
+| 11 | Task Endpoints | 07, 09 | Core | pending |
+| 23 | UI Scaffolding | 00, 01, 22 | UI | pending (unblocked) |
+
+### Wave 8 — Asana integration + UI auth (3 parallel)
+
+| Phase | Name | Depends On | Team | Status |
+|-------|------|------------|------|--------|
+| 12 | Output Normalizer — Asana | 07, 11 | Core | pending |
+| 24 | UI Auth Flow | 05, 06, 23 | UI | pending |
+| 19 | Workflow A — Intake Agent | 18, 08, 11 | Mastra | pending |
+
+### Wave 9 — Reconciliation + workflow (2 parallel)
+
+| Phase | Name | Depends On | Team | Status |
+|-------|------|------------|------|--------|
+| 13 | Status Reconciliation | 11, 12 | Core | pending |
+| 17 | Workflow Orchestration | 10, 11, 14 | API | blocked (waiting for 14) |
+
+### Wave 10 — Agenda + adapters (up to 4 parallel)
+
+| Phase | Name | Depends On | Team | Status |
+|-------|------|------------|------|--------|
+| 14 | Agenda Endpoints | 07, 09, 13 | API | pending |
+| 15 | Google Docs Adapter | 14, 09 | API | blocked (waiting for 14) |
+| 16 | Email Adapter | 14, 09 | API | blocked (waiting for 14) |
+| 20 | Workflow B — Agenda Agent | 18, 13, 14 | Mastra | blocked (waiting for 14) |
+
+### Wave 11 — After 14 completes (up to 6 parallel)
+
+| Phase | Name | Depends On | Team | Status |
+|-------|------|------------|------|--------|
+| 15 | Google Docs Adapter | 14, 09 | API | pending (unblocked) |
+| 16 | Email Adapter | 14, 09 | API | pending (unblocked) |
+| 17 | Workflow Orchestration | 10, 11, 14 | API | pending (unblocked) |
+| 20 | Workflow B — Agenda Agent | 18, 13, 14 | Mastra | pending (unblocked) |
+| 25 | UI Dashboard | 23, 24, 22 | UI | pending |
+| 26 | UI Client Detail | 23, 24, 22 | UI | pending |
+
+### Wave 12 — UI screens + MCP (up to 7 parallel — max burst)
+
+| Phase | Name | Depends On | Team | Status |
+|-------|------|------------|------|--------|
+| 25-28 | UI Dashboard/Client/Tasks/Agenda | 23, 24, 22 | UI (x4) | pending |
+| 30 | UI Workflow Trigger | 23, 24, 22, 17 | UI | pending |
+| 31 | UI Admin Settings | 23, 24, 22 | UI | pending |
+| 21 | Mastra MCP Server | 18, 19, 20 | Mastra | pending |
+
+### Wave 13 — Final leaf nodes
+
+| Phase | Name | Depends On | Team | Status |
+|-------|------|------------|------|--------|
+| 29 | UI Shared Agenda | 23, 28 | UI | pending |
+| 33 | Terminal MCP Tools | 21, 32, 22 | Terminal | pending |
+| 37 | Input Normalizer — Grain | 08, 10 | V2 | pending |
+| 38 | Historical Import | 09, 10, 12 | V2 | pending |
+
+---
+
+## Team Utilization Map
+
+| Team | Active Waves | Idle Waves |
+|------|-------------|------------|
+| **Infra** | 1 (00), 2 (02), 4 (36) | 3, 5-13 |
+| **DevOps** | 2 (34), 3 (35) | 1, 4-13 |
+| **DB** | 2 (03), 3 (04) | 1, 5-13 |
+| **Auth** | 3 (05), 4 (06) | 1-2, 5-13 |
+| **Core** | 5 (07), 6 (08), 7 (11), 8 (12), 9 (13) | 1-4, 10-13 |
+| **API** | 6 (09), 7 (10), 10 (14), 11 (15,16,17) | 1-5, 8-9, 12-13 |
+| **Mastra** | 5 (18), 8 (19), 11 (20), 12 (21) | 1-4, 6-7, 9-10, 13 |
+| **UI** | 6 (22), 7 (23), 8 (24), 12 (25-28,30,31), 13 (29) | 1-5 |
+| **Terminal** | 5 (32), 13 (33) | 1-4, 6-12 |
+| **V2** | 13 (37, 38) | 1-12 |
+
+## Idle Team Reassignment Opportunities
+
+- **Infra/DevOps/DB teams** finish early (by Wave 4). Reassign to Core or API work.
+- **Auth team** finishes by Wave 4. Can assist with API or Mastra.
+- **Terminal team** has one task in Wave 5, then idle until Wave 13. Prime candidate for reassignment.
+
+---
+
+## Status Legend
+
+| Status | Meaning |
+|--------|---------|
+| pending | Ready to start when wave begins |
+| in_progress | Currently running via `/start-phase-execute` |
+| blocked | Dependencies not yet complete |
+| done | All tasks complete |
+| failed | Execution failed, needs intervention |

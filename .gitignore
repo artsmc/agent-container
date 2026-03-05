@@ -1,1 +1,28 @@
+# Nx
+.nx/cache
+.nx/workspace-data
+dist/
+tmp/
+
+# Node
+node_modules/
+.npm/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# TypeScript
+*.tsbuildinfo
+
+# Job queue (temporary spec work)
 /job-queue
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+graph-output.json
+.claude/worktrees/

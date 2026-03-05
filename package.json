@@ -1,0 +1,35 @@
+{
+  "name": "iexcel-monorepo",
+  "version": "0.0.0",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "build": "nx run-many --target=build",
+    "build:affected": "nx affected --target=build",
+    "test": "nx run-many --target=test",
+    "test:affected": "nx affected --target=test",
+    "lint": "nx run-many --target=lint",
+    "lint:affected": "nx affected --target=lint",
+    "type-check": "nx run-many --target=type-check",
+    "graph": "nx graph",
+    "format": "nx format:write",
+    "format:check": "nx format:check"
+  },
+  "devDependencies": {
+    "nx": "~20.0.0",
+    "@nx/js": "~20.0.0",
+    "@nx/node": "~20.0.0",
+    "@nx/next": "~20.0.0",
+    "@nx/eslint": "~20.0.0",
+    "@nx/eslint-plugin": "~20.0.0",
+    "typescript": "~5.7.0",
+    "@types/node": "^22.0.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0"
+  }
+}

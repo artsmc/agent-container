@@ -1,6 +1,19 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(pnpm install:*)",
+      "Bash(npm:*)",
+      "Bash(corepack:*)",
+      "Bash(pnpm:*)",
+      "Bash(npx nx:*)",
+      "Bash(npx tsc:*)",
+      "Bash(git status:*)",
+      "Bash(git add:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "linear"
-  ],
-  "enableAllProjectMcpServers": true
+  ]
 }
