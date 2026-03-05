@@ -544,3 +544,72 @@ export const importJobErrorsRelations = relations(importJobErrors, ({ one }) => 
     references: [importJobs.id],
   }),
 }));
+
+// ---------------------------------------------------------------------------
+// Feature 17: Workflow Orchestration
+// ---------------------------------------------------------------------------
+
+/**
+ * Type of workflow that can be triggered.
+ */
+export const workflowTypeEnum = pgEnum('workflow_type', ['intake', 'agenda']);
+
+/**
+ * Lifecycle statuses for a workflow run.
+ */
+export const workflowStatusEnum = pgEnum('workflow_status', [
+  'pending',
+  'running',
+  'completed',
+  'failed',
+]);
+
+/**
+ * Tracks the lifecycle and progress of an asynchronous workflow run.
+ *
+ * input_refs JSONB shape:
+ *   For intake: { transcript_id: "uuid" }
+ *   For agenda: { cycle_start: "YYYY-MM-DD", cycle_end: "YYYY-MM-DD" }
+ *
+ * result JSONB shape:
+ *   For intake: { task_short_ids: ["TSK-0001", ...] }
+ *   For agenda: { agenda_short_id: "AGD-0001" }
+ *
+ * error JSONB shape:
+ *   { code: "string", message: "string" }
+ */
+export const workflowRuns = pgTable('workflow_runs', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  workflowType: workflowTypeEnum('workflow_type').notNull(),
+  clientId: uuid('client_id')
+    .notNull()
+    .references(() => clients.id),
+  status: workflowStatusEnum('status').notNull().default('pending'),
+  inputRefs: jsonb('input_refs').notNull().default(sql`'{}'::jsonb`),
+  result: jsonb('result'),
+  error: jsonb('error'),
+  triggeredBy: uuid('triggered_by')
+    .references(() => users.id),
+  startedAt: timestamp('started_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  completedAt: timestamp('completed_at', { withTimezone: true }),
+}, (table) => [
+  index('workflow_runs_active_run_idx')
+    .on(table.clientId, table.workflowType, table.status)
+    .where(sql`${table.status} IN ('pending', 'running')`),
+  index('workflow_runs_client_id_idx').on(table.clientId),
+  index('workflow_runs_stale_idx')
+    .on(table.status, table.updatedAt)
+    .where(sql`${table.status} IN ('pending', 'running')`),
+]);
+
+export const workflowRunsRelations = relations(workflowRuns, ({ one }) => ({
+  client: one(clients, {
+    fields: [workflowRuns.clientId],
+    references: [clients.id],
+  }),
+  triggeredByUser: one(users, {
+    fields: [workflowRuns.triggeredBy],
+    references: [users.id],
+  }),
+}));

@@ -36,6 +36,21 @@ const envSchema = z.object({
 
   /** Base URL for constructing share links (e.g., "https://app.example.com"). */
   APP_BASE_URL: z.string().url('APP_BASE_URL must be a valid URL').optional(),
+
+  /** Mastra runtime base URL for workflow invocation. */
+  MASTRA_BASE_URL: z.string().url('MASTRA_BASE_URL must be a valid URL').optional(),
+
+  /** Mastra OIDC client_id for service account authentication. */
+  MASTRA_CLIENT_ID: z.string().default('mastra-agent'),
+
+  /** This API's public base URL (used as callback URL for Mastra). */
+  API_BASE_URL: z.string().url('API_BASE_URL must be a valid URL').optional(),
+
+  /** Workflow timeout in milliseconds (default: 5 minutes). */
+  WORKFLOW_TIMEOUT_MS: z.coerce.number().int().positive().default(300_000),
+
+  /** Admin user UUID fallback for system-triggered workflow runs. */
+  ADMIN_OWNER: z.string().uuid().optional(),
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;

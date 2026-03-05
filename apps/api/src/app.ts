@@ -16,9 +16,12 @@ import { taskRoutes } from './routes/tasks';
 import { importRoutes } from './routes/import';
 import { agendaRoutes } from './routes/agendas';
 import { sharedRoutes } from './routes/shared';
+import { workflowRoutes } from './routes/workflows';
 import { NotFoundError } from './errors/api-errors';
 import { AsanaOutputAdapter } from './adapters/asana';
 import { setOutputNormalizer } from './services/output-normalizer';
+import { MastraAdapter } from './adapters/mastra.adapter';
+import { WorkflowService } from './services/workflow.service';
 
 export interface AppDependencies {
   db: DbClient;
@@ -119,6 +122,21 @@ export async function createApp(deps: AppDependencies): Promise<FastifyInstance>
       await scope.register(taskRoutes, { db });
       await scope.register(importRoutes, { db });
       await scope.register(agendaRoutes, { db });
+
+      // Workflow orchestration (Feature 17)
+      const mastraAdapter = config.MASTRA_BASE_URL
+        ? new MastraAdapter(
+            config.MASTRA_BASE_URL,
+            config.API_BASE_URL ?? `http://localhost:${config.PORT}`
+          )
+        : null;
+      const workflowService = new WorkflowService(
+        db,
+        config,
+        mastraAdapter,
+        null // ReconciliationService — wired when Feature 13 is fully integrated
+      );
+      await scope.register(workflowRoutes, { db, workflowService });
     }
   );
 
