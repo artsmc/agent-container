@@ -20,9 +20,9 @@
 | 12 | output-normalizer-asana | 3: API Core | api-prd, database-prd | 01,07,11 | 13,38 | done | done | — |
 | 13 | status-reconciliation | 3: API Core | api-prd, database-prd | 12 | 14,20 | done | done | — |
 | 14 | agenda-endpoints | 3: API Core | api-prd, database-prd | 07,09,13 | 15,16,17 | done | done | — |
-| 15 | google-docs-adapter | 3: API Core | api-prd | 07,14 | — | in_progress | done | — |
-| 16 | email-adapter | 3: API Core | api-prd | 07,14 | — | in_progress | done | — |
-| 17 | workflow-orchestration | 3: API Core | api-prd, mastra-prd | 10,11,14 | 19,20 | in_progress | done | — |
+| 15 | google-docs-adapter | 3: API Core | api-prd | 07,14 | — | done | done | — |
+| 16 | email-adapter | 3: API Core | api-prd | 07,14 | — | done | done | — |
+| 17 | workflow-orchestration | 3: API Core | api-prd, mastra-prd | 10,11,14 | 19,20 | done | done | — |
 | 18 | mastra-runtime-setup | 4: Mastra | mastra-prd, infra-prd | 00 | 19,20,21 | done | done | — |
 | 19 | workflow-a-intake-agent | 4: Mastra | mastra-prd, api-prd | 01,18,17 | 21 | pending | done | — |
 | 20 | workflow-b-agenda-agent | 4: Mastra | mastra-prd, api-prd | 01,18,17,13 | 21 | pending | done | — |
@@ -31,12 +31,12 @@
 | 23 | ui-scaffolding | 6: Web UI | ui-prd, infra-prd | 00 | 24,25,29 | done | done | — |
 | 24 | ui-auth-flow | 6: Web UI | ui-prd, auth-prd | 23,06 | 25 | done | done | — |
 | 25 | ui-dashboard | 6: Web UI | ui-prd | 23,24,22 | 26,27,28,30,31 | done | done | — |
-| 26 | ui-client-detail | 6: Web UI | ui-prd | 25 | — | in_progress | done | — |
+| 26 | ui-client-detail | 6: Web UI | ui-prd | 25 | — | done | done | — |
 | 27 | ui-task-review | 6: Web UI | ui-prd | 25,22 | — | done | done | — |
 | 28 | ui-agenda-editor | 6: Web UI | ui-prd | 25,22 | — | done | done | — |
 | 29 | ui-shared-agenda | 6: Web UI | ui-prd | 23,22 | — | done | done | — |
 | 30 | ui-workflow-trigger | 6: Web UI | ui-prd | 25,22 | — | done | done | — |
-| 31 | ui-admin-settings | 6: Web UI | ui-prd | 25,22 | — | in_progress | done | — |
+| 31 | ui-admin-settings | 6: Web UI | ui-prd | 25,22 | — | done | done | — |
 | 32 | terminal-device-auth | 7: Terminal | terminal-prd, auth-prd | 06 | 33 | done | done | — |
 | 33 | terminal-mcp-tools | 7: Terminal | terminal-prd, mastra-prd | 21,22,32 | — | pending | done | — |
 | 34 | cicd-pipeline | 8: CI/CD & Deployment | infra-prd | 00 | 35 | done | done | — |
