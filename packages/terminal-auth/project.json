@@ -1,0 +1,42 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "terminal-auth",
+  "projectType": "library",
+  "root": "packages/terminal-auth",
+  "sourceRoot": "packages/terminal-auth/src",
+  "tags": ["scope:terminal", "type:library"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/terminal-auth",
+        "tsConfig": "packages/terminal-auth/tsconfig.lib.json",
+        "packageJson": "packages/terminal-auth/package.json",
+        "main": "packages/terminal-auth/src/index.ts",
+        "assets": ["packages/terminal-auth/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/terminal-auth/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/packages/terminal-auth"
+      }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p packages/terminal-auth/tsconfig.json"
+      }
+    }
+  }
+}
