@@ -1,0 +1,271 @@
+// UsersRolesTab -- user list table and action styles.
+@use '@/styles/mixins' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-6;
+}
+
+.heading {
+  font-size: tokens.$text-xl;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+  margin: 0;
+}
+
+.description {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+  margin: 0;
+  margin-top: -(tokens.$space-4);
+}
+
+// --- Table ---
+
+.tableWrapper {
+  overflow-x: auto;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-lg;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead {
+    background-color: tokens.$color-surface-elevated;
+
+    th {
+      text-align: left;
+      font-size: tokens.$text-xs;
+      font-weight: tokens.$font-weight-medium;
+      color: tokens.$color-text-secondary;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: tokens.$space-3 tokens.$space-4;
+      border-bottom: 1px solid tokens.$color-border-default;
+    }
+  }
+}
+
+.thName {
+  min-width: 150px;
+}
+
+.thEmail {
+  min-width: 180px;
+}
+
+.thRole {
+  width: 140px;
+}
+
+.thClients {
+  width: 80px;
+  text-align: center;
+}
+
+.thActions {
+  width: 160px;
+}
+
+.row {
+  td {
+    padding: tokens.$space-3 tokens.$space-4;
+    font-size: tokens.$text-sm;
+    border-bottom: 1px solid tokens.$color-gray-100;
+    vertical-align: middle;
+  }
+
+  &:last-child td {
+    border-bottom: none;
+  }
+
+  &.inactive {
+    td {
+      opacity: 0.5;
+    }
+  }
+}
+
+.cellName {
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-primary;
+}
+
+.youBadge {
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-regular;
+  color: tokens.$color-text-secondary;
+  margin-left: tokens.$space-1;
+}
+
+.cellEmail {
+  color: tokens.$color-text-secondary;
+}
+
+.cellRole {
+  // badge container
+}
+
+.roleBadge {
+  display: inline-flex;
+  align-items: center;
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-medium;
+  padding: tokens.$space-1 tokens.$space-2;
+  border-radius: tokens.$radius-full;
+  line-height: tokens.$leading-tight;
+
+  &[data-variant='default'] {
+    background-color: tokens.$color-gray-100;
+    color: tokens.$color-gray-700;
+  }
+
+  &[data-variant='info'] {
+    background-color: tokens.$color-info-light;
+    color: tokens.$color-info;
+  }
+
+  &[data-variant='warning'] {
+    background-color: tokens.$color-warning-light;
+    color: tokens.$color-warning;
+  }
+
+  &[data-variant='danger'] {
+    background-color: tokens.$color-danger-light;
+    color: tokens.$color-danger;
+  }
+}
+
+.cellClients {
+  text-align: center;
+  color: tokens.$color-text-secondary;
+}
+
+.cellActions {
+  display: flex;
+  gap: tokens.$space-2;
+}
+
+.editButton {
+  padding: tokens.$space-1 tokens.$space-3;
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-primary;
+  background: none;
+  border: 1px solid tokens.$color-primary;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+  transition: background-color tokens.$duration-fast tokens.$ease-default;
+
+  &:hover {
+    background-color: tokens.$color-info-light;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.deactivateButton {
+  padding: tokens.$space-1 tokens.$space-3;
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-danger;
+  background: none;
+  border: 1px solid tokens.$color-danger;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+  transition: background-color tokens.$duration-fast tokens.$ease-default;
+
+  &:hover {
+    background-color: tokens.$color-danger-light;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+// --- Edit Panel ---
+
+.editPanelWrapper {
+  margin-top: tokens.$space-2;
+}
+
+// --- States ---
+
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-3;
+  padding: tokens.$space-4;
+}
+
+.skeletonRow {
+  height: 48px;
+  background-color: tokens.$color-gray-100;
+  border-radius: tokens.$radius-md;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.emptyState {
+  text-align: center;
+  padding: tokens.$space-8 tokens.$space-4;
+  color: tokens.$color-text-secondary;
+  font-size: tokens.$text-sm;
+  border: 1px dashed tokens.$color-border-default;
+  border-radius: tokens.$radius-lg;
+
+  p {
+    margin: 0;
+  }
+}
+
+.errorState {
+  padding: tokens.$space-4;
+  background-color: tokens.$color-danger-light;
+  border: 1px solid tokens.$color-danger;
+  border-radius: tokens.$radius-md;
+  color: tokens.$color-text-primary;
+  font-size: tokens.$text-sm;
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-3;
+
+  p {
+    margin: 0;
+    flex: 1;
+  }
+}
+
+.retryButton {
+  padding: tokens.$space-1 tokens.$space-3;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-primary;
+  background: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-primary;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+
+  &:hover {
+    background-color: tokens.$color-info-light;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}

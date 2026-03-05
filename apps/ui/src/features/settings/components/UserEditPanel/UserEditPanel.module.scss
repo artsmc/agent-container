@@ -1,0 +1,220 @@
+// UserEditPanel -- inline edit panel for user role and client assignments.
+@use '@/styles/mixins' as *;
+
+.root {
+  background-color: tokens.$color-surface-elevated;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-lg;
+  overflow: hidden;
+  animation: slideDown tokens.$duration-normal tokens.$ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: tokens.$space-4;
+  border-bottom: 1px solid tokens.$color-border-default;
+}
+
+.title {
+  font-size: tokens.$text-base;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+  margin: 0;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: tokens.$text-lg;
+  color: tokens.$color-text-secondary;
+  background: none;
+  border: none;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+  transition: background-color tokens.$duration-fast tokens.$ease-default;
+
+  &:hover {
+    background-color: tokens.$color-gray-200;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.body {
+  padding: tokens.$space-4;
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-4;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-1;
+}
+
+.fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-2;
+}
+
+.label {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-primary;
+}
+
+.fieldHint {
+  font-size: tokens.$text-xs;
+  color: tokens.$color-text-secondary;
+  margin: 0;
+}
+
+.select {
+  padding: tokens.$space-2 tokens.$space-3;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-primary;
+  background-color: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+  max-width: 240px;
+
+  &:focus {
+    outline: none;
+    border-color: tokens.$color-border-focus;
+    box-shadow: 0 0 0 1px tokens.$color-border-focus;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.clientsLoading {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+  padding: tokens.$space-2 0;
+}
+
+.clientCheckboxes {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-2;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: tokens.$space-2;
+  background-color: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-2;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-primary;
+  cursor: pointer;
+  padding: tokens.$space-1;
+  border-radius: tokens.$radius-sm;
+
+  &:hover {
+    background-color: tokens.$color-gray-50;
+  }
+}
+
+.checkbox {
+  accent-color: tokens.$color-primary;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.errorMessage {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-danger;
+  margin: 0;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: tokens.$space-3;
+  padding: tokens.$space-4;
+  border-top: 1px solid tokens.$color-border-default;
+}
+
+.cancelButton {
+  padding: tokens.$space-2 tokens.$space-4;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-primary;
+  background-color: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background-color: tokens.$color-gray-50;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.saveButton {
+  padding: tokens.$space-2 tokens.$space-4;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-inverse;
+  background-color: tokens.$color-primary;
+  border: none;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+  transition: background-color tokens.$duration-fast tokens.$ease-default;
+
+  &:hover:not(:disabled) {
+    background-color: tokens.$color-primary-dark;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

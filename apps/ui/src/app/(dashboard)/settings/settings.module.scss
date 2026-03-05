@@ -1,0 +1,17 @@
+// Settings page -- single column layout for admin settings.
+@use '@/styles/mixins' as *;
+
+.page {
+  padding: tokens.$space-6;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-6;
+}
+
+.pageTitle {
+  font-size: tokens.$text-2xl;
+  font-weight: tokens.$font-weight-bold;
+  color: tokens.$color-text-primary;
+  margin: 0;
+}

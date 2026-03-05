@@ -1,0 +1,365 @@
+// EmailConfigTab -- email config form and template editor styles.
+@use '@/styles/mixins' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-8;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-4;
+}
+
+.heading {
+  font-size: tokens.$text-xl;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+  margin: 0;
+}
+
+.description {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+  margin: 0;
+  margin-top: -(tokens.$space-2);
+}
+
+// --- Config Form ---
+
+.configForm {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-4;
+  max-width: 480px;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-1;
+}
+
+.label {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-primary;
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-2;
+}
+
+.optional {
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-regular;
+  color: tokens.$color-text-secondary;
+}
+
+.input {
+  padding: tokens.$space-2 tokens.$space-3;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-primary;
+  background-color: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  transition: border-color tokens.$duration-fast tokens.$ease-default;
+
+  &::placeholder {
+    color: tokens.$color-text-disabled;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: tokens.$color-border-focus;
+    box-shadow: 0 0 0 1px tokens.$color-border-focus;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.fieldError {
+  font-size: tokens.$text-xs;
+  color: tokens.$color-danger;
+  margin: 0;
+}
+
+.formError {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-danger;
+  margin: 0;
+  padding: tokens.$space-2 tokens.$space-3;
+  background-color: tokens.$color-danger-light;
+  border-radius: tokens.$radius-md;
+}
+
+.successMessage {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-success;
+  margin: 0;
+  padding: tokens.$space-2 tokens.$space-3;
+  background-color: tokens.$color-success-light;
+  border-radius: tokens.$radius-md;
+}
+
+.saveButton {
+  align-self: flex-start;
+  padding: tokens.$space-2 tokens.$space-5;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-inverse;
+  background-color: tokens.$color-primary;
+  border: none;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+  transition: background-color tokens.$duration-fast tokens.$ease-default;
+
+  &:hover:not(:disabled) {
+    background-color: tokens.$color-primary-dark;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// --- Template List ---
+
+.templateList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-lg;
+  overflow: hidden;
+}
+
+.templateItem {
+  border-bottom: 1px solid tokens.$color-border-default;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.templateHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: tokens.$space-4;
+  gap: tokens.$space-3;
+}
+
+.templateInfo {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-1;
+}
+
+.templateName {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+}
+
+.templateMeta {
+  font-size: tokens.$text-xs;
+  color: tokens.$color-text-secondary;
+}
+
+.editTemplateButton {
+  padding: tokens.$space-1 tokens.$space-3;
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-primary;
+  background: none;
+  border: 1px solid tokens.$color-primary;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: tokens.$color-info-light;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+// --- Template Editor ---
+
+.templateEditor {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-3;
+  padding: 0 tokens.$space-4 tokens.$space-4;
+}
+
+.variablesList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: tokens.$space-2;
+  font-size: tokens.$text-xs;
+  color: tokens.$color-text-secondary;
+}
+
+.variablesLabel {
+  font-weight: tokens.$font-weight-medium;
+}
+
+.variable {
+  font-family: tokens.$font-family-mono;
+  font-size: tokens.$text-xs;
+  padding: 1px tokens.$space-1;
+  background-color: tokens.$color-gray-100;
+  border-radius: tokens.$radius-sm;
+  color: tokens.$color-text-primary;
+}
+
+.textarea {
+  width: 100%;
+  padding: tokens.$space-3;
+  font-size: tokens.$text-sm;
+  font-family: tokens.$font-family-mono;
+  color: tokens.$color-text-primary;
+  background-color: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  resize: vertical;
+  line-height: tokens.$leading-normal;
+
+  &:focus {
+    outline: none;
+    border-color: tokens.$color-border-focus;
+    box-shadow: 0 0 0 1px tokens.$color-border-focus;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.editorActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: tokens.$space-2;
+}
+
+.cancelEditButton {
+  padding: tokens.$space-2 tokens.$space-4;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-primary;
+  background-color: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background-color: tokens.$color-gray-50;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.saveTemplateButton {
+  padding: tokens.$space-2 tokens.$space-4;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-inverse;
+  background-color: tokens.$color-primary;
+  border: none;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background-color: tokens.$color-primary-dark;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// --- States ---
+
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-3;
+}
+
+.skeletonField {
+  height: 60px;
+  max-width: 480px;
+  background-color: tokens.$color-gray-100;
+  border-radius: tokens.$radius-md;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeletonRow {
+  height: 48px;
+  background-color: tokens.$color-gray-100;
+  border-radius: tokens.$radius-md;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.emptyState {
+  text-align: center;
+  padding: tokens.$space-6 tokens.$space-4;
+  color: tokens.$color-text-secondary;
+  font-size: tokens.$text-sm;
+  border: 1px dashed tokens.$color-border-default;
+  border-radius: tokens.$radius-lg;
+
+  p {
+    margin: 0;
+  }
+}
+
+.errorState {
+  padding: tokens.$space-4;
+  background-color: tokens.$color-danger-light;
+  border: 1px solid tokens.$color-danger;
+  border-radius: tokens.$radius-md;
+  color: tokens.$color-text-primary;
+  font-size: tokens.$text-sm;
+
+  p {
+    margin: 0;
+  }
+}

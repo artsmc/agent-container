@@ -1,0 +1,48 @@
+// SettingsTabs -- tab navigation and content area styles.
+@use '@/styles/mixins' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-6;
+}
+
+.tabNav {
+  display: flex;
+  border-bottom: 1px solid tokens.$color-border-default;
+  gap: tokens.$space-1;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: tokens.$space-3 tokens.$space-5;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-secondary;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color tokens.$duration-fast tokens.$ease-default,
+    border-color tokens.$duration-fast tokens.$ease-default;
+
+  &:hover {
+    color: tokens.$color-text-primary;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+    outline-offset: -2px;
+  }
+
+  &.active {
+    color: tokens.$color-primary;
+    border-bottom-color: tokens.$color-primary;
+    font-weight: tokens.$font-weight-semibold;
+  }
+}
+
+.tabContent {
+  min-height: 200px;
+}

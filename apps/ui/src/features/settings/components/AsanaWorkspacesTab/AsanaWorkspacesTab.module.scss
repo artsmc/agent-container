@@ -1,0 +1,334 @@
+// AsanaWorkspacesTab -- workspace list and add form styles.
+@use '@/styles/mixins' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-6;
+}
+
+.heading {
+  font-size: tokens.$text-xl;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+  margin: 0;
+}
+
+.description {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+  margin: 0;
+  margin-top: -(tokens.$space-4);
+}
+
+// --- Workspace List ---
+
+.listSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.workspaceList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-lg;
+  overflow: hidden;
+}
+
+.workspaceItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: tokens.$space-4;
+  gap: tokens.$space-4;
+  border-bottom: 1px solid tokens.$color-border-default;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  @media (max-width: tokens.$bp-md) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.workspaceInfo {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-1;
+  min-width: 0;
+}
+
+.workspaceName {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+  @include truncate;
+}
+
+.tokenMask {
+  font-size: tokens.$text-xs;
+  color: tokens.$color-text-secondary;
+  font-family: tokens.$font-family-mono;
+}
+
+.workspaceActions {
+  display: flex;
+  gap: tokens.$space-2;
+  flex-shrink: 0;
+}
+
+.testButton {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$space-1;
+  padding: tokens.$space-1 tokens.$space-3;
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-primary;
+  background: none;
+  border: 1px solid tokens.$color-primary;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+  transition: background-color tokens.$duration-fast tokens.$ease-default;
+
+  &:hover:not(:disabled) {
+    background-color: tokens.$color-info-light;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &.testSuccess {
+    color: tokens.$color-success;
+    border-color: tokens.$color-success;
+    background-color: tokens.$color-success-light;
+  }
+
+  &.testFailed {
+    color: tokens.$color-danger;
+    border-color: tokens.$color-danger;
+    background-color: tokens.$color-danger-light;
+  }
+}
+
+.removeButton {
+  padding: tokens.$space-1 tokens.$space-3;
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-danger;
+  background: none;
+  border: 1px solid tokens.$color-danger;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+  transition: background-color tokens.$duration-fast tokens.$ease-default;
+
+  &:hover {
+    background-color: tokens.$color-danger-light;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+// --- Loading / Empty / Error States ---
+
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-3;
+  padding: tokens.$space-4;
+}
+
+.skeletonRow {
+  height: 48px;
+  background-color: tokens.$color-gray-100;
+  border-radius: tokens.$radius-md;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.emptyState {
+  text-align: center;
+  padding: tokens.$space-8 tokens.$space-4;
+  color: tokens.$color-text-secondary;
+  font-size: tokens.$text-sm;
+  border: 1px dashed tokens.$color-border-default;
+  border-radius: tokens.$radius-lg;
+
+  p {
+    margin: 0;
+  }
+}
+
+.errorState {
+  padding: tokens.$space-4;
+  background-color: tokens.$color-danger-light;
+  border: 1px solid tokens.$color-danger;
+  border-radius: tokens.$radius-md;
+  color: tokens.$color-text-primary;
+  font-size: tokens.$text-sm;
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-3;
+
+  p {
+    margin: 0;
+    flex: 1;
+  }
+}
+
+.retryButton {
+  padding: tokens.$space-1 tokens.$space-3;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-primary;
+  background: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-primary;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+
+  &:hover {
+    background-color: tokens.$color-info-light;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+// --- Add Workspace Form ---
+
+.addForm {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-4;
+  padding: tokens.$space-5;
+  background-color: tokens.$color-surface-elevated;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-lg;
+}
+
+.formHeading {
+  font-size: tokens.$text-base;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+  margin: 0;
+}
+
+.formFields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: tokens.$space-4;
+
+  @media (max-width: tokens.$bp-md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-1;
+}
+
+.label {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-primary;
+}
+
+.input {
+  padding: tokens.$space-2 tokens.$space-3;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-primary;
+  background-color: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  transition: border-color tokens.$duration-fast tokens.$ease-default;
+
+  &::placeholder {
+    color: tokens.$color-text-disabled;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: tokens.$color-border-focus;
+    box-shadow: 0 0 0 1px tokens.$color-border-focus;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.formErrorMessage {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-danger;
+  margin: 0;
+}
+
+.addButton {
+  align-self: flex-start;
+  padding: tokens.$space-2 tokens.$space-5;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-inverse;
+  background-color: tokens.$color-primary;
+  border: none;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+  transition: background-color tokens.$duration-fast tokens.$ease-default;
+
+  &:hover:not(:disabled) {
+    background-color: tokens.$color-primary-dark;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinnerSmall {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: tokens.$radius-full;
+  animation: spin 0.6s linear infinite;
+}
