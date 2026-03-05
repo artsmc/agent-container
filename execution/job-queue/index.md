@@ -24,8 +24,8 @@
 | 16 | email-adapter | 3: API Core | api-prd | 07,14 | — | done | done | — |
 | 17 | workflow-orchestration | 3: API Core | api-prd, mastra-prd | 10,11,14 | 19,20 | done | done | — |
 | 18 | mastra-runtime-setup | 4: Mastra | mastra-prd, infra-prd | 00 | 19,20,21 | done | done | — |
-| 19 | workflow-a-intake-agent | 4: Mastra | mastra-prd, api-prd | 01,18,17 | 21 | pending | done | — |
-| 20 | workflow-b-agenda-agent | 4: Mastra | mastra-prd, api-prd | 01,18,17,13 | 21 | pending | done | — |
+| 19 | workflow-a-intake-agent | 4: Mastra | mastra-prd, api-prd | 01,18,17 | 21 | done | done | — |
+| 20 | workflow-b-agenda-agent | 4: Mastra | mastra-prd, api-prd | 01,18,17,13 | 21 | done | done | — |
 | 21 | mastra-mcp-server | 4: Mastra | mastra-prd, terminal-prd | 18,19,20 | 33 | pending | done | — |
 | 22 | api-client-package | 5: API Client | infra-prd, api-prd | 01,07 | 25,26,27,28,29,30,31,33 | done | done | — |
 | 23 | ui-scaffolding | 6: Web UI | ui-prd, infra-prd | 00 | 24,25,29 | done | done | — |
