@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "iexcel-mastra": {
+      "type": "command",
+      "command": "node",
+      "args": ["./packages/terminal-tools/bin/mcp-proxy.js"],
+      "env": {
+        "MASTRA_MCP_URL": "http://localhost:8081/mcp"
+      }
+    }
+  }
+}

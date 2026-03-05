@@ -33,6 +33,7 @@
       "@iexcel/auth-database": ["packages/auth-database/src/index.ts"],
       "@iexcel/auth-database/*": ["packages/auth-database/src/*"],
       "@iexcel/terminal-auth": ["packages/terminal-auth/src/index.ts"],
+      "@iexcel/terminal-tools": ["packages/terminal-tools/src/index.ts"],
       "@iexcel/ui-tokens": ["packages/ui-tokens/index.scss"]
     }
   },

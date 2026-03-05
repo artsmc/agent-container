@@ -1,0 +1,42 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "terminal-tools",
+  "projectType": "library",
+  "root": "packages/terminal-tools",
+  "sourceRoot": "packages/terminal-tools/src",
+  "tags": ["scope:terminal", "type:library"],
+  "implicitDependencies": ["terminal-auth", "api-client", "shared-types"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/terminal-tools",
+        "tsConfig": "packages/terminal-tools/tsconfig.lib.json",
+        "packageJson": "packages/terminal-tools/package.json",
+        "main": "packages/terminal-tools/src/index.ts",
+        "assets": ["packages/terminal-tools/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/terminal-tools/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vitest --run",
+        "cwd": "packages/terminal-tools"
+      }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p packages/terminal-tools/tsconfig.json"
+      }
+    }
+  }
+}

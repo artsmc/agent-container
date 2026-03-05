@@ -1,0 +1,25 @@
+{
+  "name": "@iexcel/terminal-tools",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Terminal MCP tools — formatters, schemas, error handling, and auth bridge for Claude Code and Claw integration with the Mastra MCP server",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@iexcel/terminal-auth": "workspace:*",
+    "@iexcel/api-client": "workspace:*",
+    "@iexcel/shared-types": "workspace:*",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.0.0",
+    "typescript": "~5.7.0",
+    "vitest": "^2.0.0"
+  },
+  "license": "UNLICENSED"
+}
