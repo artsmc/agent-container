@@ -6,11 +6,12 @@
 |---|---|---|---|---|---|---|---|---|
 | 00 | nx-monorepo-scaffolding | 0: Monorepo & Tooling | infra-prd | — | 01,02,03,04,05,06,07,08,09,18,22,23,34,35 | done | done | — |
 | 01 | shared-types-package | 0: Monorepo & Tooling | infra-prd, database-prd, api-prd | 00 | 04,08,12,19,20,22 | done | done | — |
-| 02 | terraform-base-infra | 1: Infrastructure | infra-prd | 00 | 36 | pending | done | — |
+| 02 | terraform-base-infra | 1: Infrastructure | infra-prd | 00 | 36 | done | done | — |
 | 03 | auth-database-schema | 1: Infrastructure | auth-prd, database-prd | 00 | 05 | done | done | — |
 | 04 | product-database-schema | 1: Infrastructure | database-prd | 00,01 | 07 | done | done | — |
-| 05 | auth-service | 2: Auth | auth-prd | 00,03 | 06 | pending | done | — |
-| 06 | auth-client-package | 2: Auth | auth-prd, infra-prd | 00,05 | 07,24,32 | pending | done | — |
+
+| 05 | auth-service | 2: Auth | auth-prd | 00,03 | 06 | done | done | — |
+| 06 | auth-client-package | 2: Auth | auth-prd, infra-prd | 00,05 | 07,24,32 | done | done | — |
 | 07 | api-scaffolding | 3: API Core | api-prd, auth-prd | 00,04,06 | 08,09,10,11,12,14,15,16,22 | pending | done | — |
 | 08 | input-normalizer-text | 3: API Core | api-prd, mastra-prd | 01,07 | 10,37 | pending | done | — |
 | 09 | client-management | 3: API Core | api-prd, database-prd | 07 | 10,11,14,38 | pending | done | — |
@@ -39,7 +40,7 @@
 | 32 | terminal-device-auth | 7: Terminal | terminal-prd, auth-prd | 06 | 33 | pending | done | — |
 | 33 | terminal-mcp-tools | 7: Terminal | terminal-prd, mastra-prd | 21,22,32 | — | pending | done | — |
 | 34 | cicd-pipeline | 8: CI/CD & Deployment | infra-prd | 00 | 35 | done | done | — |
-| 35 | container-builds | 8: CI/CD & Deployment | infra-prd | 00,34 | 36 | pending | done | — |
+| 35 | container-builds | 8: CI/CD & Deployment | infra-prd | 00,34 | 36 | done | done | — |
 | 36 | terraform-app-deployment | 8: CI/CD & Deployment | infra-prd | 02,35 | — | pending | done | — |
 | 37 | input-normalizer-grain | 9: V2 Enhancements | api-prd, mastra-prd | 08,10 | — | pending | done | — |
 | 38 | historical-import | 9: V2 Enhancements | api-prd, database-prd | 09,10,12 | — | pending | done | — |
