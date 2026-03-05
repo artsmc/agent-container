@@ -5,5 +5,33 @@
   "root": "apps/mastra",
   "sourceRoot": "apps/mastra/src",
   "tags": ["scope:mastra", "type:app"],
-  "targets": {}
+  "implicitDependencies": ["auth-client", "shared-types"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm mastra build",
+        "cwd": "apps/mastra"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm mastra dev",
+        "cwd": "apps/mastra"
+      }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p apps/mastra/tsconfig.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["apps/mastra/**/*.ts"]
+      }
+    }
+  }
 }
