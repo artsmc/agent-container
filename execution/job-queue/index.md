@@ -26,7 +26,7 @@
 | 18 | mastra-runtime-setup | 4: Mastra | mastra-prd, infra-prd | 00 | 19,20,21 | done | done | — |
 | 19 | workflow-a-intake-agent | 4: Mastra | mastra-prd, api-prd | 01,18,17 | 21 | done | done | — |
 | 20 | workflow-b-agenda-agent | 4: Mastra | mastra-prd, api-prd | 01,18,17,13 | 21 | done | done | — |
-| 21 | mastra-mcp-server | 4: Mastra | mastra-prd, terminal-prd | 18,19,20 | 33 | pending | done | — |
+| 21 | mastra-mcp-server | 4: Mastra | mastra-prd, terminal-prd | 18,19,20 | 33 | done | done | — |
 | 22 | api-client-package | 5: API Client | infra-prd, api-prd | 01,07 | 25,26,27,28,29,30,31,33 | done | done | — |
 | 23 | ui-scaffolding | 6: Web UI | ui-prd, infra-prd | 00 | 24,25,29 | done | done | — |
 | 24 | ui-auth-flow | 6: Web UI | ui-prd, auth-prd | 23,06 | 25 | done | done | — |
@@ -38,7 +38,7 @@
 | 30 | ui-workflow-trigger | 6: Web UI | ui-prd | 25,22 | — | done | done | — |
 | 31 | ui-admin-settings | 6: Web UI | ui-prd | 25,22 | — | done | done | — |
 | 32 | terminal-device-auth | 7: Terminal | terminal-prd, auth-prd | 06 | 33 | done | done | — |
-| 33 | terminal-mcp-tools | 7: Terminal | terminal-prd, mastra-prd | 21,22,32 | — | pending | done | — |
+| 33 | terminal-mcp-tools | 7: Terminal | terminal-prd, mastra-prd | 21,22,32 | — | done | done | — |
 | 34 | cicd-pipeline | 8: CI/CD & Deployment | infra-prd | 00 | 35 | done | done | — |
 | 35 | container-builds | 8: CI/CD & Deployment | infra-prd | 00,34 | 36 | done | done | — |
 | 36 | terraform-app-deployment | 8: CI/CD & Deployment | infra-prd | 02,35 | — | done | done | — |
@@ -425,141 +425,42 @@ All actions have been resolved and propagated into the affected spec files.
 
 ---
 
-## Execution Schedule — Parallel Wave Plan
+## Execution History — Actual Wave Execution
 
-Each wave represents a set of phases that can run concurrently via `/start-phase-execute`. A phase only starts when ALL of its dependencies are complete.
+### Waves 1–10 (Completed in prior sessions)
 
-### Wave 1 — Foundation (no dependencies)
+All 35 features from Waves 1–10 completed across multiple sessions.
+Features 00–14, 18, 22–30, 32, 34–38 all done.
 
-| Phase | Name | Team | Status |
-|-------|------|------|--------|
-| 00 | Nx Monorepo Scaffolding | Infra | done |
+### Wave 11 — Adapters + Workflows + UI Settings (4 parallel)
 
-### Wave 2 — After 00 completes (4 parallel teams)
+| Phase | Name | Status | Tests | SLOC |
+|-------|------|--------|-------|------|
+| 15 | Google Docs Adapter | done | 52 | 2,192 |
+| 16 | Email Adapter | done | 52 | 1,785 |
+| 17 | Workflow Orchestration | done | 37 | 1,645 |
+| 31 | UI Admin Settings | done | 52 | 5,328 |
 
-| Phase | Name | Team | Status |
-|-------|------|------|--------|
-| 01 | Shared Types Package | Core | done |
-| 02 | Terraform Base Infra | Infra | done |
-| 03 | Auth Database Schema | DB | done |
-| 34 | CI/CD Pipeline | DevOps | done |
+### Wave 12 — Mastra AI Agents (2 parallel)
 
-### Wave 3 — Mixed deps from Wave 2 (up to 4 parallel)
+| Phase | Name | Status | Tests | SLOC |
+|-------|------|--------|-------|------|
+| 19 | Workflow A — Intake Agent | done | 51 | 1,900 |
+| 20 | Workflow B — Agenda Agent | done | 31 | 1,499 |
 
-| Phase | Name | Depends On | Team | Status |
-|-------|------|------------|------|--------|
-| 04 | Product Database Schema | 01 | DB | done |
-| 05 | Auth Service | 03 | Auth | done |
-| 35 | Container Builds | 34 | DevOps | done |
-| 18 | Mastra Runtime Setup | 01, 06 | Mastra | done |
+### Wave 13 — Final Wave (2 parallel)
 
-### Wave 4 — Auth chain + infra tail (up to 3 parallel)
-
-| Phase | Name | Depends On | Team | Status |
-|-------|------|------------|------|--------|
-| 06 | Auth Client Package | 05 | Auth | done |
-| 36 | Terraform App Deployment | 02, 35 | Infra | done |
-| 23 | UI Scaffolding | 00, 01, 22 | UI | blocked (waiting for 22) |
-
-### Wave 5 — API foundation + Mastra start (up to 3 parallel)
-
-| Phase | Name | Depends On | Team | Status |
-|-------|------|------------|------|--------|
-| 07 | API Scaffolding | 04, 06 | Core | done |
-| 18 | Mastra Runtime Setup | 01, 06 | Mastra | done |
-| 32 | Terminal Device Auth | 05, 06 | Terminal | done |
-
-### Wave 6 — API features fan-out (3 parallel)
-
-| Phase | Name | Depends On | Team | Status |
-|-------|------|------------|------|--------|
-| 08 | Input Normalizer — Text | 07 | Core | in_progress |
-| 09 | Client Management | 07, 04 | API | in_progress |
-| 22 | API Client Package | 01, 07 | UI | in_progress |
-
-### Wave 7 — API endpoints + UI scaffold (3 parallel)
-
-| Phase | Name | Depends On | Team | Status |
-|-------|------|------------|------|--------|
-| 10 | Transcript Endpoints | 07, 08, 09 | API | pending |
-| 11 | Task Endpoints | 07, 09 | Core | pending |
-| 23 | UI Scaffolding | 00, 01, 22 | UI | pending (unblocked) |
-
-### Wave 8 — Asana integration + UI auth (3 parallel)
-
-| Phase | Name | Depends On | Team | Status |
-|-------|------|------------|------|--------|
-| 12 | Output Normalizer — Asana | 07, 11 | Core | pending |
-| 24 | UI Auth Flow | 05, 06, 23 | UI | pending |
-| 19 | Workflow A — Intake Agent | 18, 08, 11 | Mastra | pending |
-
-### Wave 9 — Reconciliation + workflow (2 parallel)
-
-| Phase | Name | Depends On | Team | Status |
-|-------|------|------------|------|--------|
-| 13 | Status Reconciliation | 11, 12 | Core | pending |
-| 17 | Workflow Orchestration | 10, 11, 14 | API | blocked (waiting for 14) |
-
-### Wave 10 — Agenda + adapters (up to 4 parallel)
-
-| Phase | Name | Depends On | Team | Status |
-|-------|------|------------|------|--------|
-| 14 | Agenda Endpoints | 07, 09, 13 | API | pending |
-| 15 | Google Docs Adapter | 14, 09 | API | blocked (waiting for 14) |
-| 16 | Email Adapter | 14, 09 | API | blocked (waiting for 14) |
-| 20 | Workflow B — Agenda Agent | 18, 13, 14 | Mastra | blocked (waiting for 14) |
-
-### Wave 11 — After 14 completes (up to 6 parallel)
-
-| Phase | Name | Depends On | Team | Status |
-|-------|------|------------|------|--------|
-| 15 | Google Docs Adapter | 14, 09 | API | pending (unblocked) |
-| 16 | Email Adapter | 14, 09 | API | pending (unblocked) |
-| 17 | Workflow Orchestration | 10, 11, 14 | API | pending (unblocked) |
-| 20 | Workflow B — Agenda Agent | 18, 13, 14 | Mastra | pending (unblocked) |
-| 25 | UI Dashboard | 23, 24, 22 | UI | pending |
-| 26 | UI Client Detail | 23, 24, 22 | UI | pending |
-
-### Wave 12 — UI screens + MCP (up to 7 parallel — max burst)
-
-| Phase | Name | Depends On | Team | Status |
-|-------|------|------------|------|--------|
-| 25-28 | UI Dashboard/Client/Tasks/Agenda | 23, 24, 22 | UI (x4) | pending |
-| 30 | UI Workflow Trigger | 23, 24, 22, 17 | UI | pending |
-| 31 | UI Admin Settings | 23, 24, 22 | UI | pending |
-| 21 | Mastra MCP Server | 18, 19, 20 | Mastra | pending |
-
-### Wave 13 — Final leaf nodes
-
-| Phase | Name | Depends On | Team | Status |
-|-------|------|------------|------|--------|
-| 29 | UI Shared Agenda | 23, 28 | UI | pending |
-| 33 | Terminal MCP Tools | 21, 32, 22 | Terminal | pending |
-| 37 | Input Normalizer — Grain | 08, 10 | V2 | pending |
-| 38 | Historical Import | 09, 10, 12 | V2 | pending |
+| Phase | Name | Status | Tests | SLOC |
+|-------|------|--------|-------|------|
+| 21 | Mastra MCP Server | done | 42 | 1,978 |
+| 33 | Terminal MCP Tools | done | 90 | 1,988 |
 
 ---
 
-## Team Utilization Map
+## Final Summary
 
-| Team | Active Waves | Idle Waves |
-|------|-------------|------------|
-| **Infra** | 1 (00), 2 (02), 4 (36) | 3, 5-13 |
-| **DevOps** | 2 (34), 3 (35) | 1, 4-13 |
-| **DB** | 2 (03), 3 (04) | 1, 5-13 |
-| **Auth** | 3 (05), 4 (06) | 1-2, 5-13 |
-| **Core** | 5 (07), 6 (08), 7 (11), 8 (12), 9 (13) | 1-4, 10-13 |
-| **API** | 6 (09), 7 (10), 10 (14), 11 (15,16,17) | 1-5, 8-9, 12-13 |
-| **Mastra** | 5 (18), 8 (19), 11 (20), 12 (21) | 1-4, 6-7, 9-10, 13 |
-| **UI** | 6 (22), 7 (23), 8 (24), 12 (25-28,30,31), 13 (29) | 1-5 |
-| **Terminal** | 5 (32), 13 (33) | 1-4, 6-12 |
-| **V2** | 13 (37, 38) | 1-12 |
-
-## Idle Team Reassignment Opportunities
-
-- **Infra/DevOps/DB teams** finish early (by Wave 4). Reassign to Core or API work.
-- **Auth team** finishes by Wave 4. Can assist with API or Mastra.
-- **Terminal team** has one task in Wave 5, then idle until Wave 13. Prime candidate for reassignment.
+**All 39 features complete.** Total test count across Waves 11-13: 497 tests.
+Total SLOC added in Waves 11-13: ~17,315 lines.
 
 ---
 
