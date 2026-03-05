@@ -1,6 +1,7 @@
 import Fastify, { type FastifyInstance } from 'fastify';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
+import multipart from '@fastify/multipart';
 import type { TokenValidator } from '@iexcel/auth-client';
 import type { EnvConfig } from './config/env';
 import type { DbClient } from './db/client';
@@ -10,6 +11,8 @@ import { errorHandler } from './middleware/error-handler';
 import { healthRoutes } from './routes/health';
 import { meRoutes } from './routes/me';
 import { clientRoutes } from './routes/clients';
+import { transcriptRoutes } from './routes/transcripts/index';
+import { taskRoutes } from './routes/tasks';
 import { NotFoundError } from './errors/api-errors';
 
 export interface AppDependencies {
@@ -61,6 +64,14 @@ export async function createApp(deps: AppDependencies): Promise<FastifyInstance>
     contentSecurityPolicy: false,
   });
 
+  // Multipart support for file uploads (transcript .txt files, max 5 MB)
+  await app.register(multipart, {
+    limits: {
+      fileSize: 5_242_880, // 5 MB
+      files: 1,
+    },
+  });
+
   // ---------------------------------------------------------------------------
   // Global error handler
   // ---------------------------------------------------------------------------
@@ -89,12 +100,13 @@ export async function createApp(deps: AppDependencies): Promise<FastifyInstance>
       // Register protected routes
       await scope.register(meRoutes);
       await scope.register(clientRoutes, { db });
+      await scope.register(transcriptRoutes, { db });
+      await scope.register(taskRoutes, { db });
 
       // -----------------------------------------------------------------------
-      // Downstream features (08-16) will register additional route plugins
+      // Downstream features will register additional route plugins
       // within this protected scope. Example:
       //
-      //   await scope.register(taskRoutes, { db });
       //   await scope.register(agendaRoutes, { db });
       // -----------------------------------------------------------------------
     }
