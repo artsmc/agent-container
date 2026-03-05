@@ -1,6 +1,6 @@
 import type { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import { ZodError } from 'zod';
-import { ApiError, ValidationError } from '../errors/api-errors';
+import { ApiError, ValidationError, BusinessError } from '../errors/api-errors';
 
 interface ErrorResponseBody {
   success: false;
@@ -58,6 +58,13 @@ export function errorHandler(
 ): void {
   // --- Known API errors ---
   if (error instanceof ValidationError) {
+    void reply.status(error.statusCode).send(
+      buildErrorResponse(error.code, error.message, error.details)
+    );
+    return;
+  }
+
+  if (error instanceof BusinessError) {
     void reply.status(error.statusCode).send(
       buildErrorResponse(error.code, error.message, error.details)
     );

@@ -81,3 +81,33 @@ export class BadGatewayError extends ApiError {
     this.name = 'BadGatewayError';
   }
 }
+
+/**
+ * Business logic error with custom status code, error code, and optional details.
+ * Used for domain-specific errors like TASK_NOT_EDITABLE, TASK_NOT_APPROVABLE, etc.
+ */
+export class BusinessError extends ApiError {
+  public readonly details: Record<string, unknown>;
+
+  constructor(
+    statusCode: number,
+    code: string,
+    message: string,
+    details: Record<string, unknown> = {}
+  ) {
+    super(statusCode, code, message);
+    this.name = 'BusinessError';
+    this.details = details;
+  }
+}
+
+/**
+ * Error indicating that a feature is not yet implemented.
+ * Used as a stub for features under development.
+ */
+export class NotImplementedError extends ApiError {
+  constructor(message = 'This feature is not yet implemented') {
+    super(501, 'NOT_IMPLEMENTED', message);
+    this.name = 'NotImplementedError';
+  }
+}
