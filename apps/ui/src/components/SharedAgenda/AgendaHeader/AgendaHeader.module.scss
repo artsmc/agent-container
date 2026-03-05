@@ -1,0 +1,37 @@
+.header {
+  padding: tokens.$space-6 0;
+  border-bottom: 1px solid tokens.$color-border-default;
+  margin-bottom: tokens.$space-2;
+}
+
+.shortId {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: tokens.$space-2;
+}
+
+.clientName {
+  font-size: tokens.$text-3xl;
+  font-weight: tokens.$font-weight-bold;
+  color: tokens.$color-text-primary;
+  line-height: tokens.$leading-tight;
+  margin-bottom: tokens.$space-3;
+
+  @media (max-width: tokens.$bp-md) {
+    font-size: tokens.$text-2xl;
+  }
+}
+
+.cyclePeriod {
+  font-size: tokens.$text-lg;
+  color: tokens.$color-text-primary;
+  margin-bottom: tokens.$space-2;
+}
+
+.finalizedAt {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+}

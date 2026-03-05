@@ -1,0 +1,62 @@
+.richText {
+  font-size: tokens.$text-base;
+  line-height: tokens.$leading-relaxed;
+  color: tokens.$color-text-primary;
+
+  // Override global list-style reset for rich text content
+  :global(ul) {
+    list-style-type: disc;
+    padding-left: tokens.$space-6;
+    margin-bottom: tokens.$space-3;
+  }
+
+  :global(ol) {
+    list-style-type: decimal;
+    padding-left: tokens.$space-6;
+    margin-bottom: tokens.$space-3;
+  }
+
+  :global(li) {
+    margin-bottom: tokens.$space-1;
+  }
+
+  :global(p) {
+    margin-bottom: tokens.$space-3;
+  }
+
+  :global(strong) {
+    font-weight: tokens.$font-weight-semibold;
+  }
+
+  :global(h3) {
+    font-size: tokens.$text-lg;
+    font-weight: tokens.$font-weight-semibold;
+    margin-top: tokens.$space-4;
+    margin-bottom: tokens.$space-2;
+  }
+
+  :global(h4) {
+    font-size: tokens.$text-base;
+    font-weight: tokens.$font-weight-semibold;
+    margin-top: tokens.$space-3;
+    margin-bottom: tokens.$space-2;
+  }
+
+  :global(a) {
+    color: tokens.$color-primary;
+    text-decoration: underline;
+
+    &:hover {
+      color: tokens.$color-primary-dark;
+    }
+  }
+
+  :global(blockquote) {
+    border-left: 3px solid tokens.$color-border-default;
+    padding-left: tokens.$space-4;
+    margin-left: 0;
+    margin-bottom: tokens.$space-3;
+    color: tokens.$color-text-secondary;
+    font-style: italic;
+  }
+}

@@ -1,0 +1,1 @@
+export { SharedAgendaError } from './SharedAgendaError';

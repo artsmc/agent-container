@@ -1,0 +1,27 @@
+.section {
+  margin-bottom: tokens.$space-8;
+
+  @media print {
+    page-break-inside: avoid;
+    margin-bottom: tokens.$space-6;
+  }
+}
+
+.sectionHeading {
+  font-size: tokens.$text-xl;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+  margin-bottom: tokens.$space-3;
+  padding-bottom: tokens.$space-2;
+  border-bottom: 1px solid tokens.$color-border-default;
+}
+
+.sectionContent {
+  padding-top: tokens.$space-2;
+}
+
+.emptyPlaceholder {
+  font-size: tokens.$text-base;
+  color: tokens.$color-text-secondary;
+  font-style: italic;
+}

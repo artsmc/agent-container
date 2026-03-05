@@ -1,0 +1,11 @@
+.viewer {
+  padding: tokens.$space-6 0;
+
+  @media (min-width: tokens.$bp-md) {
+    padding: tokens.$space-8 0;
+  }
+
+  @media print {
+    padding: 0;
+  }
+}

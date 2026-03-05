@@ -8,6 +8,7 @@ import type {
   ShareAgendaResponse,
   EmailAgendaRequest,
   ExportAgendaResponse,
+  SharedAgendaResponse,
 } from '@iexcel/shared-types';
 import type { HttpTransport } from '../core/http';
 
@@ -118,7 +119,7 @@ export function createAgendaEndpoints(http: HttpTransport) {
      * that does not require authentication.
      * GET /shared/{token}
      */
-    getSharedAgenda(shareToken: string): Promise<Agenda> {
+    getSharedAgenda(shareToken: string): Promise<SharedAgendaResponse> {
       return http.request({
         method: 'GET',
         path: `/shared/${shareToken}`,
