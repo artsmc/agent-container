@@ -13,6 +13,7 @@ import { meRoutes } from './routes/me';
 import { clientRoutes } from './routes/clients';
 import { transcriptRoutes } from './routes/transcripts/index';
 import { taskRoutes } from './routes/tasks';
+import { importRoutes } from './routes/import';
 import { NotFoundError } from './errors/api-errors';
 import { AsanaOutputAdapter } from './adapters/asana';
 import { setOutputNormalizer } from './services/output-normalizer';
@@ -111,6 +112,7 @@ export async function createApp(deps: AppDependencies): Promise<FastifyInstance>
       await scope.register(clientRoutes, { db });
       await scope.register(transcriptRoutes, { db });
       await scope.register(taskRoutes, { db });
+      await scope.register(importRoutes, { db });
 
       // -----------------------------------------------------------------------
       // Downstream features will register additional route plugins

@@ -57,6 +57,14 @@ export async function approveTask(
     throw new ForbiddenError('You do not have access to this task');
   }
 
+  // Read-only enforcement for imported records (Feature 38)
+  if (task.isImported) {
+    throw new BusinessError(422, 'IMPORT_RECORD_READ_ONLY', 'This record is a historical import and cannot be modified.', {
+      entity_type: 'task',
+      entity_id: task.shortId,
+    });
+  }
+
   if (task.status !== 'draft') {
     throw new BusinessError(
       422,
@@ -127,6 +135,14 @@ export async function rejectTask(
   const hasAccess = await verifyClientAccess(db, task.clientId, userId, userRole);
   if (!hasAccess) {
     throw new ForbiddenError('You do not have access to this task');
+  }
+
+  // Read-only enforcement for imported records (Feature 38)
+  if (task.isImported) {
+    throw new BusinessError(422, 'IMPORT_RECORD_READ_ONLY', 'This record is a historical import and cannot be modified.', {
+      entity_type: 'task',
+      entity_id: task.shortId,
+    });
   }
 
   if (task.status === 'pushed') {
@@ -200,6 +216,14 @@ export async function pushTask(
   const hasAccess = await verifyClientAccess(db, task.clientId, userId, userRole);
   if (!hasAccess) {
     throw new ForbiddenError('You do not have access to this task');
+  }
+
+  // Read-only enforcement for imported records (Feature 38)
+  if (task.isImported) {
+    throw new BusinessError(422, 'IMPORT_RECORD_READ_ONLY', 'This record is a historical import and cannot be modified.', {
+      entity_type: 'task',
+      entity_id: task.shortId,
+    });
   }
 
   if (task.status !== 'approved') {

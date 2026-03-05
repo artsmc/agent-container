@@ -21,6 +21,9 @@ export interface TaskSummaryResponse {
   approved_by: string | null;
   approved_at: string | null;
   pushed_at: string | null;
+  is_imported: boolean;
+  imported_at: string | null;
+  import_source: string | null;
   created_at: string;
   updated_at: string;
 }

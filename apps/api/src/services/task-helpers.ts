@@ -121,6 +121,9 @@ export interface TaskRow {
   approvedBy: string | null;
   approvedAt: Date | null;
   pushedAt: Date | null;
+  isImported: boolean;
+  importedAt: Date | null;
+  importSource: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -141,6 +144,9 @@ export function mapTaskSummary(row: TaskRow): TaskSummaryResponse {
     approved_by: row.approvedBy,
     approved_at: row.approvedAt?.toISOString() ?? null,
     pushed_at: row.pushedAt?.toISOString() ?? null,
+    is_imported: row.isImported,
+    imported_at: row.importedAt?.toISOString() ?? null,
+    import_source: row.importSource,
     created_at: row.createdAt.toISOString(),
     updated_at: row.updatedAt.toISOString(),
   };

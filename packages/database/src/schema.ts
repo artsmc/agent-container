@@ -198,6 +198,9 @@ export const transcripts = pgTable('transcripts', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 }, (table) => [
   index('idx_transcripts_client_date').on(table.clientId, table.callDate),
+  index('idx_transcripts_client_grain_imported')
+    .on(table.clientId, table.grainCallId)
+    .where(sql`${table.isImported} = true`),
 ]);
 
 /**
@@ -252,6 +255,9 @@ export const tasks = pgTable('tasks', {
   // idx_tasks_short_id: UNIQUE -- already created by .unique() on shortId
   index('idx_tasks_client_status').on(table.clientId, table.status),
   index('idx_tasks_transcript_id').on(table.transcriptId),
+  index('idx_tasks_client_asana_imported')
+    .on(table.clientId)
+    .where(sql`${table.isImported} = true`),
 ]);
 
 /**
@@ -361,6 +367,66 @@ export const auditLog = pgTable('audit_log', {
   index('idx_audit_user_date').on(table.userId, table.createdAt),
 ]);
 
+/**
+ * Import job lifecycle statuses.
+ */
+export const importJobStatusEnum = pgEnum('import_job_status', [
+  'pending',
+  'in_progress',
+  'completed',
+  'failed',
+]);
+
+/**
+ * Tracks the lifecycle and progress of a historical import job (Feature 38).
+ */
+export const importJobs = pgTable('import_jobs', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  clientId: uuid('client_id')
+    .notNull()
+    .references(() => clients.id, { onDelete: 'restrict' }),
+  status: importJobStatusEnum('status').notNull().default('pending'),
+  grainPlaylistId: varchar('grain_playlist_id', { length: 500 }),
+  asanaProjectId: varchar('asana_project_id', { length: 255 }),
+  asanaWorkspaceId: varchar('asana_workspace_id', { length: 255 }),
+  reprocessTranscripts: boolean('reprocess_transcripts').notNull().default(false),
+  callTypeOverride: varchar('call_type_override', { length: 50 }),
+  transcriptsTotal: integer('transcripts_total'),
+  transcriptsImported: integer('transcripts_imported').notNull().default(0),
+  tasksTotal: integer('tasks_total'),
+  tasksImported: integer('tasks_imported').notNull().default(0),
+  agendasTotal: integer('agendas_total'),
+  agendasImported: integer('agendas_imported').notNull().default(0),
+  errorSummary: text('error_summary'),
+  startedAt: timestamp('started_at', { withTimezone: true }),
+  completedAt: timestamp('completed_at', { withTimezone: true }),
+  createdBy: uuid('created_by')
+    .references(() => users.id, { onDelete: 'set null' }),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index('idx_import_jobs_client_id').on(table.clientId, table.createdAt),
+  index('idx_import_jobs_status')
+    .on(table.status)
+    .where(sql`${table.status} IN ('pending', 'in_progress')`),
+]);
+
+/**
+ * Per-record error log for import jobs (Feature 38).
+ */
+export const importJobErrors = pgTable('import_job_errors', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  jobId: uuid('job_id')
+    .notNull()
+    .references(() => importJobs.id, { onDelete: 'cascade' }),
+  entityType: varchar('entity_type', { length: 50 }).notNull(),
+  sourceId: varchar('source_id', { length: 500 }).notNull(),
+  errorCode: varchar('error_code', { length: 100 }).notNull(),
+  errorMessage: text('error_message').notNull(),
+  occurredAt: timestamp('occurred_at', { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index('idx_import_job_errors_job_id').on(table.jobId),
+]);
+
 // ---------------------------------------------------------------------------
 // Relations (Drizzle relation declarations for query builder)
 // ---------------------------------------------------------------------------
@@ -379,6 +445,7 @@ export const clientsRelations = relations(clients, ({ many }) => ({
   transcripts: many(transcripts),
   tasks: many(tasks),
   agendas: many(agendas),
+  importJobs: many(importJobs),
 }));
 
 export const clientUsersRelations = relations(clientUsers, ({ one }) => ({
@@ -456,5 +523,24 @@ export const auditLogRelations = relations(auditLog, ({ one }) => ({
   user: one(users, {
     fields: [auditLog.userId],
     references: [users.id],
+  }),
+}));
+
+export const importJobsRelations = relations(importJobs, ({ one, many }) => ({
+  client: one(clients, {
+    fields: [importJobs.clientId],
+    references: [clients.id],
+  }),
+  createdByUser: one(users, {
+    fields: [importJobs.createdBy],
+    references: [users.id],
+  }),
+  errors: many(importJobErrors),
+}));
+
+export const importJobErrorsRelations = relations(importJobErrors, ({ one }) => ({
+  job: one(importJobs, {
+    fields: [importJobErrors.jobId],
+    references: [importJobs.id],
   }),
 }));

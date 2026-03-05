@@ -270,6 +270,14 @@ export async function editTask(
     throw new ForbiddenError('You do not have access to this task');
   }
 
+  // Read-only enforcement for imported records (Feature 38)
+  if (task.isImported) {
+    throw new BusinessError(422, 'IMPORT_RECORD_READ_ONLY', 'This record is a historical import and cannot be modified.', {
+      entity_type: 'task',
+      entity_id: task.shortId,
+    });
+  }
+
   if (task.status !== 'draft' && task.status !== 'rejected') {
     throw new BusinessError(422, 'TASK_NOT_EDITABLE', 'Task cannot be edited in its current status', {
       current_status: task.status,
