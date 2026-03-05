@@ -1,6 +1,7 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import type { DbClient } from '../../db/client';
 import type { NormalizedTranscript } from '@iexcel/shared-types';
+import { ApiErrorCode } from '@iexcel/shared-types';
 import { ApiError, ForbiddenError } from '../../errors/api-errors';
 import {
   isValidUuid,
@@ -11,11 +12,13 @@ import {
   isWithinFileSizeLimit,
   MIN_TRANSCRIPT_LENGTH,
   postTranscriptJsonBodySchema,
+  postTranscriptGrainBodySchema,
   type CallTypeValue,
 } from '../../validators/transcript-validators';
 import { getClientById, writeAuditLog } from '../../services/client-service';
 import { normalizeTextTranscript } from '../../normalizers/text/index.js';
 import { NormalizerError } from '../../normalizers/text/index.js';
+import { normalizeGrainTranscript, GrainNormalizerError } from '../../normalizers/grain/index.js';
 import { insertTranscript } from '../../repositories/transcript-repository';
 import { buildTranscriptAuditMetadata } from '../../services/transcript-types';
 import type { MeetingType } from '@iexcel/shared-types';
@@ -116,7 +119,8 @@ export function registerPostTranscript(
       let rawText: string | undefined;
       let callType: string | undefined;
       let callDate: string | undefined;
-      let submissionMethod: 'json' | 'file_upload' = 'json';
+      let grainRecordingId: string | undefined;
+      let submissionMethod: 'json' | 'file_upload' | 'grain' = 'json';
 
       if (contentType.includes('multipart/form-data')) {
         // --- Multipart form-data path ---
@@ -178,17 +182,47 @@ export function registerPostTranscript(
         }
       } else {
         // --- JSON body path ---
-        const bodyResult = postTranscriptJsonBodySchema.safeParse(request.body);
-        if (!bodyResult.success) {
-          const firstIssue = bodyResult.error.issues[0];
-          throw invalidBodyError(
-            firstIssue?.message ?? 'Invalid request body.'
-          );
-        }
+        const body = request.body as Record<string, unknown> | undefined;
 
-        rawText = bodyResult.data.raw_transcript;
-        callType = bodyResult.data.call_type;
-        callDate = bodyResult.data.call_date;
+        if (body && typeof body === 'object' && 'grain_recording_id' in body) {
+          // --- Grain mode ---
+          if ('raw_transcript' in body) {
+            throw invalidBodyError(
+              'Provide only one submission mode: raw_transcript or grain_recording_id, not both.'
+            );
+          }
+
+          if (process.env['GRAIN_ADAPTER_ENABLED'] !== 'true') {
+            throw invalidBodyError(
+              'Grain transcript submission is not enabled.'
+            );
+          }
+
+          const grainResult = postTranscriptGrainBodySchema.safeParse(body);
+          if (!grainResult.success) {
+            const firstIssue = grainResult.error.issues[0];
+            throw invalidBodyError(
+              firstIssue?.message ?? 'Invalid request body.'
+            );
+          }
+
+          grainRecordingId = grainResult.data.grain_recording_id;
+          callType = grainResult.data.call_type;
+          callDate = grainResult.data.call_date;
+          submissionMethod = 'grain';
+        } else {
+          const bodyResult = postTranscriptJsonBodySchema.safeParse(body);
+          if (!bodyResult.success) {
+            const firstIssue = bodyResult.error.issues[0];
+            throw invalidBodyError(
+              firstIssue?.message ?? 'Invalid request body.'
+            );
+          }
+
+          rawText = bodyResult.data.raw_transcript;
+          callType = bodyResult.data.call_type;
+          callDate = bodyResult.data.call_date;
+        }
       }
 
       // 5. Validate call_type
@@ -198,51 +232,94 @@ export function registerPostTranscript(
         );
       }
 
-      // 6. Validate call_date
-      if (!callDate || !isValidIso8601Datetime(callDate)) {
-        throw invalidBodyError(
-          'call_date must be a valid ISO 8601 datetime string.'
-        );
-      }
-
-      // 7. Validate raw text presence and length
-      if (!rawText || rawText.trim().length < MIN_TRANSCRIPT_LENGTH) {
-        throw invalidBodyError(
-          `Transcript text must be at least ${MIN_TRANSCRIPT_LENGTH} characters.`
-        );
-      }
-
-      // 8. Normalize the transcript
       let normalizedSegments: NormalizedTranscript;
-      try {
-        normalizedSegments = normalizeTextTranscript({
-          rawText,
-          callType: callType as MeetingType,
-          callDate,
-          clientId,
-        });
-      } catch (error: unknown) {
-        if (error instanceof NormalizerError) {
-          throw invalidBodyError(error.message);
+      let resolvedCallDate: string;
+      let resolvedRawText: string;
+
+      if (grainRecordingId) {
+        // ---- Grain submission path (Feature 37) ----
+        try {
+          normalizedSegments = await normalizeGrainTranscript({
+            grainRecordingId,
+            callType: callType as MeetingType,
+            clientId,
+          });
+        } catch (error: unknown) {
+          if (error instanceof GrainNormalizerError) {
+            switch (error.code) {
+              case ApiErrorCode.GrainRecordingNotFound:
+                throw new ApiError(404, 'GRAIN_RECORDING_NOT_FOUND', error.message);
+              case ApiErrorCode.GrainAccessDenied:
+                throw new ApiError(403, 'GRAIN_ACCESS_DENIED', error.message);
+              case ApiErrorCode.GrainTranscriptUnavailable:
+                throw new ApiError(422, 'GRAIN_TRANSCRIPT_UNAVAILABLE', error.message);
+              case ApiErrorCode.GrainApiError:
+                throw new ApiError(502, 'GRAIN_API_ERROR', error.message);
+              case ApiErrorCode.ValidationError:
+                throw invalidBodyError(error.message);
+              default:
+                throw new ApiError(502, 'GRAIN_API_ERROR', error.message);
+            }
+          }
+          throw error;
         }
-        throw error;
+
+        resolvedCallDate = callDate && isValidIso8601Datetime(callDate)
+          ? callDate
+          : normalizedSegments.meetingDate;
+        resolvedRawText = '';
+      } else {
+        // ---- Text/file submission path (Feature 08) ----
+
+        // 6. Validate call_date
+        if (!callDate || !isValidIso8601Datetime(callDate)) {
+          throw invalidBodyError(
+            'call_date must be a valid ISO 8601 datetime string.'
+          );
+        }
+
+        // 7. Validate raw text presence and length
+        if (!rawText || rawText.trim().length < MIN_TRANSCRIPT_LENGTH) {
+          throw invalidBodyError(
+            `Transcript text must be at least ${MIN_TRANSCRIPT_LENGTH} characters.`
+          );
+        }
+
+        // 8. Normalize the transcript
+        try {
+          normalizedSegments = normalizeTextTranscript({
+            rawText,
+            callType: callType as MeetingType,
+            callDate,
+            clientId,
+          });
+        } catch (error: unknown) {
+          if (error instanceof NormalizerError) {
+            throw invalidBodyError(error.message);
+          }
+          throw error;
+        }
+
+        resolvedCallDate = callDate;
+        resolvedRawText = rawText;
       }
 
       // 9. Insert transcript row
       const record = await insertTranscript(db, {
         clientId,
         callType: callType as CallTypeValue,
-        callDate,
-        rawTranscript: rawText,
+        callDate: resolvedCallDate,
+        rawTranscript: resolvedRawText,
         normalizedSegments,
+        grainCallId: grainRecordingId,
       });
 
       // 10. Write audit log (non-blocking)
       const auditMetadata = buildTranscriptAuditMetadata(
         callType,
-        callDate,
+        resolvedCallDate,
         normalizedSegments,
-        rawText.length,
+        resolvedRawText.length,
         submissionMethod
       );
 

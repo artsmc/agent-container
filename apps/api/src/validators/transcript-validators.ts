@@ -114,6 +114,24 @@ export const postTranscriptJsonBodySchema = z.object({
 
 export type PostTranscriptJsonBody = z.infer<typeof postTranscriptJsonBodySchema>;
 
+/**
+ * JSON body schema for Grain submission mode (grain_recording_id).
+ * call_date is optional — derived from Grain recording metadata when absent.
+ */
+export const postTranscriptGrainBodySchema = z.object({
+  grain_recording_id: z
+    .string()
+    .min(1, 'grain_recording_id must not be empty'),
+  call_type: z.enum(CALL_TYPE_VALUES, {
+    errorMap: () => ({
+      message: `call_type must be one of: ${CALL_TYPE_VALUES.join(', ')}`,
+    }),
+  }),
+  call_date: z.string().optional(),
+});
+
+export type PostTranscriptGrainBody = z.infer<typeof postTranscriptGrainBodySchema>;
+
 // ---------------------------------------------------------------------------
 // GET /clients/:clientId/transcripts - query params schema
 // ---------------------------------------------------------------------------

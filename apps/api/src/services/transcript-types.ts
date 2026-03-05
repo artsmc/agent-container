@@ -50,6 +50,7 @@ export interface InsertTranscriptParams {
   callDate: string;
   rawTranscript: string;
   normalizedSegments: NormalizedTranscript;
+  grainCallId?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -75,7 +76,7 @@ export interface TranscriptAuditMetadata {
   participant_count: number;
   segment_count: number;
   raw_transcript_length: number;
-  submission_method: 'json' | 'file_upload';
+  submission_method: 'json' | 'file_upload' | 'grain';
 }
 
 /**

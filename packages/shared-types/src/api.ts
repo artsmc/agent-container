@@ -20,6 +20,17 @@ export enum ApiErrorCode {
   InvalidId = 'INVALID_ID',
   InvalidBody = 'INVALID_BODY',
   InvalidPagination = 'INVALID_PAGINATION',
+
+  // Grain normalizer error codes (Feature 37)
+  GrainRecordingNotFound = 'GRAIN_RECORDING_NOT_FOUND',
+  GrainAccessDenied = 'GRAIN_ACCESS_DENIED',
+  GrainTranscriptUnavailable = 'GRAIN_TRANSCRIPT_UNAVAILABLE',
+  GrainApiError = 'GRAIN_API_ERROR',
+
+  // Historical import error codes (Feature 38)
+  ImportRecordReadOnly = 'IMPORT_RECORD_READ_ONLY',
+  ImportInProgress = 'IMPORT_IN_PROGRESS',
+  ImportJobNotFound = 'IMPORT_JOB_NOT_FOUND',
 }
 
 export interface ApiError {

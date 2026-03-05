@@ -78,6 +78,7 @@ export async function insertTranscript(
     .insert(transcripts)
     .values({
       clientId: params.clientId,
+      grainCallId: params.grainCallId ?? null,
       callType: params.callType,
       callDate: new Date(params.callDate),
       rawTranscript: params.rawTranscript,
