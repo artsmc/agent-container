@@ -1,0 +1,56 @@
+// AgendaCard -- card layout for the agenda list.
+
+.root {
+  transition: box-shadow tokens.$duration-normal tokens.$ease-out;
+
+  &:hover {
+    box-shadow: tokens.$shadow-md;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: tokens.$space-3;
+}
+
+.shortId {
+  font-family: tokens.$font-family-mono;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-1;
+  margin-bottom: tokens.$space-3;
+}
+
+.cycleDates {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-primary;
+}
+
+.editedBy {
+  font-size: tokens.$text-xs;
+  color: tokens.$color-text-secondary;
+}
+
+.error {
+  padding: tokens.$space-2;
+  background-color: tokens.$color-danger-light;
+  color: tokens.$color-danger;
+  border-radius: tokens.$radius-md;
+  font-size: tokens.$text-xs;
+  margin-bottom: tokens.$space-3;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-2;
+  flex-wrap: wrap;
+}

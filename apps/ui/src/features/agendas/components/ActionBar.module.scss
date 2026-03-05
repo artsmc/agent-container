@@ -1,0 +1,69 @@
+// ActionBar -- sticky bottom bar with action buttons and export dropdown.
+
+.root {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: tokens.$space-3 tokens.$space-6;
+  background-color: tokens.$color-surface-default;
+  border-top: 1px solid tokens.$color-border-default;
+  box-shadow: tokens.$shadow-md;
+  z-index: 10;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.savingLabel {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-3;
+}
+
+.exportWrapper {
+  position: relative;
+}
+
+.exportDropdown {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: tokens.$space-2;
+  background-color: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-lg;
+  box-shadow: tokens.$shadow-lg;
+  min-width: 200px;
+  overflow: hidden;
+  z-index: 20;
+}
+
+.exportOption {
+  display: block;
+  width: 100%;
+  padding: tokens.$space-3 tokens.$space-4;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-primary;
+  text-align: left;
+  font-family: tokens.$font-family-sans;
+
+  &:hover {
+    background-color: tokens.$color-surface-elevated;
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid tokens.$color-gray-100;
+  }
+}

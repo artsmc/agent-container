@@ -1,0 +1,67 @@
+// AgendaListPage -- card list layout, empty state, skeleton loading.
+
+.root {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: tokens.$space-6;
+}
+
+.title {
+  font-size: tokens.$text-2xl;
+  font-weight: tokens.$font-weight-bold;
+  color: tokens.$color-text-primary;
+  margin: 0 0 tokens.$space-6;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-4;
+}
+
+.emptyState {
+  text-align: center;
+  padding: tokens.$space-12 tokens.$space-6;
+  color: tokens.$color-text-secondary;
+  font-size: tokens.$text-base;
+  line-height: tokens.$leading-relaxed;
+}
+
+.errorState {
+  text-align: center;
+  padding: tokens.$space-12 tokens.$space-6;
+  color: tokens.$color-danger;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: tokens.$space-4;
+}
+
+.skeletonList {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-4;
+}
+
+.skeleton {
+  height: 120px;
+  background-color: tokens.$color-gray-100;
+  border-radius: tokens.$radius-lg;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.modalError {
+  color: tokens.$color-danger;
+  font-size: tokens.$text-sm;
+  margin-top: tokens.$space-3;
+}

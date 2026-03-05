@@ -1,0 +1,64 @@
+// AgendaEditorPage -- CSS Grid layout: header, content, sidebars, action bar.
+
+.editorLayout {
+  display: grid;
+  grid-template-columns: 1fr 0fr 0fr;
+  grid-template-rows: auto auto 1fr auto;
+  min-height: 100vh;
+  transition: grid-template-columns tokens.$duration-normal tokens.$ease-out;
+
+  &.commentsOpen {
+    grid-template-columns: 1fr 320px 0fr;
+  }
+
+  &.historyOpen {
+    grid-template-columns: 1fr 0fr 320px;
+  }
+
+  &.bothOpen {
+    grid-template-columns: 1fr 280px 280px;
+  }
+}
+
+.headerRow {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-3;
+  padding-right: tokens.$space-4;
+}
+
+.lockedBanner {
+  grid-column: 1 / -1;
+  padding: tokens.$space-3 tokens.$space-6;
+  background-color: tokens.$color-warning-light;
+  color: tokens.$color-warning;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  text-align: center;
+  border-bottom: 1px solid tokens.$color-border-default;
+}
+
+.contentArea {
+  grid-column: 1 / 2;
+  grid-row: 3 / 4;
+  padding: tokens.$space-6;
+  overflow-y: auto;
+}
+
+.actionBarRow {
+  grid-column: 1 / -1;
+  grid-row: 4 / 5;
+}
+
+.errorText {
+  color: tokens.$color-danger;
+  font-size: tokens.$text-sm;
+  margin-top: tokens.$space-3;
+}

@@ -1,0 +1,16 @@
+// PresenceIndicator -- avatar chips for active users.
+
+.root {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-1;
+}
+
+.chip {
+  cursor: default;
+  transition: transform tokens.$duration-fast tokens.$ease-out;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}

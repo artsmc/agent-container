@@ -1,0 +1,133 @@
+// EmailModal -- form layout, recipient tags, preview pane.
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-4;
+}
+
+.error {
+  padding: tokens.$space-3;
+  background-color: tokens.$color-danger-light;
+  color: tokens.$color-danger;
+  border-radius: tokens.$radius-md;
+  font-size: tokens.$text-sm;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-2;
+}
+
+.label {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-secondary;
+}
+
+.recipientField {
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  padding: tokens.$space-2;
+  min-height: 40px;
+
+  &:focus-within {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: -1px;
+    border-color: tokens.$color-border-focus;
+  }
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: tokens.$space-1;
+  align-items: center;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$space-1;
+  padding: tokens.$space-1 tokens.$space-2;
+  background-color: tokens.$color-gray-100;
+  border-radius: tokens.$radius-full;
+  font-size: tokens.$text-xs;
+  color: tokens.$color-text-primary;
+}
+
+.tagRemove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+  border-radius: tokens.$radius-full;
+
+  &:hover {
+    background-color: tokens.$color-gray-200;
+    color: tokens.$color-text-primary;
+  }
+}
+
+.recipientInput {
+  border: none;
+  outline: none;
+  flex: 1;
+  min-width: 120px;
+  font-size: tokens.$text-sm;
+  font-family: tokens.$font-family-sans;
+  padding: tokens.$space-1;
+}
+
+.subjectInput {
+  padding: tokens.$space-2;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  font-size: tokens.$text-sm;
+  font-family: tokens.$font-family-sans;
+
+  &:focus {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: -1px;
+    border-color: tokens.$color-border-focus;
+  }
+}
+
+.preview {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: tokens.$space-3;
+  background-color: tokens.$color-surface-elevated;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+}
+
+.previewSection {
+  margin-bottom: tokens.$space-3;
+
+  strong {
+    display: block;
+    font-size: tokens.$text-sm;
+    font-weight: tokens.$font-weight-semibold;
+    color: tokens.$color-text-primary;
+    margin-bottom: tokens.$space-1;
+  }
+
+  p {
+    font-size: tokens.$text-sm;
+    color: tokens.$color-text-secondary;
+    margin: 0;
+    line-height: tokens.$leading-normal;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

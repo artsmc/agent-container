@@ -1,0 +1,89 @@
+// CommentThread -- comment bubble with author, timestamp, replies.
+
+.root {
+  padding: tokens.$space-3;
+  border-bottom: 1px solid tokens.$color-gray-100;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.commentBody {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-1;
+}
+
+.authorRow {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-2;
+}
+
+.authorName {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-primary;
+}
+
+.timestamp {
+  font-size: tokens.$text-xs;
+  color: tokens.$color-text-secondary;
+}
+
+.text {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-primary;
+  line-height: tokens.$leading-normal;
+  margin: tokens.$space-1 0 0;
+}
+
+.replyToggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: tokens.$text-xs;
+  color: tokens.$color-primary;
+  font-weight: tokens.$font-weight-medium;
+  padding: 0;
+  align-self: flex-start;
+  margin-top: tokens.$space-1;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.replies {
+  margin-left: tokens.$space-6;
+  margin-top: tokens.$space-2;
+  border-left: 2px solid tokens.$color-gray-200;
+  padding-left: tokens.$space-3;
+}
+
+.reply {
+  padding: tokens.$space-2 0;
+}
+
+.replyInput {
+  display: flex;
+  gap: tokens.$space-2;
+  margin-top: tokens.$space-2;
+  margin-left: tokens.$space-6;
+}
+
+.input {
+  flex: 1;
+  padding: tokens.$space-2;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  font-size: tokens.$text-sm;
+  font-family: tokens.$font-family-sans;
+
+  &:focus {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: -1px;
+    border-color: tokens.$color-border-focus;
+  }
+}

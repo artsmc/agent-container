@@ -1,5 +1,4 @@
-// Modal stub styles
-// Full styles implemented in feature 25.
+// Modal -- dialog overlay with portal rendering, focus trap, size variants.
 
 .root {
   position: fixed;
@@ -20,9 +19,27 @@
   position: relative;
   background-color: tokens.$color-surface-default;
   border-radius: tokens.$radius-lg;
-  width: 100%;
-  max-width: 480px;
+  box-shadow: tokens.$shadow-xl;
   margin: tokens.$space-4;
+  max-height: calc(100vh - tokens.$space-16);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+
+  &[data-size='sm'] {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  &[data-size='md'] {
+    width: 100%;
+    max-width: 480px;
+  }
+
+  &[data-size='lg'] {
+    width: 100%;
+    max-width: 640px;
+  }
 }
 
 .header {
@@ -31,13 +48,46 @@
   justify-content: space-between;
   padding: tokens.$space-4;
   border-bottom: 1px solid tokens.$color-border-default;
+  flex-shrink: 0;
 }
 
 .title {
   font-size: tokens.$text-lg;
   font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+  margin: 0;
+}
+
+.closeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: tokens.$text-xl;
+  color: tokens.$color-text-secondary;
+  border-radius: tokens.$radius-md;
+
+  &:hover {
+    background-color: tokens.$color-gray-100;
+    color: tokens.$color-text-primary;
+  }
 }
 
 .content {
   padding: tokens.$space-4;
+  flex: 1;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: tokens.$space-3;
+  padding: tokens.$space-4;
+  border-top: 1px solid tokens.$color-border-default;
+  flex-shrink: 0;
 }

@@ -1,16 +1,14 @@
-// RichTextEditor stub styles
-// Full styles implemented in feature 28.
+// RichTextEditor -- TipTap-based rich text editor with toolbar.
 
 .root {
-  min-height: 120px;
-  padding: tokens.$space-3;
   border: 1px solid tokens.$color-border-default;
   border-radius: tokens.$radius-md;
   font-family: tokens.$font-family-sans;
   font-size: tokens.$text-base;
   line-height: tokens.$leading-normal;
+  overflow: hidden;
 
-  &:focus {
+  &:focus-within {
     outline: 2px solid tokens.$color-border-focus;
     outline-offset: -1px;
     border-color: tokens.$color-border-focus;
@@ -19,5 +17,119 @@
   &[data-readonly='true'] {
     cursor: default;
     background-color: tokens.$color-surface-elevated;
+    border-color: tokens.$color-gray-200;
+  }
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-1;
+  padding: tokens.$space-2;
+  border-bottom: 1px solid tokens.$color-border-default;
+  background-color: tokens.$color-surface-elevated;
+  flex-wrap: wrap;
+}
+
+.toolbarBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 tokens.$space-1;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-secondary;
+  border-radius: tokens.$radius-sm;
+
+  &:hover {
+    background-color: tokens.$color-gray-200;
+    color: tokens.$color-text-primary;
+  }
+}
+
+.toolbarBtnActive {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 tokens.$space-1;
+  border: none;
+  cursor: pointer;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  border-radius: tokens.$radius-sm;
+  background-color: tokens.$color-primary;
+  color: tokens.$color-text-inverse;
+
+  &:hover {
+    background-color: tokens.$color-primary-dark;
+    color: tokens.$color-text-inverse;
+  }
+}
+
+.toolbarDivider {
+  width: 1px;
+  height: 20px;
+  background-color: tokens.$color-border-default;
+  margin: 0 tokens.$space-1;
+}
+
+.editorContent {
+  min-height: 100px;
+  padding: tokens.$space-3;
+
+  // ProseMirror editor styling
+  :global {
+    .ProseMirror {
+      outline: none;
+      min-height: 80px;
+
+      p {
+        margin: 0 0 tokens.$space-2;
+      }
+
+      h4 {
+        font-size: tokens.$text-lg;
+        font-weight: tokens.$font-weight-semibold;
+        margin: tokens.$space-3 0 tokens.$space-2;
+      }
+
+      ul,
+      ol {
+        padding-left: tokens.$space-6;
+        margin: 0 0 tokens.$space-2;
+      }
+
+      li {
+        margin-bottom: tokens.$space-1;
+      }
+
+      code {
+        background-color: tokens.$color-gray-100;
+        padding: 1px tokens.$space-1;
+        border-radius: tokens.$radius-sm;
+        font-family: tokens.$font-family-mono;
+        font-size: tokens.$text-sm;
+      }
+
+      a {
+        color: tokens.$color-primary;
+        text-decoration: underline;
+      }
+
+      .is-editor-empty:first-child::before {
+        content: attr(data-placeholder);
+        float: left;
+        color: tokens.$color-text-disabled;
+        pointer-events: none;
+        height: 0;
+      }
+    }
   }
 }

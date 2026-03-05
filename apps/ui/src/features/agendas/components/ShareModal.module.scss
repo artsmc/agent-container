@@ -1,0 +1,41 @@
+// ShareModal -- URL rows with copy buttons.
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-4;
+}
+
+.urlRow {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-2;
+}
+
+.label {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-secondary;
+}
+
+.urlField {
+  display: flex;
+  gap: tokens.$space-2;
+}
+
+.urlInput {
+  flex: 1;
+  padding: tokens.$space-2;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  font-size: tokens.$text-sm;
+  font-family: tokens.$font-family-mono;
+  color: tokens.$color-text-primary;
+  background-color: tokens.$color-surface-elevated;
+  cursor: text;
+
+  &:focus {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: -1px;
+  }
+}

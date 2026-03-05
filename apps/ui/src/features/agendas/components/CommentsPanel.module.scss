@@ -1,0 +1,91 @@
+// CommentsPanel -- collapsible right sidebar for internal comments.
+
+.root {
+  overflow: hidden;
+  border-left: 1px solid tokens.$color-border-default;
+  background-color: tokens.$color-surface-default;
+  display: flex;
+  flex-direction: column;
+  transition: width tokens.$duration-normal tokens.$ease-out;
+  min-width: 0;
+}
+
+.open {
+  min-width: 280px;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-2;
+  padding: tokens.$space-3;
+  background: none;
+  border: none;
+  border-bottom: 1px solid tokens.$color-border-default;
+  cursor: pointer;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+  width: 100%;
+  text-align: left;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: tokens.$color-surface-elevated;
+  }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 tokens.$space-1;
+  border-radius: tokens.$radius-full;
+  background-color: tokens.$color-primary;
+  color: tokens.$color-text-inverse;
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-medium;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.newComment {
+  display: flex;
+  gap: tokens.$space-2;
+  padding: tokens.$space-3;
+  border-bottom: 1px solid tokens.$color-gray-100;
+}
+
+.input {
+  flex: 1;
+  padding: tokens.$space-2;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  font-size: tokens.$text-sm;
+  font-family: tokens.$font-family-sans;
+
+  &:focus {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: -1px;
+    border-color: tokens.$color-border-focus;
+  }
+}
+
+.list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.empty {
+  text-align: center;
+  color: tokens.$color-text-secondary;
+  font-size: tokens.$text-sm;
+  padding: tokens.$space-6;
+}

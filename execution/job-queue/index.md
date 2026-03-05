@@ -19,10 +19,10 @@
 | 11 | task-endpoints | 3: API Core | api-prd, database-prd | 07,09 | 12,17 | done | done | — |
 | 12 | output-normalizer-asana | 3: API Core | api-prd, database-prd | 01,07,11 | 13,38 | done | done | — |
 | 13 | status-reconciliation | 3: API Core | api-prd, database-prd | 12 | 14,20 | done | done | — |
-| 14 | agenda-endpoints | 3: API Core | api-prd, database-prd | 07,09,13 | 15,16,17 | in_progress | done | — |
-| 15 | google-docs-adapter | 3: API Core | api-prd | 07,14 | — | pending | done | — |
-| 16 | email-adapter | 3: API Core | api-prd | 07,14 | — | pending | done | — |
-| 17 | workflow-orchestration | 3: API Core | api-prd, mastra-prd | 10,11,14 | 19,20 | pending | done | — |
+| 14 | agenda-endpoints | 3: API Core | api-prd, database-prd | 07,09,13 | 15,16,17 | done | done | — |
+| 15 | google-docs-adapter | 3: API Core | api-prd | 07,14 | — | in_progress | done | — |
+| 16 | email-adapter | 3: API Core | api-prd | 07,14 | — | in_progress | done | — |
+| 17 | workflow-orchestration | 3: API Core | api-prd, mastra-prd | 10,11,14 | 19,20 | in_progress | done | — |
 | 18 | mastra-runtime-setup | 4: Mastra | mastra-prd, infra-prd | 00 | 19,20,21 | done | done | — |
 | 19 | workflow-a-intake-agent | 4: Mastra | mastra-prd, api-prd | 01,18,17 | 21 | pending | done | — |
 | 20 | workflow-b-agenda-agent | 4: Mastra | mastra-prd, api-prd | 01,18,17,13 | 21 | pending | done | — |
@@ -32,10 +32,10 @@
 | 24 | ui-auth-flow | 6: Web UI | ui-prd, auth-prd | 23,06 | 25 | done | done | — |
 | 25 | ui-dashboard | 6: Web UI | ui-prd | 23,24,22 | 26,27,28,30,31 | done | done | — |
 | 26 | ui-client-detail | 6: Web UI | ui-prd | 25 | — | in_progress | done | — |
-| 27 | ui-task-review | 6: Web UI | ui-prd | 25,22 | — | in_progress | done | — |
-| 28 | ui-agenda-editor | 6: Web UI | ui-prd | 25,22 | — | in_progress | done | — |
+| 27 | ui-task-review | 6: Web UI | ui-prd | 25,22 | — | done | done | — |
+| 28 | ui-agenda-editor | 6: Web UI | ui-prd | 25,22 | — | done | done | — |
 | 29 | ui-shared-agenda | 6: Web UI | ui-prd | 23,22 | — | done | done | — |
-| 30 | ui-workflow-trigger | 6: Web UI | ui-prd | 25,22 | — | in_progress | done | — |
+| 30 | ui-workflow-trigger | 6: Web UI | ui-prd | 25,22 | — | done | done | — |
 | 31 | ui-admin-settings | 6: Web UI | ui-prd | 25,22 | — | in_progress | done | — |
 | 32 | terminal-device-auth | 7: Terminal | terminal-prd, auth-prd | 06 | 33 | done | done | — |
 | 33 | terminal-mcp-tools | 7: Terminal | terminal-prd, mastra-prd | 21,22,32 | — | pending | done | — |
@@ -43,7 +43,7 @@
 | 35 | container-builds | 8: CI/CD & Deployment | infra-prd | 00,34 | 36 | done | done | — |
 | 36 | terraform-app-deployment | 8: CI/CD & Deployment | infra-prd | 02,35 | — | done | done | — |
 | 37 | input-normalizer-grain | 9: V2 Enhancements | api-prd, mastra-prd | 08,10 | — | done | done | — |
-| 38 | historical-import | 9: V2 Enhancements | api-prd, database-prd | 09,10,12 | — | in_progress | done | — |
+| 38 | historical-import | 9: V2 Enhancements | api-prd, database-prd | 09,10,12 | — | done | done | — |
 
 ## Critical Path
 

@@ -1,0 +1,15 @@
+// AgendaSection -- section header and editor area.
+
+.root {
+  margin-bottom: tokens.$space-6;
+}
+
+.sectionHeader {
+  font-size: tokens.$text-lg;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+  margin: 0 0 tokens.$space-3;
+  padding-bottom: tokens.$space-2;
+  border-bottom: 1px solid tokens.$color-gray-200;
+  user-select: none;
+}

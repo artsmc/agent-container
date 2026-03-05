@@ -1,0 +1,78 @@
+// AgendaEditorHeader -- header with short ID, status, auto-save indicator.
+
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: tokens.$space-4 tokens.$space-6;
+  border-bottom: 1px solid tokens.$color-border-default;
+  background-color: tokens.$color-surface-default;
+  flex-wrap: wrap;
+  gap: tokens.$space-3;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-3;
+  flex-wrap: wrap;
+}
+
+.shortId {
+  font-family: tokens.$font-family-mono;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+}
+
+.clientName {
+  font-size: tokens.$text-base;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-primary;
+}
+
+.cycleDates {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-3;
+}
+
+.saveIndicator {
+  font-size: tokens.$text-sm;
+}
+
+.saved {
+  color: tokens.$color-success;
+}
+
+.saving {
+  color: tokens.$color-text-secondary;
+}
+
+.unsaved {
+  color: tokens.$color-warning;
+}
+
+.failed {
+  color: tokens.$color-danger;
+}
+
+.retryBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: tokens.$color-primary;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  text-decoration: underline;
+  padding: 0;
+
+  &:hover {
+    color: tokens.$color-primary-dark;
+  }
+}

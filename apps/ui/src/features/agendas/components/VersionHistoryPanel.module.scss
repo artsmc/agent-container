@@ -1,0 +1,115 @@
+// VersionHistoryPanel -- collapsible panel with version entries and diff view.
+
+.root {
+  overflow: hidden;
+  border-left: 1px solid tokens.$color-border-default;
+  background-color: tokens.$color-surface-default;
+  display: flex;
+  flex-direction: column;
+  transition: width tokens.$duration-normal tokens.$ease-out;
+  min-width: 0;
+}
+
+.open {
+  min-width: 280px;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-2;
+  padding: tokens.$space-3;
+  background: none;
+  border: none;
+  border-bottom: 1px solid tokens.$color-border-default;
+  cursor: pointer;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+  width: 100%;
+  text-align: left;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: tokens.$color-surface-elevated;
+  }
+}
+
+.count {
+  font-weight: tokens.$font-weight-regular;
+  color: tokens.$color-text-secondary;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.empty {
+  text-align: center;
+  color: tokens.$color-text-secondary;
+  font-size: tokens.$text-sm;
+  padding: tokens.$space-6;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.entry {
+  padding: tokens.$space-3;
+  border-bottom: 1px solid tokens.$color-gray-100;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.entryHeader {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-2;
+  flex-wrap: wrap;
+}
+
+.changedBy {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-primary;
+}
+
+.timestamp {
+  font-size: tokens.$text-xs;
+  color: tokens.$color-text-secondary;
+}
+
+.section {
+  display: block;
+  font-size: tokens.$text-xs;
+  color: tokens.$color-text-secondary;
+  text-transform: capitalize;
+  margin-top: tokens.$space-1;
+}
+
+.diff {
+  margin-top: tokens.$space-2;
+  font-size: tokens.$text-sm;
+  line-height: tokens.$leading-normal;
+}
+
+.removed {
+  background-color: tokens.$color-danger-light;
+  color: tokens.$color-danger;
+  text-decoration: line-through;
+  padding: tokens.$space-1 tokens.$space-2;
+  border-radius: tokens.$radius-sm;
+  margin-bottom: tokens.$space-1;
+}
+
+.added {
+  background-color: tokens.$color-success-light;
+  color: tokens.$color-success;
+  padding: tokens.$space-1 tokens.$space-2;
+  border-radius: tokens.$radius-sm;
+}
