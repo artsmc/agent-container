@@ -39,3 +39,25 @@ variable "vpc_id" {
   type        = string
   description = "Self-link of the VPC network. Passed from module.networking.vpc_id. Reserved for future private DNS zone configuration if required."
 }
+
+# ─── Feature 36: App Deployment ────────────────────────────────────────────────
+
+variable "neg_ids" {
+  type = object({
+    ui   = optional(string, null)
+    api  = optional(string, null)
+    auth = optional(string, null)
+  })
+  description = "Map of service name to Serverless NEG self-link from the corresponding app module. When a value is non-null, the NEG is attached to the matching backend service as a backend. Populated by feature 36 after Cloud Run services are deployed."
+  default = {
+    ui   = null
+    api  = null
+    auth = null
+  }
+}
+
+variable "enable_ui_cdn" {
+  type        = bool
+  description = "Enable Cloud CDN on the UI backend service for static asset caching at Google's edge. Should be true in all environments once the UI is deployed."
+  default     = false
+}

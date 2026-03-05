@@ -139,3 +139,108 @@ variable "terraform_state_bucket" {
   description = "Name of the GCS bucket that holds Terraform remote state. Must exist before terraform init."
   default     = "iexcel-terraform-state"
 }
+
+# ─── App Deployment (Feature 36) ──────────────────────────────────────────────
+
+variable "auth_image_url" {
+  type        = string
+  description = "Full Artifact Registry image URL for the auth service, including tag (e.g. 'us-central1-docker.pkg.dev/iexcel-dev/iexcel-dev-auth/auth:sha-abc123'). Set by CI/CD pipeline on each deployment."
+}
+
+variable "api_image_url" {
+  type        = string
+  description = "Full Artifact Registry image URL for the api service, including tag."
+}
+
+variable "mastra_image_url" {
+  type        = string
+  description = "Full Artifact Registry image URL for the mastra service, including tag."
+}
+
+variable "ui_image_url" {
+  type        = string
+  description = "Full Artifact Registry image URL for the ui service, including tag."
+}
+
+# ─── Auth Scaling ──────────────────────────────────────────────────────────────
+
+variable "auth_min_instances" {
+  type        = number
+  description = "Minimum Cloud Run instances for the auth service. Set to 0 for scale-to-zero (dev), >=1 to eliminate cold starts (prod)."
+  default     = 0
+}
+
+variable "auth_max_instances" {
+  type        = number
+  description = "Maximum Cloud Run instances for the auth service."
+  default     = 3
+}
+
+# ─── API Scaling ───────────────────────────────────────────────────────────────
+
+variable "api_min_instances" {
+  type        = number
+  description = "Minimum Cloud Run instances for the api service. Set to 0 for scale-to-zero (dev), >=1 to eliminate cold starts (prod)."
+  default     = 0
+}
+
+variable "api_max_instances" {
+  type        = number
+  description = "Maximum Cloud Run instances for the api service."
+  default     = 5
+}
+
+# ─── Mastra Scaling ────────────────────────────────────────────────────────────
+
+variable "mastra_min_instances" {
+  type        = number
+  description = "Minimum Cloud Run instances for the mastra AI agent service. LLM initialization is slow, so consider min=1 in staging and production."
+  default     = 0
+}
+
+variable "mastra_max_instances" {
+  type        = number
+  description = "Maximum Cloud Run instances for the mastra service. LLM calls are CPU/memory intensive; keep max lower than the API service."
+  default     = 3
+}
+
+# ─── UI Scaling ────────────────────────────────────────────────────────────────
+
+variable "ui_min_instances" {
+  type        = number
+  description = "Minimum Cloud Run instances for the UI service. Set to 0 for scale-to-zero (dev), >=1 to eliminate cold starts (prod)."
+  default     = 0
+}
+
+variable "ui_max_instances" {
+  type        = number
+  description = "Maximum Cloud Run instances for the UI service."
+  default     = 3
+}
+
+# ─── Inter-service Config ──────────────────────────────────────────────────────
+
+variable "mastra_url" {
+  type        = string
+  description = "Internal Cloud Run URL of the mastra service. Used to configure the MASTRA_URL env var in the api service. Leave empty on initial deployment; update after mastra is deployed and its URL is known via 'terraform output mastra_service_url'."
+  default     = ""
+}
+
+# ─── LLM Configuration ────────────────────────────────────────────────────────
+
+variable "llm_provider" {
+  type        = string
+  description = "LLM provider used by the mastra service. Must be 'openai' or 'anthropic'."
+  default     = "anthropic"
+
+  validation {
+    condition     = contains(["openai", "anthropic"], var.llm_provider)
+    error_message = "llm_provider must be one of: openai, anthropic."
+  }
+}
+
+variable "llm_model" {
+  type        = string
+  description = "LLM model name used by the mastra service (e.g. 'claude-sonnet-4-20250514', 'gpt-4o'). Must be a valid model name for the selected llm_provider."
+  default     = "claude-sonnet-4-20250514"
+}

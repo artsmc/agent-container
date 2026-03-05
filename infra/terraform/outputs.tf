@@ -102,3 +102,25 @@ output "vpc_connector_id" {
   description = "Serverless VPC Access connector ID for Cloud Run services."
   value       = module.networking.vpc_connector_id
 }
+
+# ─── App Service URLs (Feature 36) ─────────────────────────────────────────────
+
+output "auth_service_url" {
+  description = "Direct Cloud Run URL of the auth service. Use for health verification. Public access is via https://auth.{domain} through the load balancer."
+  value       = module.auth.service_url
+}
+
+output "api_service_url" {
+  description = "Direct Cloud Run URL of the api service. Use for health verification. Public access is via https://api.{domain} through the load balancer."
+  value       = module.api.service_url
+}
+
+output "mastra_service_url" {
+  description = "Internal Cloud Run URL of the mastra service. Copy this value into the mastra_url variable in your .tfvars file and re-apply to wire the API service to mastra."
+  value       = module.mastra.service_url
+}
+
+output "ui_service_url" {
+  description = "Direct Cloud Run URL of the UI service. Use for health verification. Public access is via https://app.{domain} through the load balancer."
+  value       = module.ui.service_url
+}

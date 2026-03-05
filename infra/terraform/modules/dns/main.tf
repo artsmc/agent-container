@@ -9,9 +9,10 @@
 #   api.{domain}  → api-backend (Fastify API)
 #   auth.{domain} → auth-backend (Custom OIDC)
 #
-# Backend services are created as stubs with no backends attached.
-# Feature 36 (Cloud Run deployment) will attach Serverless NEGs (Network
-# Endpoint Groups) to each backend service once Cloud Run services exist.
+# Backend services are initially created with no backends attached (stubs).
+# Feature 36 (Cloud Run deployment) passes Serverless NEG self-links via
+# var.neg_ids. When non-null, a dynamic backend block attaches the NEG to the
+# corresponding backend service (in-place update, no resource recreation).
 #
 # SSL certificate: Google-managed wildcard cert for *.{domain}.
 # Google handles certificate provisioning, rotation, and renewal automatically.
@@ -109,11 +110,28 @@ resource "google_compute_backend_service" "services" {
 
   project               = var.gcp_project_id
   name                  = "${local.name_prefix}-${each.key}-backend"
-  description           = "Backend service stub for ${each.key} (${each.value}). Serverless NEGs attached by feature 36."
+  description           = "Backend service for ${each.key} (${each.value}). Serverless NEG attached by feature 36 when var.neg_ids.${each.key} is set."
   protocol              = "HTTPS"
   port_name             = "https"
   timeout_sec           = 30
   load_balancing_scheme = "EXTERNAL_MANAGED"
+
+  # Enable Cloud CDN on the UI backend only. CDN caches static Next.js assets
+  # (/_next/static/**) at Google's edge POPs to reduce Cloud Run cold starts
+  # and improve global response times.
+  enable_cdn = each.key == "ui" ? var.enable_ui_cdn : false
+
+  # Attach a Serverless NEG when one has been provisioned by the app module
+  # (feature 36). The dynamic block produces an empty list (no backend block)
+  # when neg_ids is null, making the backend service a no-backend stub for the
+  # initial base infrastructure apply. Adding a NEG on a subsequent apply causes
+  # an in-place update — no resource recreation.
+  dynamic "backend" {
+    for_each = var.neg_ids[each.key] != null ? [var.neg_ids[each.key]] : []
+    content {
+      group = backend.value
+    }
+  }
 
   # Health check is attached for monitoring; Serverless NEG backends do not use
   # traditional health check probes but GCP still requires the field.

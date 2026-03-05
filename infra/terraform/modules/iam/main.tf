@@ -53,6 +53,9 @@ locals {
     ]
     mastra = [
       "LLM_API_KEY",
+      # MASTRA_CLIENT_SECRET is the OIDC client secret for the mastra service.
+      # Added by feature 36 (terraform-app-deployment).
+      "MASTRA_CLIENT_SECRET",
     ]
     ui = [] # UI SA has no secret access; UI reads data via the API service
   }

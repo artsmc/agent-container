@@ -50,6 +50,10 @@ locals {
     "GOOGLE_SERVICE_ACCOUNT_JSON",
     "LLM_API_KEY",
     "EMAIL_PROVIDER_API_KEY",
+    # MASTRA_CLIENT_SECRET: shared secret used by the mastra service to
+    # authenticate with the auth service as an OIDC client.
+    # Added by feature 36 (terraform-app-deployment).
+    "MASTRA_CLIENT_SECRET",
   ]
 }
 
