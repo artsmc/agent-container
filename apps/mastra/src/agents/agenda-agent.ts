@@ -1,41 +1,50 @@
 /**
- * Agenda Agent — placeholder for the Running Notes document generation workflow.
+ * Agenda Agent — Workflow B: Pre-Call to Build Agenda.
  *
- * This agent compiles approved tasks for a billing cycle into a structured
- * Running Notes agenda document ready for client review.
- * The full implementation ships in Feature 20 (Agenda Agent).
+ * Generates a six-section Running Notes document from reconciled task data
+ * and persists it as a draft agenda via the iExcel API.
  *
- * @see Feature 20 — Agenda Agent: full system prompt and tool wiring
+ * ## Input Contract
+ * Invoked with `AgendaAgentInput`:
+ *   - workflowRunId: UUID of the workflow run record
+ *   - clientId: UUID of the client
+ *   - clientName: Display name of the client (optional, defaults to clientId)
+ *   - cycleStart: ISO 8601 date (e.g., '2026-02-01')
+ *   - cycleEnd: ISO 8601 date (e.g., '2026-02-28')
+ *
+ * ## Output Contract
+ * On success: updates workflow to `completed` with result containing
+ *   agenda_short_id, tasks_analyzed, tasks_completed, tasks_incomplete.
+ * On failure: updates workflow to `failed` with error code and message.
+ *
+ * ## Running Notes Sections
+ * 1. Completed Tasks (theme-grouped prose)
+ * 2. Incomplete Tasks
+ * 3. Relevant Deliverables
+ * 4. Recommendations (2-4 items)
+ * 5. New Ideas (1-3 items)
+ * 6. Next Steps (3-5 items)
+ *
+ * @see Feature 20 — Agenda Agent
  */
 import { Agent } from '@mastra/core/agent';
+import { AGENDA_AGENT_INSTRUCTIONS } from '../prompts/agenda-instructions.js';
 import { env } from '../config/env.js';
-import {
-  getTask,
-  listTasksForClient,
-  createDraftAgenda,
-  getAgenda,
-} from '../tools/index.js';
+import { getReconciledTasksTool, saveDraftAgendaTool } from '../tools/index.js';
+import { updateWorkflowStatusTool } from '../tools/workflow-tools.js';
 
 export const agendaAgent = new Agent({
   id: 'agenda-agent',
   name: 'Agenda Agent',
   description:
-    'Compiles approved tasks into a structured Running Notes agenda for client review.',
-  // TODO(feature-20): Replace with a detailed system prompt that instructs the
-  // agent on how to group tasks, write cycle summaries, and format the agenda.
-  instructions:
-    'You are the iExcel Agenda Agent. ' +
-    'You compile the approved tasks for a billing cycle into a well-structured ' +
-    'Running Notes document. ' +
-    'Group tasks by category, include effort estimates, and write a brief cycle summary. ' +
-    'Use the provided tools to fetch tasks and persist the generated agenda.',
+    'Compiles reconciled tasks into a structured Running Notes agenda for client review.',
+  instructions: AGENDA_AGENT_INSTRUCTIONS,
   model: {
     id: `${env.LLM_PROVIDER}/${env.LLM_MODEL}` as `${string}/${string}`,
   },
   tools: {
-    getTask,
-    listTasksForClient,
-    createDraftAgenda,
-    getAgenda,
+    getReconciledTasksTool,
+    saveDraftAgendaTool,
+    updateWorkflowStatusTool,
   },
 });

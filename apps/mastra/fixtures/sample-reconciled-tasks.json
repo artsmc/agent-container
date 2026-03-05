@@ -1,0 +1,164 @@
+{
+  "tasks": [
+    {
+      "id": "task-uuid-001",
+      "shortId": "TSK-0042",
+      "title": "Update proposal with Q2 pricing",
+      "description": {
+        "taskContext": "Review and update the client proposal document to reflect the new Q2 pricing structure, including revised hourly rates and package options.",
+        "additionalContext": "The pricing changes were discussed in the last client call and need to be finalized before the next meeting.",
+        "requirements": ["Update all pricing tables", "Add new package tier", "Review with finance team"]
+      },
+      "assignee": "Mark",
+      "estimatedTime": "PT2H",
+      "scrumStage": "done",
+      "asanaStatus": "completed",
+      "asanaCompleted": true,
+      "asanaCompletedAt": "2026-02-15T10:30:00Z"
+    },
+    {
+      "id": "task-uuid-002",
+      "shortId": "TSK-0043",
+      "title": "Review brand guidelines document",
+      "description": {
+        "taskContext": "Conduct a thorough review of the existing brand guidelines document and identify areas that need updating for the new marketing push.",
+        "additionalContext": "Client mentioned wanting a refresh of their brand identity during the intake call.",
+        "requirements": ["Review current guidelines", "Flag outdated sections", "Propose updates"]
+      },
+      "assignee": "Sarah",
+      "estimatedTime": "PT3H",
+      "scrumStage": "done",
+      "asanaStatus": "completed",
+      "asanaCompleted": true,
+      "asanaCompletedAt": "2026-02-18T14:00:00Z"
+    },
+    {
+      "id": "task-uuid-003",
+      "shortId": "TSK-0044",
+      "title": "Set up Google Analytics 4 tracking",
+      "description": {
+        "taskContext": "Configure Google Analytics 4 property for the client's main website and set up basic event tracking for key user interactions.",
+        "additionalContext": "The client is transitioning from Universal Analytics and needs GA4 set up before the deprecation deadline.",
+        "requirements": ["Create GA4 property", "Install tracking code", "Configure data streams"]
+      },
+      "assignee": "Alex",
+      "estimatedTime": "PT4H",
+      "scrumStage": "done",
+      "asanaStatus": "completed",
+      "asanaCompleted": true,
+      "asanaCompletedAt": "2026-02-10T09:00:00Z"
+    },
+    {
+      "id": "task-uuid-004",
+      "shortId": "TSK-0045",
+      "title": "Configure conversion events in GA4",
+      "description": {
+        "taskContext": "Set up custom conversion events in Google Analytics 4 to track form submissions, button clicks, and purchase completions.",
+        "additionalContext": "Follows the GA4 property setup. Conversion tracking is essential for the upcoming campaign performance measurement.",
+        "requirements": ["Define conversion events", "Set up event parameters", "Test event firing"]
+      },
+      "assignee": "Alex",
+      "estimatedTime": "PT3H",
+      "scrumStage": "done",
+      "asanaStatus": "completed",
+      "asanaCompleted": true,
+      "asanaCompletedAt": "2026-02-12T16:30:00Z"
+    },
+    {
+      "id": "task-uuid-005",
+      "shortId": "TSK-0046",
+      "title": "Write Q1 campaign brief",
+      "description": {
+        "taskContext": "Draft a comprehensive campaign brief for the Q1 marketing campaign, including target audience, messaging, channels, and KPIs.",
+        "additionalContext": "This brief will guide all marketing activities for the next quarter.",
+        "requirements": ["Define target audience", "Outline messaging framework", "Set KPIs"]
+      },
+      "assignee": "Jessica",
+      "estimatedTime": "PT5H",
+      "scrumStage": "done",
+      "asanaStatus": "completed",
+      "asanaCompleted": true,
+      "asanaCompletedAt": "2026-02-20T11:00:00Z"
+    },
+    {
+      "id": "task-uuid-006",
+      "shortId": "TSK-0047",
+      "title": "Create social media content calendar",
+      "description": {
+        "taskContext": "Build a monthly social media content calendar covering all active platforms (Instagram, LinkedIn, Twitter) with post topics, formats, and scheduling.",
+        "additionalContext": "Aligns with the Q1 campaign brief and client's brand voice guidelines.",
+        "requirements": ["Plan 30 days of content", "Include platform-specific formats", "Schedule posting times"]
+      },
+      "assignee": "Jessica",
+      "estimatedTime": "PT4H",
+      "scrumStage": "done",
+      "asanaStatus": "completed",
+      "asanaCompleted": true,
+      "asanaCompletedAt": "2026-02-22T15:00:00Z"
+    },
+    {
+      "id": "task-uuid-007",
+      "shortId": "TSK-0048",
+      "title": "Draft email sequence for new leads",
+      "description": {
+        "taskContext": "Create a 5-email nurture sequence for new leads entering the funnel from the landing page, including welcome, value proposition, case study, offer, and follow-up emails.",
+        "additionalContext": "Part of the broader lead generation strategy discussed with the client.",
+        "requirements": ["Write 5 email drafts", "Include subject lines", "Define send timing"]
+      },
+      "assignee": "Mark",
+      "estimatedTime": "PT6H",
+      "scrumStage": "done",
+      "asanaStatus": "completed",
+      "asanaCompleted": true,
+      "asanaCompletedAt": "2026-02-25T10:00:00Z"
+    },
+    {
+      "id": "task-uuid-008",
+      "shortId": "TSK-0049",
+      "title": "Audit existing email list segments",
+      "description": {
+        "taskContext": "Review and clean up the client's existing email list segments to ensure accurate targeting for the upcoming campaign.",
+        "additionalContext": "Several segments have not been updated since Q3 of last year.",
+        "requirements": ["Review segment definitions", "Remove inactive subscribers", "Create new segments"]
+      },
+      "assignee": "Sarah",
+      "estimatedTime": "PT2H30M",
+      "scrumStage": "done",
+      "asanaStatus": "completed",
+      "asanaCompleted": true,
+      "asanaCompletedAt": "2026-02-26T09:30:00Z"
+    },
+    {
+      "id": "task-uuid-009",
+      "shortId": "TSK-0050",
+      "title": "Publish Q2 campaign landing page",
+      "description": {
+        "taskContext": "Design and publish the landing page for the Q2 marketing campaign, including lead capture form and tracking pixels.",
+        "additionalContext": "Depends on finalized campaign messaging from the campaign brief.",
+        "requirements": ["Design landing page", "Implement lead form", "Add tracking pixels"]
+      },
+      "assignee": "Alex",
+      "estimatedTime": "PT8H",
+      "scrumStage": "in_progress",
+      "asanaStatus": "incomplete",
+      "asanaCompleted": false,
+      "asanaCompletedAt": null
+    },
+    {
+      "id": "task-uuid-010",
+      "shortId": "TSK-0051",
+      "title": "Integrate CRM with email tool",
+      "description": {
+        "taskContext": "Set up the integration between the client's CRM system and email marketing platform to enable automated lead syncing and segmentation.",
+        "additionalContext": "This integration is a prerequisite for the automated email sequences.",
+        "requirements": ["Configure API connection", "Map contact fields", "Test sync"]
+      },
+      "assignee": "Alex",
+      "estimatedTime": "PT6H",
+      "scrumStage": "backlog",
+      "asanaStatus": "not_found",
+      "asanaCompleted": null,
+      "asanaCompletedAt": null
+    }
+  ]
+}

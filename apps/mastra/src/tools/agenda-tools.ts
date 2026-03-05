@@ -1,58 +1,49 @@
 /**
- * Placeholder agenda tools for the Mastra runtime.
+ * Agenda tools for the Mastra runtime.
  *
- * These are stubs that satisfy the Mastra tool registry at runtime.
- * Full implementations ship in Feature 20 (Agenda Agent Tools).
+ * Implements saveDraftAgendaTool which persists agent-generated Running Notes
+ * documents as draft agendas via the iExcel API.
  *
- * @see Feature 20 — Agenda Agent: agenda tool implementations
+ * @see Feature 20 — Agenda Agent
  */
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
+import { getApiClient } from '../api-client.js';
 
-// ── Shared sub-schemas ────────────────────────────────────────────────────────
+// ── saveDraftAgendaTool ─────────────────────────────────────────────────────
 
-const agendaSchema = z.object({
-  id: z.string(),
-  shortId: z.string(),
-  clientId: z.string(),
-  status: z.enum(['draft', 'in_review', 'finalized', 'shared']),
-  content: z.string().describe('Markdown content of the Running Notes document'),
-  cycleStart: z.string().describe('ISO 8601 date'),
-  cycleEnd: z.string().describe('ISO 8601 date'),
-  sharedUrlToken: z.string().nullable(),
-  internalUrlToken: z.string().nullable(),
-  googleDocId: z.string().nullable(),
-  finalizedBy: z.string().nullable(),
-  finalizedAt: z.string().nullable(),
-  sharedAt: z.string().nullable(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-});
-
-// ── createDraftAgenda ─────────────────────────────────────────────────────────
-
-const createDraftAgendaInputSchema = z.object({
-  clientId: z.string().describe('Client UUID to associate the agenda with'),
-  content: z
-    .string()
-    .describe('Initial markdown content for the Running Notes document'),
+const saveDraftAgendaInputSchema = z.object({
+  clientId: z.string().uuid().describe('Client UUID to associate the agenda with'),
+  content: z.string().min(1).describe('Markdown content for the Running Notes document'),
   cycleStart: z.string().describe('ISO 8601 date for the cycle start'),
   cycleEnd: z.string().describe('ISO 8601 date for the cycle end'),
 });
 
-const createDraftAgendaOutputSchema = z.object({
-  agenda: agendaSchema,
+const saveDraftAgendaOutputSchema = z.object({
+  id: z.string(),
+  shortId: z.string(),
+  status: z.literal('draft'),
 });
 
-export const createDraftAgenda = createTool({
-  id: 'create-draft-agenda',
+export const saveDraftAgendaTool = createTool({
+  id: 'save-draft-agenda',
   description:
-    'Creates a draft Running Notes agenda document for a client billing cycle.',
-  inputSchema: createDraftAgendaInputSchema,
-  outputSchema: createDraftAgendaOutputSchema,
-  execute: async (_input, _context) => {
-    // TODO(feature-20): Implement via @iexcel/api-client POST /agendas
-    throw new Error('Not implemented — see feature 20');
+    'Save the generated Running Notes document as a draft agenda for a client.',
+  inputSchema: saveDraftAgendaInputSchema,
+  outputSchema: saveDraftAgendaOutputSchema,
+  execute: async (input) => {
+    const apiClient = getApiClient();
+    const response = await apiClient.createAgenda(input.clientId, {
+      clientId: input.clientId,
+      content: input.content,
+      cycleStart: input.cycleStart,
+      cycleEnd: input.cycleEnd,
+    });
+    return {
+      id: response.id,
+      shortId: response.shortId,
+      status: 'draft' as const,
+    };
   },
 });
 
@@ -63,7 +54,23 @@ const getAgendaInputSchema = z.object({
 });
 
 const getAgendaOutputSchema = z.object({
-  agenda: agendaSchema,
+  agenda: z.object({
+    id: z.string(),
+    shortId: z.string(),
+    clientId: z.string(),
+    status: z.enum(['draft', 'in_review', 'finalized', 'shared']),
+    content: z.string(),
+    cycleStart: z.string(),
+    cycleEnd: z.string(),
+    sharedUrlToken: z.string().nullable(),
+    internalUrlToken: z.string().nullable(),
+    googleDocId: z.string().nullable(),
+    finalizedBy: z.string().nullable(),
+    finalizedAt: z.string().nullable(),
+    sharedAt: z.string().nullable(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+  }),
 });
 
 export const getAgenda = createTool({
@@ -71,8 +78,9 @@ export const getAgenda = createTool({
   description: 'Retrieves a single agenda document by its ID.',
   inputSchema: getAgendaInputSchema,
   outputSchema: getAgendaOutputSchema,
-  execute: async (_input, _context) => {
-    // TODO(feature-20): Implement via @iexcel/api-client GET /agendas/{id}
-    throw new Error('Not implemented — see feature 20');
+  execute: async (input) => {
+    const apiClient = getApiClient();
+    const response = await apiClient.getAgenda(input.agendaId);
+    return { agenda: response.agenda };
   },
 });
