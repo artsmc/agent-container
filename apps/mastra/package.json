@@ -6,6 +6,7 @@
   "main": "src/index.ts",
   "dependencies": {
     "@mastra/core": "^1.9.0",
+    "@iexcel/api-client": "workspace:*",
     "@iexcel/auth-client": "workspace:*",
     "@iexcel/shared-types": "workspace:*",
     "pino": "^9.0.0",

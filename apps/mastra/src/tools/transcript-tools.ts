@@ -1,13 +1,13 @@
 /**
- * Placeholder transcript tools for the Mastra runtime.
+ * Transcript tools for the Mastra runtime.
  *
- * These are stubs that satisfy the Mastra tool registry at runtime.
- * Full implementations ship in Feature 19 (Intake Agent Tools).
+ * Provides tools for retrieving and listing transcripts via the iExcel API.
  *
- * @see Feature 19 — Intake Agent: transcript tool implementations
+ * @see Feature 19 — Intake Agent
  */
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
+import { getApiClient } from '../api-client.js';
 
 // ── Shared sub-schemas ────────────────────────────────────────────────────────
 
@@ -48,9 +48,12 @@ export const getTranscript = createTool({
   description: 'Retrieves a single transcript by its ID.',
   inputSchema: getTranscriptInputSchema,
   outputSchema: getTranscriptOutputSchema,
-  execute: async (_input, _context) => {
-    // TODO(feature-19): Implement via @iexcel/api-client GET /transcripts/{id}
-    throw new Error('Not implemented — see feature 19');
+  execute: async (input) => {
+    const apiClient = getApiClient();
+    const response = await apiClient.getTranscript(input.transcriptId);
+    // The API returns GetTranscriptResponse — we need to return a NormalizedTranscript-like shape.
+    // The transcript data includes the normalized fields.
+    return { transcript: response as unknown as z.infer<typeof transcriptSchema> };
   },
 });
 
@@ -82,8 +85,14 @@ export const listTranscriptsForClient = createTool({
     'Lists transcripts for a specific client, with optional meeting type filter.',
   inputSchema: listTranscriptsForClientInputSchema,
   outputSchema: listTranscriptsForClientOutputSchema,
-  execute: async (_input, _context) => {
-    // TODO(feature-19): Implement via @iexcel/api-client GET /transcripts?clientId=...
-    throw new Error('Not implemented — see feature 19');
+  execute: async (input) => {
+    const apiClient = getApiClient();
+    const response = await apiClient.listTranscripts(input.clientId, {
+      limit: input.limit,
+    });
+    return {
+      transcripts: response.data as unknown as z.infer<typeof transcriptSchema>[],
+      total: response.total,
+    };
   },
 });

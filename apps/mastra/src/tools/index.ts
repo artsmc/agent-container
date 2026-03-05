@@ -4,11 +4,14 @@
  * Grouped by domain to make it easy to compose tool sets for individual agents.
  */
 
-// Task tools (Feature 19)
-export { createDraftTasks, getTask, listTasksForClient } from './task-tools.js';
+// Task tools (Feature 19 + Feature 20)
+export { saveTasksTool, createDraftTasks, getTask, listTasksForClient, getReconciledTasksTool } from './task-tools.js';
 
 // Transcript tools (Feature 19)
 export { getTranscript, listTranscriptsForClient } from './transcript-tools.js';
 
+// Workflow tools (Feature 19, shared with Feature 20)
+export { updateWorkflowStatusTool } from './workflow-tools.js';
+
 // Agenda tools (Feature 20)
-export { createDraftAgenda, getAgenda } from './agenda-tools.js';
+export { saveDraftAgendaTool, getAgenda } from './agenda-tools.js';

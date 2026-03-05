@@ -5,7 +5,7 @@
   "root": "apps/mastra",
   "sourceRoot": "apps/mastra/src",
   "tags": ["scope:mastra", "type:app"],
-  "implicitDependencies": ["auth-client", "shared-types"],
+  "implicitDependencies": ["api-client", "auth-client", "shared-types"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
@@ -25,6 +25,12 @@
       "executor": "nx:run-commands",
       "options": {
         "command": "tsc --noEmit -p apps/mastra/tsconfig.json"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vitest run --config apps/mastra/vitest.config.ts"
       }
     },
     "lint": {

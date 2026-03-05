@@ -1,0 +1,69 @@
+{
+  "source": "grain",
+  "sourceId": "grain-rec-12345",
+  "meetingDate": "2026-02-15T14:00:00Z",
+  "clientId": "client-uuid-001",
+  "meetingType": "intake",
+  "participants": ["Sarah (iExcel)", "Mark (iExcel)", "John (Client)"],
+  "durationSeconds": 5220,
+  "segments": [
+    {
+      "speaker": "Sarah",
+      "timestamp": 0,
+      "text": "Alright, let's get started. John, thanks for joining us today. We're going to go through everything we discussed in the proposal and figure out next steps."
+    },
+    {
+      "speaker": "John",
+      "timestamp": 15,
+      "text": "Sounds good. I'm excited to get things moving."
+    },
+    {
+      "speaker": "Sarah",
+      "timestamp": 22,
+      "text": "Great. So the first thing we need to tackle is updating the proposal with the Q2 pricing. Mark, can you handle that? I think it should take about two hours."
+    },
+    {
+      "speaker": "Mark",
+      "timestamp": 35,
+      "text": "Sure, I'll get that done by end of week."
+    },
+    {
+      "speaker": "Sarah",
+      "timestamp": 42,
+      "text": "Perfect. The second item — John, we need to set up your analytics dashboard. Someone on the team will need to configure Looker for your account. That's probably a four-hour job."
+    },
+    {
+      "speaker": "John",
+      "timestamp": 60,
+      "text": "That would be great. We need the monthly report by the 5th of every month, without exception."
+    },
+    {
+      "speaker": "Sarah",
+      "timestamp": 72,
+      "text": "Noted. We'll make sure that's in the requirements. Last thing — I need to send a follow-up email to John summarizing everything we discussed today. I'll do that myself, should take about 30 minutes."
+    },
+    {
+      "speaker": "Mark",
+      "timestamp": 872,
+      "text": "Also, we should build out the campaign report template in Looker. That's going to be a bigger task, probably around four hours for the dev team."
+    },
+    {
+      "speaker": "Sarah",
+      "timestamp": 890,
+      "text": "Good call. Let's add that to the list. Alright, I think that covers everything. John, any questions?"
+    },
+    {
+      "speaker": "John",
+      "timestamp": 905,
+      "text": "No, I think we're good. Thanks for the thorough walkthrough."
+    }
+  ],
+  "summary": "Intake call with John from the client team. Discussed Q2 pricing updates, analytics dashboard setup in Looker, monthly reporting requirements, and campaign report template creation.",
+  "highlights": [
+    "Q2 pricing proposal update needed — Mark to handle, ~2 hours",
+    "Looker analytics dashboard setup required — ~4 hours",
+    "Monthly report due by the 5th of every month",
+    "Follow-up email to client — Sarah, ~30 minutes",
+    "Campaign report template in Looker — dev team, ~4 hours"
+  ]
+}

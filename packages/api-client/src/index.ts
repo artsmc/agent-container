@@ -17,3 +17,6 @@ export type {
   TriggerImportRequest,
   RejectTaskRequest,
 } from './types/additional';
+
+// Workflow types
+export type { UpdateWorkflowStatusRequest } from './endpoints/workflows';

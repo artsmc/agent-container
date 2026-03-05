@@ -85,6 +85,7 @@ export class ApiClient
   public readonly triggerIntakeWorkflow: WorkflowEndpoints['triggerIntakeWorkflow'];
   public readonly triggerAgendaWorkflow: WorkflowEndpoints['triggerAgendaWorkflow'];
   public readonly getWorkflowStatus: WorkflowEndpoints['getWorkflowStatus'];
+  public readonly updateWorkflowStatus: WorkflowEndpoints['updateWorkflowStatus'];
 
   // Asana
   public readonly listAsanaWorkspaces: AsanaEndpoints['listAsanaWorkspaces'];
@@ -156,6 +157,7 @@ export class ApiClient
     this.triggerIntakeWorkflow = workflows.triggerIntakeWorkflow;
     this.triggerAgendaWorkflow = workflows.triggerAgendaWorkflow;
     this.getWorkflowStatus = workflows.getWorkflowStatus;
+    this.updateWorkflowStatus = workflows.updateWorkflowStatus;
 
     // Asana
     this.listAsanaWorkspaces = asana.listAsanaWorkspaces;

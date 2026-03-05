@@ -4,7 +4,7 @@
  * Boot sequence:
  *   1. Validate and load environment (triggers API key injection)
  *   2. Initialise the service token manager (verifies auth connectivity)
- *   3. Create the API client stub (replaced by @iexcel/api-client in Feature 22)
+ *   3. Initialize the shared API client (@iexcel/api-client)
  *   4. Construct and export the Mastra instance
  *
  * The `mastra` named export follows Mastra's file-based convention — the
@@ -20,7 +20,7 @@ import { Mastra } from '@mastra/core';
 import { createLogger, LogLevel } from '@mastra/core/logger';
 
 import { ServiceTokenManager } from './auth/service-token.js';
-import { createApiClient } from './api-client-stub.js';
+import { initializeApiClient } from './api-client.js';
 import { intakeAgent, agendaAgent } from './agents/index.js';
 
 // Step 2 — Initialise service token manager.
@@ -32,12 +32,9 @@ const serviceTokenManager = new ServiceTokenManager({
 
 await serviceTokenManager.initialize();
 
-// Step 3 — Create the API client stub.
-// Replace with: import { createApiClient } from '@iexcel/api-client' (Feature 22)
-const _apiClient = createApiClient({
-  baseUrl: env.API_BASE_URL,
-  getAccessToken: () => serviceTokenManager.getToken(),
-});
+// Step 3 — Initialize the shared API client.
+// Uses @iexcel/api-client (Feature 22) with the service token manager.
+initializeApiClient(serviceTokenManager);
 
 // Step 4 — Construct the Mastra instance.
 // The `mastra` export is the primary convention for Mastra framework discovery.

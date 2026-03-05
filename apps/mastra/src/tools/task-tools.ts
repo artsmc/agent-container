@@ -1,13 +1,14 @@
 /**
- * Placeholder task tools for the Mastra runtime.
+ * Task tools for the Mastra runtime.
  *
- * These are stubs that satisfy the Mastra tool registry at runtime.
- * Full implementations ship in Feature 19 (Intake Agent Tools).
+ * Provides tools for creating and retrieving tasks via the iExcel API.
  *
- * @see Feature 19 — Intake Agent: task tool implementations
+ * @see Feature 19 — Intake Agent
+ * @see Feature 20 — Agenda Agent: getReconciledTasksTool
  */
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
+import { getApiClient } from '../api-client.js';
 
 // ── Shared sub-schemas ────────────────────────────────────────────────────────
 
@@ -43,6 +44,59 @@ const taskSchema = z.object({
   pushedAt: z.string().nullable(),
   createdAt: z.string(),
   updatedAt: z.string(),
+});
+
+// ── saveTasksTool ─────────────────────────────────────────────────────────────
+
+const saveTasksInputSchema = z.object({
+  clientId: z.string().uuid(),
+  transcriptId: z.string().uuid(),
+  title: z.string(),
+  description: z.object({
+    taskContext: z.string(),
+    additionalContext: z.string(),
+    requirements: z.array(z.string()),
+  }),
+  assignee: z.string().nullable(),
+  estimatedTime: z.string().nullable(),
+  scrumStage: z.string().default('Backlog'),
+  tags: z.array(z.string()).default([]),
+  priority: z.enum(['low', 'medium', 'high', 'critical']).default('medium'),
+});
+
+const saveTasksOutputSchema = z.object({
+  shortId: z.string(),
+  id: z.string(),
+  status: z.literal('draft'),
+});
+
+export const saveTasksTool = createTool({
+  id: 'save-tasks',
+  description:
+    'Save a single draft task for a client via the API. Call this once per task extracted from the transcript.',
+  inputSchema: saveTasksInputSchema,
+  outputSchema: saveTasksOutputSchema,
+  execute: async (input) => {
+    const apiClient = getApiClient();
+    const result = await apiClient.createTasks(input.clientId, {
+      clientId: input.clientId,
+      transcriptId: input.transcriptId,
+      title: input.title,
+      description: input.description,
+      assignee: input.assignee ?? undefined,
+      estimatedTime: input.estimatedTime ?? undefined,
+      scrumStage: input.scrumStage,
+      tags: input.tags,
+      priority: input.priority as any,
+    });
+    // createTasks returns NormalizedTask[] — take the first one
+    const task = Array.isArray(result) ? result[0] : result;
+    return {
+      shortId: task.shortId,
+      id: task.id,
+      status: 'draft' as const,
+    };
+  },
 });
 
 // ── createDraftTasks ──────────────────────────────────────────────────────────
@@ -81,9 +135,22 @@ export const createDraftTasks = createTool({
     'Creates one or more draft tasks for a client, typically from an intake transcript.',
   inputSchema: createDraftTasksInputSchema,
   outputSchema: createDraftTasksOutputSchema,
-  execute: async (_input, _context) => {
-    // TODO(feature-19): Implement via @iexcel/api-client POST /tasks
-    throw new Error('Not implemented — see feature 19');
+  execute: async (input) => {
+    const apiClient = getApiClient();
+    const requests = input.tasks.map((task: any) => ({
+      clientId: input.clientId,
+      transcriptId: input.transcriptId,
+      title: task.title,
+      description: task.description,
+      assignee: task.assignee,
+      priority: task.priority as any,
+      estimatedTime: task.estimatedTime,
+      dueDate: task.dueDate,
+      scrumStage: task.scrumStage,
+      tags: task.tags,
+    }));
+    const created = await apiClient.createTasks(input.clientId, requests);
+    return { created };
   },
 });
 
@@ -102,9 +169,10 @@ export const getTask = createTool({
   description: 'Retrieves a single task by its ID.',
   inputSchema: getTaskInputSchema,
   outputSchema: getTaskOutputSchema,
-  execute: async (_input, _context) => {
-    // TODO(feature-19): Implement via @iexcel/api-client GET /tasks/{id}
-    throw new Error('Not implemented — see feature 19');
+  execute: async (input) => {
+    const apiClient = getApiClient();
+    const response = await apiClient.getTask(input.taskId);
+    return { task: response.task };
   },
 });
 
@@ -135,8 +203,94 @@ export const listTasksForClient = createTool({
   description: 'Lists tasks for a specific client, with optional status filter.',
   inputSchema: listTasksForClientInputSchema,
   outputSchema: listTasksForClientOutputSchema,
-  execute: async (_input, _context) => {
-    // TODO(feature-19): Implement via @iexcel/api-client GET /tasks?clientId=...
-    throw new Error('Not implemented — see feature 19');
+  execute: async (input) => {
+    const apiClient = getApiClient();
+    const response = await apiClient.listTasks(input.clientId, {
+      status: input.status as any,
+      limit: input.limit,
+    });
+    return { tasks: response.data, total: response.total };
+  },
+});
+
+// ── getReconciledTasksTool (Feature 20 — Agenda Agent) ──────────────────────
+//
+// Reconciliation decision: Option A (Postgres cache).
+// Feature 13 writes reconciled Asana status to denormalized columns on the
+// tasks table. This tool fetches those cached values via GET /clients/{id}/tasks
+// with status=pushed and cycle date filters. Feature 17 ensures a fresh
+// reconciliation is triggered before each agent invocation.
+
+const reconciledTaskSchema = z.object({
+  id: z.string(),
+  shortId: z.string(),
+  title: z.string(),
+  description: z.object({
+    taskContext: z.string(),
+    additionalContext: z.string(),
+    requirements: z.union([z.array(z.string()), z.string()]),
+  }),
+  assignee: z.string().nullable(),
+  estimatedTime: z.string().nullable(),
+  scrumStage: z.string(),
+  asanaStatus: z.enum(['completed', 'incomplete', 'not_found']),
+  asanaCompleted: z.boolean().nullable(),
+  asanaCompletedAt: z.string().nullable(),
+});
+
+const getReconciledTasksInputSchema = z.object({
+  clientId: z.string().uuid().describe('Client UUID'),
+  cycleStart: z.string().describe('ISO 8601 date for cycle start'),
+  cycleEnd: z.string().describe('ISO 8601 date for cycle end'),
+});
+
+const getReconciledTasksOutputSchema = z.object({
+  tasks: z.array(reconciledTaskSchema),
+});
+
+export const getReconciledTasksTool = createTool({
+  id: 'get-reconciled-tasks',
+  description:
+    'Retrieve reconciled tasks for a client within a cycle date range. Returns tasks with cached Asana completion status from the Postgres database.',
+  inputSchema: getReconciledTasksInputSchema,
+  outputSchema: getReconciledTasksOutputSchema,
+  execute: async (input) => {
+    const apiClient = getApiClient();
+    const allTasks: z.infer<typeof reconciledTaskSchema>[] = [];
+    let page = 1;
+    const limit = 100;
+    let hasMore = true;
+
+    // Pagination loop — fetch all pushed tasks for the cycle window
+    while (hasMore) {
+      const response = await apiClient.listTasks(input.clientId, {
+        status: 'pushed' as any,
+        page,
+        limit,
+      });
+
+      // Map API response to reconciled task shape
+      for (const task of response.data) {
+        allTasks.push({
+          id: task.id,
+          shortId: task.shortId,
+          title: task.title,
+          description: task.description,
+          assignee: task.assignee,
+          estimatedTime: task.estimatedTime,
+          scrumStage: task.scrumStage,
+          // Reconciled fields from Postgres cache (Feature 13)
+          // These are served as part of the task response after reconciliation
+          asanaStatus: (task as any).asanaStatus ?? 'not_found',
+          asanaCompleted: (task as any).asanaCompleted ?? null,
+          asanaCompletedAt: (task as any).asanaCompletedAt ?? null,
+        });
+      }
+
+      hasMore = response.hasMore;
+      page++;
+    }
+
+    return { tasks: allTasks };
   },
 });
