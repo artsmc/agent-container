@@ -4,7 +4,39 @@
   "projectType": "library",
   "root": "packages/api-client",
   "sourceRoot": "packages/api-client/src",
-  "tags": ["scope:shared", "type:client"],
-  "implicitDependencies": ["shared-types"],
-  "targets": {}
+  "tags": ["scope:shared", "type:library"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/api-client",
+        "tsConfig": "packages/api-client/tsconfig.lib.json",
+        "packageJson": "packages/api-client/package.json",
+        "main": "packages/api-client/src/index.ts",
+        "assets": ["packages/api-client/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/api-client/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/packages/api-client"
+      }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p packages/api-client/tsconfig.json"
+      }
+    }
+  }
 }

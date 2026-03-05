@@ -1,0 +1,22 @@
+{
+  "name": "@iexcel/api-client",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Typed HTTP client library for the iExcel API",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@iexcel/shared-types": "workspace:*"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.0.0",
+    "typescript": "~5.7.0",
+    "vitest": "^2.0.0"
+  },
+  "license": "UNLICENSED"
+}
