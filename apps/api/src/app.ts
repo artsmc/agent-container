@@ -14,6 +14,8 @@ import { clientRoutes } from './routes/clients';
 import { transcriptRoutes } from './routes/transcripts/index';
 import { taskRoutes } from './routes/tasks';
 import { NotFoundError } from './errors/api-errors';
+import { AsanaOutputAdapter } from './adapters/asana';
+import { setOutputNormalizer } from './services/output-normalizer';
 
 export interface AppDependencies {
   db: DbClient;
@@ -77,6 +79,13 @@ export async function createApp(deps: AppDependencies): Promise<FastifyInstance>
   // ---------------------------------------------------------------------------
 
   app.setErrorHandler(errorHandler);
+
+  // ---------------------------------------------------------------------------
+  // Output Normalizer — Asana adapter (Feature 12)
+  // ---------------------------------------------------------------------------
+
+  const asanaAdapter = new AsanaOutputAdapter(db);
+  setOutputNormalizer(asanaAdapter);
 
   // ---------------------------------------------------------------------------
   // Public routes

@@ -125,6 +125,16 @@ export const asanaWorkspaces = pgTable('asana_workspaces', {
   asanaWorkspaceId: varchar('asana_workspace_id', { length: 255 }).notNull(),
   name: varchar('name', { length: 255 }).notNull(),
   accessTokenRef: varchar('access_token_ref', { length: 500 }).notNull(),
+  /**
+   * Per-workspace Asana custom field GID configuration.
+   * JSONB shape: {
+   *   clientFieldGid: string,
+   *   scrumStageFieldGid: string,
+   *   estimatedTimeFieldGid: string,
+   *   estimatedTimeFormat: "h_m" | "hh_mm"
+   * }
+   */
+  customFieldConfig: jsonb('custom_field_config').notNull().default(sql`'{}'::jsonb`),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
