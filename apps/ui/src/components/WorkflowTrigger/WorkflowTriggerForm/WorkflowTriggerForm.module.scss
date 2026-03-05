@@ -1,0 +1,85 @@
+// WorkflowTriggerForm -- Main orchestrator form layout.
+
+.form {
+  max-width: 720px;
+}
+
+.warningBanner {
+  padding: tokens.$space-3 tokens.$space-4;
+  margin-bottom: tokens.$space-4;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-warning;
+  background-color: tokens.$color-warning-light;
+  border: 1px solid tokens.$color-warning;
+  border-radius: tokens.$radius-md;
+  line-height: tokens.$leading-normal;
+}
+
+.errorBanner {
+  padding: tokens.$space-3 tokens.$space-4;
+  margin-bottom: tokens.$space-4;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-danger;
+  background-color: tokens.$color-danger-light;
+  border: 1px solid tokens.$color-danger;
+  border-radius: tokens.$radius-md;
+  line-height: tokens.$leading-normal;
+}
+
+.submitRow {
+  display: flex;
+  justify-content: flex-start;
+  padding-top: tokens.$space-4;
+  border-top: 1px solid tokens.$color-border-default;
+}
+
+.submitButton {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$space-2;
+  padding: tokens.$space-3 tokens.$space-6;
+  font-size: tokens.$text-base;
+  font-weight: tokens.$font-weight-semibold;
+  font-family: tokens.$font-family-sans;
+  color: tokens.$color-text-inverse;
+  background-color: tokens.$color-primary;
+  border: 1px solid tokens.$color-primary;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+  transition: background-color tokens.$duration-fast tokens.$ease-default,
+    opacity tokens.$duration-fast tokens.$ease-default;
+
+  &:hover:not(:disabled) {
+    background-color: tokens.$color-primary-dark;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.submitButtonLoading {
+    cursor: wait;
+  }
+}
+
+.submitSpinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: tokens.$color-text-inverse;
+  border-radius: 50%;
+  animation: submitSpin 0.6s linear infinite;
+}
+
+@keyframes submitSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

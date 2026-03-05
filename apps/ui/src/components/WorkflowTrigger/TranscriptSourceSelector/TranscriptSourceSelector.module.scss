@@ -1,0 +1,172 @@
+// TranscriptSourceSelector -- Tabbed interface for paste/upload/grain transcript input.
+
+.container {
+  margin-bottom: tokens.$space-5;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid tokens.$color-border-default;
+  margin-bottom: tokens.$space-4;
+  gap: tokens.$space-1;
+}
+
+.tab {
+  padding: tokens.$space-2 tokens.$space-4;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  font-family: tokens.$font-family-sans;
+  color: tokens.$color-text-secondary;
+  cursor: pointer;
+  transition: color tokens.$duration-fast tokens.$ease-default,
+    border-color tokens.$duration-fast tokens.$ease-default;
+
+  &:hover:not(:disabled) {
+    color: tokens.$color-text-primary;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: -2px;
+  }
+
+  &.tabActive {
+    color: tokens.$color-primary;
+    border-bottom-color: tokens.$color-primary;
+  }
+
+  &.tabDisabled {
+    color: tokens.$color-text-disabled;
+    cursor: not-allowed;
+  }
+}
+
+.comingSoon {
+  display: inline-block;
+  margin-left: tokens.$space-1;
+  padding: 1px tokens.$space-1;
+  font-size: tokens.$text-xs;
+  background-color: tokens.$color-gray-100;
+  border-radius: tokens.$radius-sm;
+  color: tokens.$color-text-disabled;
+}
+
+.panel {
+  min-height: 120px;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 180px;
+  padding: tokens.$space-3;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  font-size: tokens.$text-base;
+  font-family: tokens.$font-family-sans;
+  color: tokens.$color-text-primary;
+  background-color: tokens.$color-surface-default;
+  resize: vertical;
+  transition: border-color tokens.$duration-fast tokens.$ease-default;
+
+  &::placeholder {
+    color: tokens.$color-text-disabled;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: tokens.$color-border-focus;
+    box-shadow: 0 0 0 2px rgba(tokens.$color-primary, 0.15);
+  }
+
+  &.textareaError {
+    border-color: tokens.$color-border-error;
+  }
+}
+
+.uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: tokens.$space-3;
+  padding: tokens.$space-6;
+  border: 2px dashed tokens.$color-border-default;
+  border-radius: tokens.$radius-lg;
+  background-color: tokens.$color-gray-50;
+}
+
+.fileInput {
+  // Visually hidden but accessible
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.fileLabel {
+  display: inline-flex;
+  align-items: center;
+  padding: tokens.$space-2 tokens.$space-4;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-primary;
+  background-color: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-primary;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+  transition: background-color tokens.$duration-fast tokens.$ease-default,
+    color tokens.$duration-fast tokens.$ease-default;
+
+  &:hover {
+    background-color: tokens.$color-primary;
+    color: tokens.$color-text-inverse;
+  }
+}
+
+.fileHint {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+}
+
+.fileDisplay {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-3;
+}
+
+.fileName {
+  font-size: tokens.$text-base;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-primary;
+}
+
+.removeFileButton {
+  padding: tokens.$space-1 tokens.$space-3;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-danger;
+  background: none;
+  border: 1px solid tokens.$color-danger;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+  transition: background-color tokens.$duration-fast tokens.$ease-default,
+    color tokens.$duration-fast tokens.$ease-default;
+
+  &:hover {
+    background-color: tokens.$color-danger;
+    color: tokens.$color-text-inverse;
+  }
+}
+
+.error {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-danger;
+  margin-top: tokens.$space-2;
+}

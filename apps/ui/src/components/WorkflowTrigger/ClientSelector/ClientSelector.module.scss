@@ -1,0 +1,114 @@
+// ClientSelector -- Searchable client dropdown.
+
+.container {
+  position: relative;
+  margin-bottom: tokens.$space-5;
+}
+
+.label {
+  display: block;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-primary;
+  margin-bottom: tokens.$space-1;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: tokens.$space-2 tokens.$space-3;
+  padding-right: tokens.$space-8;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  font-size: tokens.$text-base;
+  font-family: tokens.$font-family-sans;
+  color: tokens.$color-text-primary;
+  background-color: tokens.$color-surface-default;
+  transition: border-color tokens.$duration-fast tokens.$ease-default;
+
+  &::placeholder {
+    color: tokens.$color-text-disabled;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: tokens.$color-border-focus;
+    box-shadow: 0 0 0 2px rgba(tokens.$color-primary, 0.15);
+  }
+
+  &.inputError {
+    border-color: tokens.$color-border-error;
+
+    &:focus {
+      box-shadow: 0 0 0 2px rgba(tokens.$color-danger, 0.15);
+    }
+  }
+}
+
+.clearButton {
+  position: absolute;
+  right: tokens.$space-2;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: tokens.$text-lg;
+  color: tokens.$color-text-secondary;
+  cursor: pointer;
+  padding: tokens.$space-1;
+  line-height: 1;
+
+  &:hover {
+    color: tokens.$color-text-primary;
+  }
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  max-height: 240px;
+  overflow-y: auto;
+  margin: tokens.$space-1 0 0;
+  padding: tokens.$space-1 0;
+  background-color: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  list-style: none;
+}
+
+.option {
+  padding: tokens.$space-2 tokens.$space-3;
+  font-size: tokens.$text-base;
+  color: tokens.$color-text-primary;
+  cursor: pointer;
+  transition: background-color tokens.$duration-fast tokens.$ease-default;
+
+  &:hover {
+    background-color: tokens.$color-gray-50;
+  }
+
+  &.optionSelected {
+    background-color: tokens.$color-info-light;
+    font-weight: tokens.$font-weight-medium;
+  }
+}
+
+.noResults {
+  padding: tokens.$space-3;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-disabled;
+  text-align: center;
+}
+
+.error {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-danger;
+  margin-top: tokens.$space-1;
+}

@@ -1,0 +1,66 @@
+// WorkflowSelector -- Card-style toggle for intake/agenda selection.
+
+.fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 tokens.$space-6 0;
+}
+
+.legend {
+  font-size: tokens.$text-lg;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+  margin-bottom: tokens.$space-3;
+}
+
+.selectorContainer {
+  display: flex;
+  gap: tokens.$space-4;
+}
+
+.option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-1;
+  padding: tokens.$space-5 tokens.$space-4;
+  border: 2px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-lg;
+  background: tokens.$color-surface-default;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color tokens.$duration-fast tokens.$ease-default,
+    background-color tokens.$duration-fast tokens.$ease-default;
+
+  &:hover {
+    border-color: tokens.$color-primary;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: 2px;
+  }
+
+  &.selected {
+    border-color: tokens.$color-primary;
+    background-color: tokens.$color-info-light;
+  }
+}
+
+.optionLabel {
+  font-size: tokens.$text-base;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+}
+
+.optionDescription {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+  line-height: tokens.$leading-normal;
+}
+
+.error {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-danger;
+  margin-top: tokens.$space-2;
+}

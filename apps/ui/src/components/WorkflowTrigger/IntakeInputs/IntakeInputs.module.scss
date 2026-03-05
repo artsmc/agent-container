@@ -1,0 +1,51 @@
+// IntakeInputs -- Transcript source + call date fields for intake workflow.
+
+.container {
+  margin-bottom: tokens.$space-6;
+}
+
+.sectionTitle {
+  font-size: tokens.$text-base;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+  margin-bottom: tokens.$space-3;
+}
+
+.dateField {
+  margin-top: tokens.$space-4;
+}
+
+.dateLabel {
+  display: block;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-primary;
+  margin-bottom: tokens.$space-1;
+}
+
+.dateInput {
+  padding: tokens.$space-2 tokens.$space-3;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  font-size: tokens.$text-base;
+  font-family: tokens.$font-family-sans;
+  color: tokens.$color-text-primary;
+  background-color: tokens.$color-surface-default;
+  transition: border-color tokens.$duration-fast tokens.$ease-default;
+
+  &:focus {
+    outline: none;
+    border-color: tokens.$color-border-focus;
+    box-shadow: 0 0 0 2px rgba(tokens.$color-primary, 0.15);
+  }
+
+  &.dateInputError {
+    border-color: tokens.$color-border-error;
+  }
+}
+
+.dateError {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-danger;
+  margin-top: tokens.$space-1;
+}

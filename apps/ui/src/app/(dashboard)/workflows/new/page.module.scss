@@ -1,0 +1,13 @@
+// Workflow Trigger page -- layout shell.
+
+.page {
+  max-width: 800px;
+  padding: tokens.$space-2 0;
+}
+
+.pageTitle {
+  font-size: tokens.$text-2xl;
+  font-weight: tokens.$font-weight-bold;
+  color: tokens.$color-text-primary;
+  margin-bottom: tokens.$space-6;
+}
