@@ -1,0 +1,72 @@
+// =============================================================================
+// SCSS Mixins
+// =============================================================================
+// Token variables are auto-injected via next.config.ts additionalData as `tokens.*`
+
+// Responsive breakpoint wrapper
+// Usage: @include respond-to(md) { ... }
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: tokens.$bp-sm) {
+      @content;
+    }
+  } @else if $breakpoint == md {
+    @media (min-width: tokens.$bp-md) {
+      @content;
+    }
+  } @else if $breakpoint == lg {
+    @media (min-width: tokens.$bp-lg) {
+      @content;
+    }
+  } @else if $breakpoint == xl {
+    @media (min-width: tokens.$bp-xl) {
+      @content;
+    }
+  } @else if $breakpoint == 2xl {
+    @media (min-width: tokens.$bp-2xl) {
+      @content;
+    }
+  }
+}
+
+// Text truncation with ellipsis
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Visually hidden — accessible hiding for screen readers
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+// Focus ring — consistent focus indicator
+@mixin focus-ring {
+  outline: 2px solid tokens.$color-border-focus;
+  outline-offset: 2px;
+}
+
+// Elevation — shadow level
+// Usage: @include elevation(md);
+@mixin elevation($level) {
+  @if $level == none {
+    box-shadow: tokens.$shadow-none;
+  } @else if $level == sm {
+    box-shadow: tokens.$shadow-sm;
+  } @else if $level == md {
+    box-shadow: tokens.$shadow-md;
+  } @else if $level == lg {
+    box-shadow: tokens.$shadow-lg;
+  } @else if $level == xl {
+    box-shadow: tokens.$shadow-xl;
+  }
+}

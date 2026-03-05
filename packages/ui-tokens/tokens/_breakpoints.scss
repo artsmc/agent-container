@@ -1,0 +1,10 @@
+// =============================================================================
+// Breakpoint Tokens (SCSS-only, no CSS custom properties)
+// =============================================================================
+// Breakpoints are used in @media queries at compile time, not runtime.
+
+$bp-sm: 640px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+$bp-2xl: 1536px;

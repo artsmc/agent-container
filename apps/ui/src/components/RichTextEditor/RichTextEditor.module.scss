@@ -1,0 +1,23 @@
+// RichTextEditor stub styles
+// Full styles implemented in feature 28.
+
+.root {
+  min-height: 120px;
+  padding: tokens.$space-3;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  font-family: tokens.$font-family-sans;
+  font-size: tokens.$text-base;
+  line-height: tokens.$leading-normal;
+
+  &:focus {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: -1px;
+    border-color: tokens.$color-border-focus;
+  }
+
+  &[data-readonly='true'] {
+    cursor: default;
+    background-color: tokens.$color-surface-elevated;
+  }
+}

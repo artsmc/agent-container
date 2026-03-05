@@ -1,0 +1,41 @@
+// SlideOver stub styles
+// Full styles implemented in feature 26.
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: tokens.$color-surface-overlay;
+}
+
+.panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 480px;
+  background-color: tokens.$color-surface-default;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: tokens.$space-4;
+  border-bottom: 1px solid tokens.$color-border-default;
+}
+
+.title {
+  font-size: tokens.$text-lg;
+  font-weight: tokens.$font-weight-semibold;
+}
+
+.content {
+  padding: tokens.$space-4;
+  overflow: auto;
+}

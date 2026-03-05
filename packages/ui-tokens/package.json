@@ -1,0 +1,9 @@
+{
+  "name": "@iexcel/ui-tokens",
+  "version": "0.0.1",
+  "private": true,
+  "main": "index.scss",
+  "exports": {
+    ".": "./index.scss"
+  }
+}

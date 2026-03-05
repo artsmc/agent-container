@@ -1,0 +1,11 @@
+// Badge stub styles
+// Full styles implemented in feature 25.
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-medium;
+  padding: tokens.$space-1 tokens.$space-2;
+  border-radius: tokens.$radius-full;
+}

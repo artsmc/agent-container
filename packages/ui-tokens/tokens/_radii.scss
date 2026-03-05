@@ -1,0 +1,11 @@
+// =============================================================================
+// Border Radius Tokens
+// =============================================================================
+// CSS custom properties are declared in globals.scss to avoid CSS Module conflicts.
+
+$radius-none: 0;
+$radius-sm: 2px;
+$radius-md: 4px;
+$radius-lg: 8px;
+$radius-xl: 12px;
+$radius-full: 9999px;

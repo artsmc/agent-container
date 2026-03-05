@@ -1,0 +1,15 @@
+{
+  "name": "ui-tokens",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/ui-tokens",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["packages/ui-tokens/**/*.scss"]
+      }
+    }
+  },
+  "tags": ["scope:shared", "type:ui-tokens"]
+}

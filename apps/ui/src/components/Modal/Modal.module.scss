@@ -1,0 +1,43 @@
+// Modal stub styles
+// Full styles implemented in feature 25.
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: tokens.$color-surface-overlay;
+}
+
+.panel {
+  position: relative;
+  background-color: tokens.$color-surface-default;
+  border-radius: tokens.$radius-lg;
+  width: 100%;
+  max-width: 480px;
+  margin: tokens.$space-4;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: tokens.$space-4;
+  border-bottom: 1px solid tokens.$color-border-default;
+}
+
+.title {
+  font-size: tokens.$text-lg;
+  font-weight: tokens.$font-weight-semibold;
+}
+
+.content {
+  padding: tokens.$space-4;
+}

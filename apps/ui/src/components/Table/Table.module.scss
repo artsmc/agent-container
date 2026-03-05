@@ -1,0 +1,11 @@
+// Table stub styles
+// Full styles implemented in feature 25.
+
+.root {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.row {
+  border-bottom: 1px solid tokens.$color-border-default;
+}

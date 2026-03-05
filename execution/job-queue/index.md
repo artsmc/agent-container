@@ -12,23 +12,23 @@
 
 | 05 | auth-service | 2: Auth | auth-prd | 00,03 | 06 | done | done | — |
 | 06 | auth-client-package | 2: Auth | auth-prd, infra-prd | 00,05 | 07,24,32 | done | done | — |
-| 07 | api-scaffolding | 3: API Core | api-prd, auth-prd | 00,04,06 | 08,09,10,11,12,14,15,16,22 | pending | done | — |
-| 08 | input-normalizer-text | 3: API Core | api-prd, mastra-prd | 01,07 | 10,37 | pending | done | — |
-| 09 | client-management | 3: API Core | api-prd, database-prd | 07 | 10,11,14,38 | pending | done | — |
-| 10 | transcript-endpoints | 3: API Core | api-prd, database-prd | 07,08,09 | 17,37,38 | pending | done | — |
-| 11 | task-endpoints | 3: API Core | api-prd, database-prd | 07,09 | 12,17 | pending | done | — |
+| 07 | api-scaffolding | 3: API Core | api-prd, auth-prd | 00,04,06 | 08,09,10,11,12,14,15,16,22 | done | done | — |
+| 08 | input-normalizer-text | 3: API Core | api-prd, mastra-prd | 01,07 | 10,37 | done | done | — |
+| 09 | client-management | 3: API Core | api-prd, database-prd | 07 | 10,11,14,38 | done | done | — |
+| 10 | transcript-endpoints | 3: API Core | api-prd, database-prd | 07,08,09 | 17,37,38 | in_progress | done | — |
+| 11 | task-endpoints | 3: API Core | api-prd, database-prd | 07,09 | 12,17 | in_progress | done | — |
 | 12 | output-normalizer-asana | 3: API Core | api-prd, database-prd | 01,07,11 | 13,38 | pending | done | — |
 | 13 | status-reconciliation | 3: API Core | api-prd, database-prd | 12 | 14,20 | pending | done | — |
 | 14 | agenda-endpoints | 3: API Core | api-prd, database-prd | 07,09,13 | 15,16,17 | pending | done | — |
 | 15 | google-docs-adapter | 3: API Core | api-prd | 07,14 | — | pending | done | — |
 | 16 | email-adapter | 3: API Core | api-prd | 07,14 | — | pending | done | — |
 | 17 | workflow-orchestration | 3: API Core | api-prd, mastra-prd | 10,11,14 | 19,20 | pending | done | — |
-| 18 | mastra-runtime-setup | 4: Mastra | mastra-prd, infra-prd | 00 | 19,20,21 | pending | done | — |
+| 18 | mastra-runtime-setup | 4: Mastra | mastra-prd, infra-prd | 00 | 19,20,21 | done | done | — |
 | 19 | workflow-a-intake-agent | 4: Mastra | mastra-prd, api-prd | 01,18,17 | 21 | pending | done | — |
 | 20 | workflow-b-agenda-agent | 4: Mastra | mastra-prd, api-prd | 01,18,17,13 | 21 | pending | done | — |
 | 21 | mastra-mcp-server | 4: Mastra | mastra-prd, terminal-prd | 18,19,20 | 33 | pending | done | — |
-| 22 | api-client-package | 5: API Client | infra-prd, api-prd | 01,07 | 25,26,27,28,29,30,31,33 | pending | done | — |
-| 23 | ui-scaffolding | 6: Web UI | ui-prd, infra-prd | 00 | 24,25,29 | pending | done | — |
+| 22 | api-client-package | 5: API Client | infra-prd, api-prd | 01,07 | 25,26,27,28,29,30,31,33 | done | done | — |
+| 23 | ui-scaffolding | 6: Web UI | ui-prd, infra-prd | 00 | 24,25,29 | done | done | — |
 | 24 | ui-auth-flow | 6: Web UI | ui-prd, auth-prd | 23,06 | 25 | pending | done | — |
 | 25 | ui-dashboard | 6: Web UI | ui-prd | 23,24,22 | 26,27,28,30,31 | pending | done | — |
 | 26 | ui-client-detail | 6: Web UI | ui-prd | 25 | — | pending | done | — |
@@ -37,11 +37,11 @@
 | 29 | ui-shared-agenda | 6: Web UI | ui-prd | 23,22 | — | pending | done | — |
 | 30 | ui-workflow-trigger | 6: Web UI | ui-prd | 25,22 | — | pending | done | — |
 | 31 | ui-admin-settings | 6: Web UI | ui-prd | 25,22 | — | pending | done | — |
-| 32 | terminal-device-auth | 7: Terminal | terminal-prd, auth-prd | 06 | 33 | pending | done | — |
+| 32 | terminal-device-auth | 7: Terminal | terminal-prd, auth-prd | 06 | 33 | done | done | — |
 | 33 | terminal-mcp-tools | 7: Terminal | terminal-prd, mastra-prd | 21,22,32 | — | pending | done | — |
 | 34 | cicd-pipeline | 8: CI/CD & Deployment | infra-prd | 00 | 35 | done | done | — |
 | 35 | container-builds | 8: CI/CD & Deployment | infra-prd | 00,34 | 36 | done | done | — |
-| 36 | terraform-app-deployment | 8: CI/CD & Deployment | infra-prd | 02,35 | — | pending | done | — |
+| 36 | terraform-app-deployment | 8: CI/CD & Deployment | infra-prd | 02,35 | — | done | done | — |
 | 37 | input-normalizer-grain | 9: V2 Enhancements | api-prd, mastra-prd | 08,10 | — | pending | done | — |
 | 38 | historical-import | 9: V2 Enhancements | api-prd, database-prd | 09,10,12 | — | pending | done | — |
 
@@ -440,7 +440,7 @@ Each wave represents a set of phases that can run concurrently via `/start-phase
 | Phase | Name | Team | Status |
 |-------|------|------|--------|
 | 01 | Shared Types Package | Core | done |
-| 02 | Terraform Base Infra | Infra | pending |
+| 02 | Terraform Base Infra | Infra | done |
 | 03 | Auth Database Schema | DB | done |
 | 34 | CI/CD Pipeline | DevOps | done |
 
@@ -448,34 +448,34 @@ Each wave represents a set of phases that can run concurrently via `/start-phase
 
 | Phase | Name | Depends On | Team | Status |
 |-------|------|------------|------|--------|
-| 04 | Product Database Schema | 01 | DB | pending |
-| 05 | Auth Service | 03 | Auth | pending |
-| 35 | Container Builds | 34 | DevOps | pending |
-| 18 | Mastra Runtime Setup | 01, 06 | Mastra | blocked (waiting for 06) |
+| 04 | Product Database Schema | 01 | DB | done |
+| 05 | Auth Service | 03 | Auth | done |
+| 35 | Container Builds | 34 | DevOps | done |
+| 18 | Mastra Runtime Setup | 01, 06 | Mastra | done |
 
 ### Wave 4 — Auth chain + infra tail (up to 3 parallel)
 
 | Phase | Name | Depends On | Team | Status |
 |-------|------|------------|------|--------|
-| 06 | Auth Client Package | 05 | Auth | pending |
-| 36 | Terraform App Deployment | 02, 35 | Infra | pending |
+| 06 | Auth Client Package | 05 | Auth | done |
+| 36 | Terraform App Deployment | 02, 35 | Infra | done |
 | 23 | UI Scaffolding | 00, 01, 22 | UI | blocked (waiting for 22) |
 
 ### Wave 5 — API foundation + Mastra start (up to 3 parallel)
 
 | Phase | Name | Depends On | Team | Status |
 |-------|------|------------|------|--------|
-| 07 | API Scaffolding | 04, 06 | Core | pending |
-| 18 | Mastra Runtime Setup | 01, 06 | Mastra | pending (unblocked) |
-| 32 | Terminal Device Auth | 05, 06 | Terminal | pending |
+| 07 | API Scaffolding | 04, 06 | Core | done |
+| 18 | Mastra Runtime Setup | 01, 06 | Mastra | done |
+| 32 | Terminal Device Auth | 05, 06 | Terminal | done |
 
 ### Wave 6 — API features fan-out (3 parallel)
 
 | Phase | Name | Depends On | Team | Status |
 |-------|------|------------|------|--------|
-| 08 | Input Normalizer — Text | 07 | Core | pending |
-| 09 | Client Management | 07, 04 | API | pending |
-| 22 | API Client Package | 01, 07 | UI | pending |
+| 08 | Input Normalizer — Text | 07 | Core | in_progress |
+| 09 | Client Management | 07, 04 | API | in_progress |
+| 22 | API Client Package | 01, 07 | UI | in_progress |
 
 ### Wave 7 — API endpoints + UI scaffold (3 parallel)
 

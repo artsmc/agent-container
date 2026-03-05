@@ -1,0 +1,9 @@
+// Card stub styles
+// Full styles implemented in feature 25.
+
+.root {
+  background-color: tokens.$color-surface-default;
+  border-radius: tokens.$radius-lg;
+  border: 1px solid tokens.$color-border-default;
+  padding: tokens.$space-4;
+}

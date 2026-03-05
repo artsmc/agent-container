@@ -1,0 +1,17 @@
+// InlineEdit stub styles
+// Full styles implemented in feature 26.
+
+.root {
+  display: inline-block;
+  cursor: text;
+}
+
+.display {
+  padding: tokens.$space-1 tokens.$space-2;
+  border-radius: tokens.$radius-md;
+  transition: tokens.$transition-default;
+
+  &:hover {
+    background-color: tokens.$color-gray-100;
+  }
+}

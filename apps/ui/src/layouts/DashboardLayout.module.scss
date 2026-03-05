@@ -1,0 +1,35 @@
+// DashboardLayout — Two-column layout: sidebar + main content
+
+.root {
+  display: flex;
+  min-height: 100vh;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  padding: tokens.$space-4 tokens.$space-4;
+  border-bottom: 1px solid tokens.$color-border-default;
+  min-height: 56px;
+}
+
+.logoText {
+  font-size: tokens.$text-xl;
+  font-weight: tokens.$font-weight-bold;
+  color: tokens.$color-primary;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  padding: tokens.$space-3 tokens.$space-4;
+  border-top: 1px solid tokens.$color-border-default;
+  margin-top: auto;
+}
+
+.main {
+  flex: 1;
+  padding: tokens.$space-6;
+  overflow: auto;
+  background-color: tokens.$color-surface-default;
+}

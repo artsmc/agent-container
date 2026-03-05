@@ -28,4 +28,5 @@ coverage/
 
 # Build artifacts
 graph-output.json
+.next/
 .claude/worktrees/

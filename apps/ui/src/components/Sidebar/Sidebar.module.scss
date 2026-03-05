@@ -1,0 +1,51 @@
+// Sidebar stub styles
+
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+  min-height: 100vh;
+  background-color: tokens.$color-surface-elevated;
+  border-right: 1px solid tokens.$color-border-default;
+
+  &[data-collapsed='true'] {
+    width: 64px;
+  }
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  padding: tokens.$space-2 0;
+  flex: 1;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  padding: tokens.$space-2 tokens.$space-4;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-secondary;
+  text-decoration: none;
+  transition: tokens.$transition-default;
+  border-radius: tokens.$radius-md;
+  margin: 0 tokens.$space-2;
+
+  &:hover {
+    background-color: tokens.$color-gray-100;
+    color: tokens.$color-text-primary;
+    text-decoration: none;
+  }
+}
+
+.navItemActive {
+  background-color: tokens.$color-info-light;
+  color: tokens.$color-primary;
+  font-weight: tokens.$font-weight-semibold;
+
+  &:hover {
+    background-color: tokens.$color-info-light;
+    color: tokens.$color-primary;
+  }
+}

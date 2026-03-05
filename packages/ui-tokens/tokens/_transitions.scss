@@ -1,0 +1,18 @@
+// =============================================================================
+// Transition Tokens
+// =============================================================================
+// CSS custom properties are declared in globals.scss to avoid CSS Module conflicts.
+
+// Duration
+$duration-fast: 100ms;
+$duration-normal: 200ms;
+$duration-slow: 300ms;
+
+// Easing
+$ease-default: ease;
+$ease-in: ease-in;
+$ease-out: ease-out;
+$ease-in-out: ease-in-out;
+
+// Compound shorthands
+$transition-default: all $duration-normal $ease-default;

@@ -1,0 +1,46 @@
+// =============================================================================
+// Color Tokens
+// =============================================================================
+// CSS custom properties are declared in globals.scss to avoid CSS Module conflicts.
+
+// Brand palette
+$color-primary: #2563eb;
+$color-primary-dark: #1d4ed8;
+
+// Gray scale
+$color-gray-50: #f9fafb;
+$color-gray-100: #f3f4f6;
+$color-gray-200: #e5e7eb;
+$color-gray-300: #d1d5db;
+$color-gray-400: #9ca3af;
+$color-gray-500: #6b7280;
+$color-gray-600: #4b5563;
+$color-gray-700: #374151;
+$color-gray-800: #1f2937;
+$color-gray-900: #111827;
+
+// Semantic colors
+$color-success: #16a34a;
+$color-success-light: #dcfce7;
+$color-warning: #ca8a04;
+$color-warning-light: #fef9c3;
+$color-danger: #dc2626;
+$color-danger-light: #fee2e2;
+$color-info: #2563eb;
+$color-info-light: #dbeafe;
+
+// Surface colors
+$color-surface-default: #ffffff;
+$color-surface-elevated: #f9fafb;
+$color-surface-overlay: rgba(0, 0, 0, 0.5);
+
+// Text colors
+$color-text-primary: #111827;
+$color-text-secondary: #6b7280;
+$color-text-disabled: #9ca3af;
+$color-text-inverse: #ffffff;
+
+// Border colors
+$color-border-default: #e5e7eb;
+$color-border-focus: #2563eb;
+$color-border-error: #dc2626;
