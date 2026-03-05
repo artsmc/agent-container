@@ -1,0 +1,26 @@
+// Dashboard page -- two-column grid layout (main content + sidebar).
+
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: tokens.$space-6;
+  padding: tokens.$space-6;
+
+  @media (max-width: tokens.$bp-lg) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pageTitle {
+  margin-bottom: tokens.$space-4;
+}
+
+.clientGrid {
+  min-width: 0; // prevent grid blowout from child elements
+}
+
+.panels {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-4;
+}

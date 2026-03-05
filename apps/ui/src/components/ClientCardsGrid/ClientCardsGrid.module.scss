@@ -1,0 +1,60 @@
+// ClientCardsGrid -- responsive 3 -> 2 -> 1 column grid layout.
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: tokens.$space-4;
+
+  @media (max-width: tokens.$bp-xl) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: tokens.$bp-md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.emptyState {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: tokens.$space-8 tokens.$space-4;
+  color: tokens.$color-text-secondary;
+  font-size: tokens.$text-base;
+  background-color: tokens.$color-surface-elevated;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-lg;
+}
+
+.errorBanner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: tokens.$space-3;
+  padding: tokens.$space-4;
+  background-color: tokens.$color-danger-light;
+  border: 1px solid tokens.$color-danger;
+  border-radius: tokens.$radius-lg;
+  color: tokens.$color-text-primary;
+  font-size: tokens.$text-sm;
+}
+
+.retryButton {
+  padding: tokens.$space-2 tokens.$space-4;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-inverse;
+  background-color: tokens.$color-danger;
+  border: none;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+  transition: opacity tokens.$duration-fast tokens.$ease-default;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: 2px;
+  }
+}

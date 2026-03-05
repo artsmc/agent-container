@@ -1,0 +1,71 @@
+// ActivityFeed -- feed container, entry layout, row separators.
+
+.panel {
+  background-color: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-lg;
+  padding: tokens.$space-4;
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-3;
+}
+
+.title {
+  font-size: tokens.$text-lg;
+  font-weight: tokens.$font-weight-semibold;
+  line-height: tokens.$leading-tight;
+  margin: 0;
+}
+
+.emptyState {
+  text-align: center;
+  padding: tokens.$space-6 tokens.$space-4;
+  color: tokens.$color-text-secondary;
+  font-size: tokens.$text-sm;
+}
+
+.errorState {
+  text-align: center;
+  padding: tokens.$space-6 tokens.$space-4;
+  color: tokens.$color-danger;
+  font-size: tokens.$text-sm;
+}
+
+.entries {
+  display: flex;
+  flex-direction: column;
+}
+
+// Entry layout: avatar + content block + timestamp
+.entry {
+  display: flex;
+  gap: tokens.$space-3;
+  padding: tokens.$space-3 0;
+  align-items: flex-start;
+
+  & + & {
+    border-top: 1px solid tokens.$color-gray-100;
+  }
+}
+
+.entryContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.entryDescription {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-primary;
+  line-height: tokens.$leading-normal;
+  margin: 0;
+}
+
+.actorName {
+  font-weight: tokens.$font-weight-semibold;
+}
+
+.entryTimestamp {
+  font-size: tokens.$text-xs;
+  color: tokens.$color-text-secondary;
+  cursor: default;
+}

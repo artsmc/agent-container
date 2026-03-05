@@ -1,0 +1,95 @@
+// ClientCard -- Scoped styles for the dashboard client card.
+@use '@/styles/mixins' as *;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-3;
+  min-height: 180px;
+  transition: box-shadow tokens.$duration-fast tokens.$ease-default;
+
+  &:hover {
+    box-shadow: tokens.$shadow-md;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: tokens.$space-2;
+}
+
+.clientName {
+  font-size: tokens.$text-lg;
+  font-weight: tokens.$font-weight-semibold;
+  line-height: tokens.$leading-tight;
+  @include truncate;
+  flex: 1;
+  min-width: 0;
+}
+
+.badges {
+  display: flex;
+  gap: tokens.$space-2;
+  flex-wrap: wrap;
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-2;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+}
+
+.statusLabel {
+  font-weight: tokens.$font-weight-medium;
+}
+
+.statusValue {
+  color: tokens.$color-text-primary;
+}
+
+.statusDash {
+  color: tokens.$color-text-disabled;
+}
+
+.errorIndicator {
+  font-size: tokens.$text-xs;
+  color: tokens.$color-danger;
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-1;
+}
+
+.actions {
+  display: flex;
+  gap: tokens.$space-2;
+  margin-top: auto;
+}
+
+.actionLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: tokens.$space-2 tokens.$space-3;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-primary;
+  border: 1px solid tokens.$color-primary;
+  border-radius: tokens.$radius-md;
+  text-decoration: none;
+  transition: background-color tokens.$duration-fast tokens.$ease-default,
+    color tokens.$duration-fast tokens.$ease-default;
+
+  &:hover {
+    background-color: tokens.$color-primary;
+    color: tokens.$color-text-inverse;
+    text-decoration: none;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}

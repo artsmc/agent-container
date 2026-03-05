@@ -1,5 +1,4 @@
-// Badge stub styles
-// Full styles implemented in feature 25.
+// Badge -- variant-colored status indicator chip.
 
 .root {
   display: inline-flex;
@@ -8,4 +7,31 @@
   font-weight: tokens.$font-weight-medium;
   padding: tokens.$space-1 tokens.$space-2;
   border-radius: tokens.$radius-full;
+  line-height: tokens.$leading-tight;
+
+  // Variant colors via data attribute
+  &[data-variant='default'] {
+    background-color: tokens.$color-gray-100;
+    color: tokens.$color-gray-700;
+  }
+
+  &[data-variant='success'] {
+    background-color: tokens.$color-success-light;
+    color: tokens.$color-success;
+  }
+
+  &[data-variant='warning'] {
+    background-color: tokens.$color-warning-light;
+    color: tokens.$color-warning;
+  }
+
+  &[data-variant='danger'] {
+    background-color: tokens.$color-danger-light;
+    color: tokens.$color-danger;
+  }
+
+  &[data-variant='info'] {
+    background-color: tokens.$color-info-light;
+    color: tokens.$color-info;
+  }
 }
