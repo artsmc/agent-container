@@ -33,6 +33,9 @@ const envSchema = z.object({
 
   /** Comma-separated CORS origins or '*' for all. */
   CORS_ORIGINS: z.string().default('*'),
+
+  /** Base URL for constructing share links (e.g., "https://app.example.com"). */
+  APP_BASE_URL: z.string().url('APP_BASE_URL must be a valid URL').optional(),
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;

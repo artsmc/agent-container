@@ -14,6 +14,8 @@ import { clientRoutes } from './routes/clients';
 import { transcriptRoutes } from './routes/transcripts/index';
 import { taskRoutes } from './routes/tasks';
 import { importRoutes } from './routes/import';
+import { agendaRoutes } from './routes/agendas';
+import { sharedRoutes } from './routes/shared';
 import { NotFoundError } from './errors/api-errors';
 import { AsanaOutputAdapter } from './adapters/asana';
 import { setOutputNormalizer } from './services/output-normalizer';
@@ -94,6 +96,9 @@ export async function createApp(deps: AppDependencies): Promise<FastifyInstance>
 
   await app.register(healthRoutes, { db });
 
+  // Public shared agenda endpoint (no JWT middleware)
+  await app.register(sharedRoutes, { db });
+
   // ---------------------------------------------------------------------------
   // Protected route scope
   // ---------------------------------------------------------------------------
@@ -113,13 +118,7 @@ export async function createApp(deps: AppDependencies): Promise<FastifyInstance>
       await scope.register(transcriptRoutes, { db });
       await scope.register(taskRoutes, { db });
       await scope.register(importRoutes, { db });
-
-      // -----------------------------------------------------------------------
-      // Downstream features will register additional route plugins
-      // within this protected scope. Example:
-      //
-      //   await scope.register(agendaRoutes, { db });
-      // -----------------------------------------------------------------------
+      await scope.register(agendaRoutes, { db });
     }
   );
 
