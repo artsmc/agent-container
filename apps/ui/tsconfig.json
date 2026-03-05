@@ -18,7 +18,14 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ]
+      ],
+      "@iexcel/shared-types": ["../../packages/shared-types/src/index.ts"],
+      "@iexcel/shared-types/*": ["../../packages/shared-types/src/*"],
+      "@iexcel/api-client": ["../../packages/api-client/src/index.ts"],
+      "@iexcel/api-client/*": ["../../packages/api-client/src/*"],
+      "@iexcel/auth-client": ["../../packages/auth-client/src/index.ts"],
+      "@iexcel/auth-client/*": ["../../packages/auth-client/src/*"],
+      "@iexcel/ui-tokens": ["../../packages/ui-tokens/index.scss"]
     },
     "plugins": [
       {

@@ -1,0 +1,58 @@
+// Login page styles
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: tokens.$space-6;
+}
+
+.heading {
+  font-size: tokens.$text-2xl;
+  font-weight: tokens.$font-weight-bold;
+  color: tokens.$color-text-primary;
+  text-align: center;
+}
+
+.subheading {
+  font-size: tokens.$text-base;
+  color: tokens.$color-text-secondary;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: tokens.$space-3 tokens.$space-6;
+  background-color: tokens.$color-primary;
+  color: tokens.$color-text-inverse;
+  font-size: tokens.$text-base;
+  font-weight: tokens.$font-weight-semibold;
+  border: none;
+  border-radius: tokens.$radius-md;
+  cursor: pointer;
+  transition: tokens.$transition-default;
+  min-width: 200px;
+
+  &:hover {
+    background-color: tokens.$color-primary-dark;
+  }
+
+  &:active {
+    opacity: 0.9;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$color-primary;
+    outline-offset: 2px;
+  }
+}

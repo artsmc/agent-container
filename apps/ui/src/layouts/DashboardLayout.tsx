@@ -13,6 +13,11 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         <NavLinks />
         <div className={styles.userSection}>
           <Avatar name="User" size="sm" />
+          <form method="post" action="/auth/logout" className={styles.logoutForm}>
+            <button type="submit" className={styles.logoutButton} data-testid="logout-button">
+              Logout
+            </button>
+          </form>
         </div>
       </Sidebar>
       <main className={styles.main} data-testid="dashboard-main">

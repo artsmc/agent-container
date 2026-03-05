@@ -32,6 +32,6 @@
       }
     }
   },
-  "implicitDependencies": ["ui-tokens", "shared-types", "api-client"],
+  "implicitDependencies": ["ui-tokens", "shared-types", "api-client", "auth-client"],
   "tags": ["scope:ui", "type:app"]
 }

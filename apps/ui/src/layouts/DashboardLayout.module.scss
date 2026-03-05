@@ -21,10 +21,42 @@
 
 .userSection {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: tokens.$space-2;
   padding: tokens.$space-3 tokens.$space-4;
   border-top: 1px solid tokens.$color-border-default;
   margin-top: auto;
+}
+
+.logoutForm {
+  display: flex;
+  width: 100%;
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: tokens.$space-2 tokens.$space-3;
+  background: none;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-secondary;
+  cursor: pointer;
+  transition: tokens.$transition-default;
+
+  &:hover {
+    background-color: tokens.$color-danger-light;
+    border-color: tokens.$color-danger;
+    color: tokens.$color-danger;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$color-danger;
+    outline-offset: 2px;
+  }
 }
 
 .main {
