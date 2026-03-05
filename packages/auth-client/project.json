@@ -4,6 +4,39 @@
   "projectType": "library",
   "root": "packages/auth-client",
   "sourceRoot": "packages/auth-client/src",
-  "tags": ["scope:auth", "type:client"],
-  "targets": {}
+  "tags": ["scope:shared", "type:library"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/auth-client",
+        "tsConfig": "packages/auth-client/tsconfig.lib.json",
+        "packageJson": "packages/auth-client/package.json",
+        "main": "packages/auth-client/src/index.ts",
+        "assets": ["packages/auth-client/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/auth-client/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/packages/auth-client"
+      }
+    },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p packages/auth-client/tsconfig.json"
+      }
+    }
+  }
 }

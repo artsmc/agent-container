@@ -1,0 +1,29 @@
+{
+  "name": "@iexcel/auth-client",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "OIDC authentication client utilities for the iExcel automation system",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types/index.ts",
+    "./discovery": "./src/discovery/index.ts",
+    "./validation": "./src/validation/index.ts",
+    "./refresh": "./src/refresh/index.ts",
+    "./auth-code": "./src/auth-code/index.ts",
+    "./device-flow": "./src/device-flow/index.ts",
+    "./client-credentials": "./src/client-credentials/index.ts",
+    "./token-storage": "./src/token-storage/index.ts"
+  },
+  "dependencies": {
+    "jose": "^5.10.0"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.0.0",
+    "typescript": "~5.7.0",
+    "vitest": "^2.0.0"
+  },
+  "license": "UNLICENSED",
+  "keywords": []
+}
