@@ -1,0 +1,15 @@
+[00:00:00] Mark: Welcome everyone to today's intake call. We have a lot of ground to cover so let's get started right away.
+[00:00:15] Sarah: Thanks Mark. I've prepared the agenda items we discussed last week.
+[00:00:45] Mark: Great. Let's start with the onboarding timeline. Where are we with the API integration?
+[00:01:20] Sarah: We've completed the initial setup. The authentication module is live and the data sync pipeline is about 80 percent done.
+[00:01:55] Mark: That's good progress. What are the remaining blockers?
+[00:02:30] Sarah: The main blocker is the third-party vendor API. They have a rate limit issue that we need to work around. I've filed a support ticket with them.
+[00:03:00] Mark: Understood. Let's set a deadline for resolution. Can we get that sorted by end of next week?
+[00:03:25] Sarah: I think that's achievable. I'll follow up with the vendor today and keep you posted.
+[00:03:50] Mark: Perfect. Moving on to item two — the client dashboard design.
+[00:04:15] Sarah: I've shared the mockups in the design channel. The team has reviewed them and we have a few minor change requests.
+[00:04:45] Mark: Alright, let's review those in our next design sync. Any other items?
+[00:05:00] Sarah: Just one more thing. We need to finalize the deployment schedule for the staging environment.
+[00:05:20] Mark: Good point. Let's schedule that for Thursday. I'll send a calendar invite.
+[00:05:40] Sarah: Sounds good. That covers everything on my end.
+[00:05:55] Mark: Great work Sarah. Let's wrap up for today. Thanks everyone.

@@ -1,0 +1,9 @@
+[00:00:00] Mark: Let's begin the standup. Starting with updates from the backend team.
+01:30 Sarah: Backend is on track. We merged the authentication module yesterday and started on the authorization layer today.
+[00:02:45] Mark: Great progress. How about the database migration work?
+04:00 Sarah: The migrations are written and tested locally. We need to run them on staging before the end of the sprint.
+[00:05:30] Mark: Understood. Let's make that a priority for tomorrow morning.
+07:15 Sarah: Agreed. I'll coordinate with the DevOps team to get a maintenance window scheduled.
+[00:08:00] Mark: Good. Any blockers from anyone else on the team?
+09:30 Sarah: No major blockers. Just the usual code review backlog that we're working through.
+[00:10:45] Mark: Alright. Let's commit to clearing the review queue by end of day. Thanks everyone for the updates.

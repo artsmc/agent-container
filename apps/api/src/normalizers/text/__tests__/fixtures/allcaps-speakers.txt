@@ -1,0 +1,13 @@
+MARK: Good morning everyone. Let's begin with the project status update.
+SARAH: Good morning. The frontend team has completed the dashboard redesign and it's ready for QA testing.
+MARK: Excellent. How about the backend services? Are they on track for the release date?
+SARAH: Yes, the API endpoints are all passing integration tests. We just need to run the load tests before signing off.
+MARK: Good. Let's make sure we have the load test results by end of day Wednesday.
+SARAH: I'll coordinate with the infrastructure team to set up the test environment.
+MARK: Thanks Sarah. Let's move on to the next topic which is the client onboarding checklist.
+SARAH: I've updated the checklist based on the feedback from the last two onboardings. There are a few new steps we added for security review.
+MARK: That makes sense. Can you share the updated checklist with the team?
+SARAH: Already done. I sent it this morning in the project channel.
+MARK: Perfect. That's all I had on my list. Anything from your side?
+SARAH: Nothing else. We're in good shape for the release.
+MARK: Great work everyone. Let's wrap up and get back to it.

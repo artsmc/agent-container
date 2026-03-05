@@ -1,0 +1,15 @@
+Mark: Welcome to the call. Let's get started with the agenda for this week.
+Sarah: Thanks Mark. I have three topics to discuss today.
+Mark: Go ahead with the first one.
+Sarah: The first topic is the product roadmap update. We need to finalize the Q2 deliverables and share them with the stakeholders by Friday.
+Mark: Right, I've been working on that. I'll have a draft ready by tomorrow morning.
+Sarah: That would be great. The second topic is the client feedback summary from last month's release.
+Mark: I saw the survey results. Overall the feedback was positive but there were a few concerns about performance.
+Sarah: Yes exactly. The performance team is already investigating the slow response times on the dashboard page.
+Mark: Good. What's the third topic?
+Sarah: We need to decide on the tech stack for the new microservice. I've narrowed it down to two options.
+Mark: Let's discuss those options in detail. Send me a comparison doc and we'll review it together.
+Sarah: Will do. I'll have it ready by end of day.
+Mark: Perfect. Anything else before we wrap up?
+Sarah: That's all from my side. Thanks for the productive call.
+Mark: Great. Talk to you next week.
