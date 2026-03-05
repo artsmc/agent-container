@@ -3,11 +3,20 @@
 .root {
   display: inline-flex;
   align-items: center;
-  font-size: tokens.$text-xs;
   font-weight: tokens.$font-weight-medium;
-  padding: tokens.$space-1 tokens.$space-2;
   border-radius: tokens.$radius-full;
   line-height: tokens.$leading-tight;
+
+  // Size variants
+  &[data-size='sm'] {
+    font-size: tokens.$text-xs;
+    padding: tokens.$space-1 tokens.$space-2;
+  }
+
+  &[data-size='md'] {
+    font-size: tokens.$text-sm;
+    padding: tokens.$space-1 tokens.$space-3;
+  }
 
   // Variant colors via data attribute
   &[data-variant='default'] {
@@ -33,5 +42,10 @@
   &[data-variant='info'] {
     background-color: tokens.$color-info-light;
     color: tokens.$color-info;
+  }
+
+  &[data-variant='primary'] {
+    background-color: tokens.$color-primary;
+    color: tokens.$color-text-inverse;
   }
 }

@@ -1,0 +1,50 @@
+// AgendasTab -- agenda card list styles.
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-4;
+}
+
+.infoNote {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+  background-color: tokens.$color-info-light;
+  padding: tokens.$space-3 tokens.$space-4;
+  border-radius: tokens.$radius-md;
+  border-left: 3px solid tokens.$color-info;
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-3;
+}
+
+.errorMessage {
+  color: tokens.$color-danger;
+  font-size: tokens.$text-sm;
+}
+
+.emptyMessage {
+  color: tokens.$color-text-secondary;
+  font-size: tokens.$text-sm;
+}
+
+// Skeleton loading
+.skeletonCard {
+  height: 120px;
+  border-radius: tokens.$radius-lg;
+  background-color: tokens.$color-gray-200;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}

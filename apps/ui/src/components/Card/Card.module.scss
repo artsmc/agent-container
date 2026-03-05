@@ -1,7 +1,7 @@
 // Card -- content container with surface background and elevation variants.
 
 .root {
-  background-color: tokens.$color-surface-default;
+  background-color: tokens.$color-surface-elevated;
   border-radius: tokens.$radius-lg;
   border: 1px solid tokens.$color-border-default;
   padding: tokens.$space-4;
@@ -15,6 +15,6 @@
   }
 
   &[data-elevation='floating'] {
-    box-shadow: tokens.$shadow-lg;
+    box-shadow: tokens.$shadow-md;
   }
 }

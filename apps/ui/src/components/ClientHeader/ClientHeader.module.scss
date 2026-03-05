@@ -1,0 +1,70 @@
+// ClientHeader -- header layout, name typography, workspace/link row.
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-1;
+}
+
+.name {
+  font-size: tokens.$text-2xl;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+  line-height: tokens.$leading-tight;
+}
+
+.workspace {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+  line-height: tokens.$leading-normal;
+}
+
+.grainLink {
+  display: inline-block;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-primary;
+  text-decoration: none;
+  margin-top: tokens.$space-1;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: 2px;
+    border-radius: tokens.$radius-sm;
+  }
+}
+
+// Skeleton loading bars
+.skeleton {
+  border-radius: tokens.$radius-md;
+  background-color: tokens.$color-gray-200;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeletonName {
+  width: 240px;
+  height: 28px;
+}
+
+.skeletonWorkspace {
+  width: 180px;
+  height: 18px;
+}
+
+.skeletonLink {
+  width: 140px;
+  height: 16px;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}

@@ -1,0 +1,48 @@
+// TabNav -- horizontal tab bar, active indicator, and panel wrapper.
+
+.tabBar {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid tokens.$color-border-default;
+  gap: 0;
+}
+
+.tab {
+  position: relative;
+  padding: tokens.$space-3 tokens.$space-4;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-regular;
+  color: tokens.$color-text-secondary;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: background-color tokens.$duration-fast tokens.$ease-default,
+    color tokens.$duration-fast tokens.$ease-default;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: tokens.$color-surface-elevated;
+    color: tokens.$color-text-primary;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: -2px;
+    border-radius: tokens.$radius-sm tokens.$radius-sm 0 0;
+  }
+}
+
+.tabActive {
+  color: tokens.$color-primary;
+  font-weight: tokens.$font-weight-semibold;
+  border-bottom-color: tokens.$color-primary;
+}
+
+.panel {
+  padding-top: tokens.$space-5;
+
+  &[hidden] {
+    display: none;
+  }
+}

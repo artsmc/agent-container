@@ -1,0 +1,69 @@
+// TranscriptsTab -- transcript table styles.
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-4;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  text-align: left;
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: tokens.$space-2 tokens.$space-3;
+  border-bottom: 1px solid tokens.$color-border-default;
+}
+
+.row {
+  border-bottom: 1px solid tokens.$color-border-default;
+
+  &:hover {
+    background-color: tokens.$color-surface-elevated;
+  }
+}
+
+.td {
+  padding: tokens.$space-3;
+  font-size: tokens.$text-sm;
+  vertical-align: middle;
+}
+
+.errorMessage {
+  color: tokens.$color-danger;
+  font-size: tokens.$text-sm;
+}
+
+.emptyMessage {
+  color: tokens.$color-text-secondary;
+  font-size: tokens.$text-sm;
+}
+
+// Skeleton loading
+.skeletonRow {
+  height: 44px;
+  border-radius: tokens.$radius-md;
+  background-color: tokens.$color-gray-200;
+  animation: pulse 1.5s ease-in-out infinite;
+
+  & + & {
+    margin-top: tokens.$space-2;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}

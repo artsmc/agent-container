@@ -1,0 +1,52 @@
+// AgendaCard -- individual agenda card styles.
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-2;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.shortId {
+  font-family: tokens.$font-family-mono;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+}
+
+.dates {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-primary;
+}
+
+.lastEdited {
+  font-size: tokens.$text-xs;
+  color: tokens.$color-text-secondary;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: tokens.$space-1;
+}
+
+.editLink {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-primary;
+  text-decoration: none;
+  font-weight: tokens.$font-weight-medium;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: 2px;
+    border-radius: tokens.$radius-sm;
+  }
+}

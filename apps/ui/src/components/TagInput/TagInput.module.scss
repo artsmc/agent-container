@@ -1,0 +1,100 @@
+// TagInput -- tag chips with inline text input.
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-1;
+}
+
+.inputArea {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: tokens.$space-1;
+  padding: tokens.$space-2 tokens.$space-3;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  background-color: tokens.$color-surface-default;
+  cursor: text;
+  min-height: 40px;
+  transition: border-color tokens.$duration-fast tokens.$ease-default;
+
+  &:focus-within {
+    border-color: tokens.$color-border-focus;
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: -1px;
+  }
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$space-1;
+  background-color: tokens.$color-gray-100;
+  color: tokens.$color-text-primary;
+  font-size: tokens.$text-sm;
+  padding: tokens.$space-1 tokens.$space-2;
+  border-radius: tokens.$radius-md;
+  line-height: tokens.$leading-tight;
+}
+
+.tagText {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tagRemove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 14px;
+  line-height: 1;
+  color: tokens.$color-text-secondary;
+  background: none;
+  border: none;
+  border-radius: tokens.$radius-full;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+
+  &:hover {
+    color: tokens.$color-danger;
+    background-color: tokens.$color-danger-light;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: 1px;
+  }
+}
+
+.input {
+  flex: 1;
+  min-width: 120px;
+  border: none;
+  outline: none;
+  padding: 0;
+  font-size: tokens.$text-sm;
+  background: transparent;
+  color: tokens.$color-text-primary;
+
+  &::placeholder {
+    color: tokens.$color-text-disabled;
+  }
+
+  // Override global input focus styles since the container handles them
+  &:focus {
+    outline: none;
+    border: none;
+  }
+}
+
+.error {
+  font-size: tokens.$text-xs;
+  color: tokens.$color-danger;
+  margin: 0;
+}

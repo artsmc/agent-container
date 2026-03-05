@@ -1,0 +1,14 @@
+// ClientDetailPage -- page-level layout constraints.
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-6;
+  max-width: 960px;
+  padding: tokens.$space-6;
+}
+
+.tabSection {
+  display: flex;
+  flex-direction: column;
+}

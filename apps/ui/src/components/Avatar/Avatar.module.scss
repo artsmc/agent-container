@@ -1,5 +1,4 @@
-// Avatar stub styles
-// Full styles implemented in feature 25.
+// Avatar -- circular user avatar with initials fallback and name-derived color.
 
 .root {
   display: inline-flex;
@@ -8,23 +7,24 @@
   border-radius: tokens.$radius-full;
   background-color: tokens.$color-gray-200;
   overflow: hidden;
+  flex-shrink: 0;
 
   &[data-size='sm'] {
+    width: 24px;
+    height: 24px;
+    font-size: 10px;
+  }
+
+  &[data-size='md'] {
     width: 32px;
     height: 32px;
     font-size: tokens.$text-xs;
   }
 
-  &[data-size='md'] {
+  &[data-size='lg'] {
     width: 40px;
     height: 40px;
     font-size: tokens.$text-sm;
-  }
-
-  &[data-size='lg'] {
-    width: 48px;
-    height: 48px;
-    font-size: tokens.$text-base;
   }
 }
 
@@ -36,5 +36,6 @@
 
 .initials {
   font-weight: tokens.$font-weight-medium;
-  color: tokens.$color-text-secondary;
+  color: tokens.$color-text-inverse;
+  user-select: none;
 }

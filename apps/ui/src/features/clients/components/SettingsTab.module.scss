@@ -1,0 +1,88 @@
+// SettingsTab -- form layout and field groupings.
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-5;
+  max-width: 600px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-2;
+}
+
+.label {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+}
+
+.select {
+  width: 100%;
+  padding: tokens.$space-2 tokens.$space-3;
+  font-size: tokens.$text-sm;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  background-color: tokens.$color-surface-default;
+  color: tokens.$color-text-primary;
+  cursor: pointer;
+
+  &:focus {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: -1px;
+    border-color: tokens.$color-border-focus;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.textarea {
+  width: 100%;
+  padding: tokens.$space-2 tokens.$space-3;
+  font-size: tokens.$text-sm;
+  font-family: tokens.$font-family-mono;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  background-color: tokens.$color-surface-default;
+  color: tokens.$color-text-primary;
+  resize: vertical;
+  min-height: 100px;
+
+  &:focus {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: -1px;
+    border-color: tokens.$color-border-focus;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-3;
+  padding-top: tokens.$space-2;
+}
+
+.successMessage {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-success;
+  animation: fadeIn tokens.$duration-fast tokens.$ease-default;
+}
+
+.errorMessage {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-danger;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
