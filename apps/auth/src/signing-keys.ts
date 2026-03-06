@@ -28,17 +28,22 @@ async function loadKeyPair(pem: string): Promise<SigningKeyPair> {
   // Handle escaped newlines from environment variables
   const normalizedPem = pem.replace(/\\n/g, '\n');
   const privateKey = await importPKCS8(normalizedPem, 'RS256');
-  const publicJwk = await exportJWK(privateKey);
-  const kid = await calculateJwkThumbprint(publicJwk, 'sha256');
+  const jwk = await exportJWK(privateKey);
+  const kid = await calculateJwkThumbprint(jwk, 'sha256');
+
+  // Strip private key components — JWKS must only expose public key
+  const publicJwk: JWK = {
+    kty: jwk.kty,
+    n: jwk.n,
+    e: jwk.e,
+    kid,
+    use: 'sig',
+    alg: 'RS256',
+  };
 
   return {
     privateKey,
-    publicJwk: {
-      ...publicJwk,
-      kid,
-      use: 'sig',
-      alg: 'RS256',
-    },
+    publicJwk,
     kid,
   };
 }

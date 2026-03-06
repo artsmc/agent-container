@@ -1,11 +1,10 @@
 /**
  * GET /authorize
- * OIDC authorization endpoint. Validates params and redirects to the external IdP.
+ * OIDC authorization endpoint. Validates params and redirects to the login page.
+ * The user chooses local auth or external IdP (Google) on the login page.
  */
-import { randomBytes } from 'node:crypto';
 import type { FastifyInstance } from 'fastify';
 import { lookupClient, assertClientSupportsGrant } from '../services/client.js';
-import { fetchIdpDiscovery, buildIdpAuthorizationUrl } from '../services/idp.js';
 import type { AuthorizationRequestSession } from '../types.js';
 import { AuthError } from '../errors.js';
 
@@ -22,7 +21,7 @@ interface AuthorizeQuery {
 
 export function registerAuthorizeRoute(
   app: FastifyInstance,
-  idpIssuerUrl: string
+  _idpIssuerUrl: string
 ): void {
   app.get<{ Querystring: AuthorizeQuery }>('/authorize', async (request, reply) => {
     const {
@@ -113,8 +112,7 @@ export function registerAuthorizeRoute(
       return redirectWithError(reply, redirect_uri, 'invalid_request', 'Only code_challenge_method=S256 is supported.', state);
     }
 
-    // Store authorization request in a cookie for the callback
-    const sessionNonce = randomBytes(16).toString('base64url');
+    // Store authorization request in a cookie for the login page
     const session: AuthorizationRequestSession = {
       clientId: client_id,
       redirectUri: redirect_uri,
@@ -137,25 +135,9 @@ export function registerAuthorizeRoute(
       path: '/',
     });
 
-    // Fetch IdP discovery and redirect
-    const idpDiscovery = await fetchIdpDiscovery(idpIssuerUrl);
-    const idpAuthUrl = buildIdpAuthorizationUrl({
-      authorizationEndpoint: idpDiscovery.authorization_endpoint,
-      state: sessionNonce,
-      nonce: randomBytes(16).toString('base64url'),
-      scopes: ['openid', 'profile', 'email'],
-    });
-
-    // Store the nonce->state mapping for callback verification
-    reply.setCookie('idp_state', sessionNonce, {
-      httpOnly: true,
-      secure: process.env['NODE_ENV'] === 'production',
-      sameSite: 'lax',
-      maxAge: 300,
-      path: '/',
-    });
-
-    return reply.redirect(302, idpAuthUrl);
+    // Redirect to the auth service's own login page.
+    // The login page will let the user choose local auth or external IdP (Google).
+    return reply.redirect(302, '/login');
   });
 }
 

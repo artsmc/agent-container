@@ -8,6 +8,7 @@
     "target": "ES2022",
     "moduleResolution": "bundler",
     "strict": true,
+    "noPropertyAccessFromIndexSignature": false,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "declaration": true,

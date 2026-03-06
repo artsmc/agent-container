@@ -1,0 +1,40 @@
+.page {
+  padding: tokens.$space-6;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: tokens.$space-4;
+}
+
+.pageTitle {
+  margin: 0;
+}
+
+.createLink {
+  display: inline-flex;
+  align-items: center;
+  padding: tokens.$space-2 tokens.$space-4;
+  background-color: tokens.$color-primary;
+  color: tokens.$color-text-inverse;
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-semibold;
+  border-radius: tokens.$radius-md;
+  text-decoration: none;
+
+  &:hover {
+    background-color: tokens.$color-primary-dark;
+    text-decoration: none;
+  }
+}
+
+.emptyState {
+  background: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  padding: tokens.$space-8;
+  text-align: center;
+  color: tokens.$color-text-secondary;
+}

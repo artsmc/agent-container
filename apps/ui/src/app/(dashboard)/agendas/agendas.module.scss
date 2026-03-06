@@ -1,0 +1,16 @@
+.page {
+  padding: tokens.$space-6;
+}
+
+.pageTitle {
+  margin-bottom: tokens.$space-4;
+}
+
+.emptyState {
+  background: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  padding: tokens.$space-8;
+  text-align: center;
+  color: tokens.$color-text-secondary;
+}

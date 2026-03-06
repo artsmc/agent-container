@@ -25,6 +25,10 @@ import { evictExpiredAuthCodes } from './services/auth-codes.js';
 import { deleteExpiredSessions } from './db/sessions.js';
 import { deleteExpiredAndRevokedRefreshTokens } from './db/tokens.js';
 
+import fastifyStatic from '@fastify/static';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 // Route registrations
 import { registerDiscoveryRoute } from './routes/well-known/discovery.js';
 import { registerJwksRoute } from './routes/well-known/jwks.js';
@@ -38,6 +42,14 @@ import { registerUserinfoRoute } from './routes/userinfo.js';
 import { registerHealthRoute } from './routes/health.js';
 import { registerAdminClientRoutes } from './routes/admin/clients.js';
 import { registerAdminUserRoutes } from './routes/admin/users.js';
+import { registerRegisterRoute } from './routes/register.js';
+import { registerLoginRoute } from './routes/login.js';
+
+// HTML page routes
+import { registerLoginPageRoute } from './routes/pages/login.js';
+import { registerRegisterPageRoute } from './routes/pages/register.js';
+import { registerAdminPageRoutes } from './routes/pages/admin-clients.js';
+import { registerGoogleLoginRoute } from './routes/pages/login-google.js';
 
 const CLEANUP_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
 const AUDIENCE = 'iexcel-api';
@@ -126,6 +138,13 @@ async function main(): Promise<void> {
     global: false,
   });
 
+  // Serve static assets (CSS) from public directory
+  const __dirname = dirname(fileURLToPath(import.meta.url));
+  await app.register(fastifyStatic, {
+    root: join(__dirname, '..', 'public'),
+    prefix: '/static/',
+  });
+
   // Global error handler
   app.setErrorHandler((error, request, reply) => {
     request.log.error(error);
@@ -174,6 +193,21 @@ async function main(): Promise<void> {
 
   // Health check
   registerHealthRoute(app);
+
+  // Local auth routes
+  registerRegisterRoute(app);
+  registerLoginRoute(app, config.authIssuerUrl);
+
+  // Root redirect
+  app.get('/', async (_request, reply) => {
+    return reply.redirect('/login');
+  });
+
+  // HTML page routes (registered before admin API routes to avoid conflicts)
+  registerLoginPageRoute(app);
+  registerRegisterPageRoute(app);
+  registerGoogleLoginRoute(app, config.idpIssuerUrl);
+  registerAdminPageRoutes(app);
 
   // Admin endpoints
   registerAdminClientRoutes(app, config.authIssuerUrl, AUDIENCE, config.adminScope);

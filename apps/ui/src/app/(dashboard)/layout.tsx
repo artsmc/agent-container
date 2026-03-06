@@ -54,11 +54,11 @@ export default async function DashboardGroupLayout({
       baseUrl: process.env.API_BASE_URL ?? '',
       tokenProvider: createCookieTokenProvider(),
     })
-    const response = await apiClient.getMe()
-    // ProductUser.role is a UserRole enum value which maps to the same union
-    role = response.user.role as AuthenticatedUser['role']
-    // assignedClientIds will be added to the /me response in a future iteration.
-    // Default to empty array until the API contract is updated.
+    const response = await apiClient.getMe() as any
+    // The API wraps responses in { success, data } via sendSuccess helper.
+    // Handle both shapes: { user: { role } } (typed) and { success, data: { role } } (actual).
+    const userData = response.user ?? response.data
+    role = userData.role as AuthenticatedUser['role']
     assignedClientIds = []
   } catch (err) {
     console.error('[dashboard/layout] GET /me failed:', err instanceof Error ? err.message : err)

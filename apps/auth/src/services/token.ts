@@ -13,6 +13,8 @@ export interface SignAccessTokenParams {
   iss: string;
   clientId?: string;
   jti?: string;
+  email?: string;
+  name?: string;
 }
 
 export interface SignIdTokenParams {
@@ -41,6 +43,14 @@ export async function signAccessToken(
 
   if (params.jti) {
     payload.jti = params.jti;
+  }
+
+  if (params.email) {
+    payload.email = params.email;
+  }
+
+  if (params.name) {
+    payload.name = params.name;
   }
 
   return new SignJWT(payload)

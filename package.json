@@ -21,15 +21,16 @@
     "format:check": "nx format:check"
   },
   "devDependencies": {
-    "nx": "~20.0.0",
-    "@nx/js": "~20.0.0",
-    "@nx/node": "~20.0.0",
-    "@nx/next": "~20.0.0",
+    "@nx/esbuild": "^20.0.13",
     "@nx/eslint": "~20.0.0",
     "@nx/eslint-plugin": "~20.0.0",
-    "typescript": "~5.7.0",
+    "@nx/js": "~20.0.0",
+    "@nx/next": "~20.0.0",
+    "@nx/node": "~20.0.0",
     "@types/node": "^22.0.0",
     "eslint": "^9.0.0",
-    "prettier": "^3.0.0"
+    "nx": "~20.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "~5.7.0"
   }
 }

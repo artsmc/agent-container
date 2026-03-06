@@ -23,6 +23,7 @@ import {
   revokeAllRefreshTokensForUserAndClient,
 } from '../db/tokens.js';
 import { getUserById } from '../db/users.js';
+import { getUserRoleById } from '../db/local-auth.js';
 import { assertUserIsActive } from '../services/user.js';
 import {
   AuthError,
@@ -134,6 +135,7 @@ async function handleAuthorizationCode(
   assertUserIsActive(user);
 
   // Issue tokens
+  const scopes = authCodeRecord.scope.split(' ');
   const jti = randomBytes(16).toString('base64url');
   const accessToken = await signAccessToken(
     {
@@ -142,12 +144,13 @@ async function handleAuthorizationCode(
       scope: authCodeRecord.scope,
       iss: issuerUrl,
       jti,
+      email: user.email,
+      name: user.name,
     },
     client.token_lifetime
   );
 
   // Build ID token claims based on scope
-  const scopes = authCodeRecord.scope.split(' ');
   const idTokenParams: {
     sub: string;
     aud: string;
@@ -252,15 +255,25 @@ async function handleRefreshToken(
   }
   assertUserIsActive(user);
 
+  // Preserve admin scope on refresh
+  const role = await getUserRoleById(user.id);
+  const scopes = ['openid', 'profile', 'email'];
+  if (role === 'admin') {
+    scopes.push('admin');
+  }
+  const scope = scopes.join(' ');
+
   // Issue new tokens
   const jti = randomBytes(16).toString('base64url');
   const accessToken = await signAccessToken(
     {
       sub: user.id,
       aud: 'iexcel-api',
-      scope: 'openid profile email',
+      scope,
       iss: issuerUrl,
       jti,
+      email: user.email,
+      name: user.name,
     },
     client.token_lifetime
   );
