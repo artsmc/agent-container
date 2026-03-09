@@ -7,8 +7,12 @@
  * @see Feature 20 — Agenda Agent: getReconciledTasksTool
  */
 import { createTool } from '@mastra/core/tools';
+import type { ToolExecutionContext } from '@mastra/core/tools';
 import { z } from 'zod';
+import type { GetTasksRequest } from '@iexcel/shared-types';
 import { getApiClient } from '../api-client.js';
+import { extractToken } from '../mcp-tools/helpers/extract-token.js';
+import { createUserApiClient } from '../mcp-tools/helpers/create-user-api-client.js';
 
 // ── Shared sub-schemas ────────────────────────────────────────────────────────
 
@@ -76,8 +80,9 @@ export const saveTasksTool = createTool({
     'Save a single draft task for a client via the API. Call this once per task extracted from the transcript.',
   inputSchema: saveTasksInputSchema,
   outputSchema: saveTasksOutputSchema,
-  execute: async (input) => {
-    const apiClient = getApiClient();
+  execute: async (input, context: ToolExecutionContext) => {
+    const userToken = extractToken(context);
+    const apiClient = userToken ? createUserApiClient(userToken) : getApiClient();
     const result = await apiClient.createTasks(input.clientId, {
       clientId: input.clientId,
       transcriptId: input.transcriptId,
@@ -135,9 +140,10 @@ export const createDraftTasks = createTool({
     'Creates one or more draft tasks for a client, typically from an intake transcript.',
   inputSchema: createDraftTasksInputSchema,
   outputSchema: createDraftTasksOutputSchema,
-  execute: async (input) => {
-    const apiClient = getApiClient();
-    const requests = input.tasks.map((task: any) => ({
+  execute: async (input, context: ToolExecutionContext) => {
+    const userToken = extractToken(context);
+    const apiClient = userToken ? createUserApiClient(userToken) : getApiClient();
+    const requests = input.tasks.map((task: (typeof input.tasks)[number]) => ({
       clientId: input.clientId,
       transcriptId: input.transcriptId,
       title: task.title,
@@ -169,8 +175,9 @@ export const getTask = createTool({
   description: 'Retrieves a single task by its ID.',
   inputSchema: getTaskInputSchema,
   outputSchema: getTaskOutputSchema,
-  execute: async (input) => {
-    const apiClient = getApiClient();
+  execute: async (input, context: ToolExecutionContext) => {
+    const userToken = extractToken(context);
+    const apiClient = userToken ? createUserApiClient(userToken) : getApiClient();
     const response = await apiClient.getTask(input.taskId);
     return { task: response.task };
   },
@@ -203,10 +210,11 @@ export const listTasksForClient = createTool({
   description: 'Lists tasks for a specific client, with optional status filter.',
   inputSchema: listTasksForClientInputSchema,
   outputSchema: listTasksForClientOutputSchema,
-  execute: async (input) => {
-    const apiClient = getApiClient();
+  execute: async (input, context: ToolExecutionContext) => {
+    const userToken = extractToken(context);
+    const apiClient = userToken ? createUserApiClient(userToken) : getApiClient();
     const response = await apiClient.listTasks(input.clientId, {
-      status: input.status as any,
+      status: input.status as GetTasksRequest['status'],
       limit: input.limit,
     });
     return { tasks: response.data, total: response.total };
@@ -254,8 +262,9 @@ export const getReconciledTasksTool = createTool({
     'Retrieve reconciled tasks for a client within a cycle date range. Returns tasks with cached Asana completion status from the Postgres database.',
   inputSchema: getReconciledTasksInputSchema,
   outputSchema: getReconciledTasksOutputSchema,
-  execute: async (input) => {
-    const apiClient = getApiClient();
+  execute: async (input, context: ToolExecutionContext) => {
+    const userToken = extractToken(context);
+    const apiClient = userToken ? createUserApiClient(userToken) : getApiClient();
     const allTasks: z.infer<typeof reconciledTaskSchema>[] = [];
     let page = 1;
     const limit = 100;

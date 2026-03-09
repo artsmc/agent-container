@@ -8,8 +8,11 @@
  * @see Feature 20 — Agenda Agent
  */
 import { createTool } from '@mastra/core/tools';
+import type { ToolExecutionContext } from '@mastra/core/tools';
 import { z } from 'zod';
 import { getApiClient } from '../api-client.js';
+import { extractToken } from '../mcp-tools/helpers/extract-token.js';
+import { createUserApiClient } from '../mcp-tools/helpers/create-user-api-client.js';
 
 // ── updateWorkflowStatusTool ──────────────────────────────────────────────────
 
@@ -43,17 +46,17 @@ export const updateWorkflowStatusTool = createTool({
     'Updates the status of a workflow run. Used to report progress, completion, or failure.',
   inputSchema: updateWorkflowStatusInputSchema,
   outputSchema: updateWorkflowStatusOutputSchema,
-  execute: async (input) => {
-    const apiClient = getApiClient();
+  execute: async (input, context: ToolExecutionContext) => {
+    const userToken = extractToken(context);
+    const apiClient = userToken ? createUserApiClient(userToken) : getApiClient();
     // The API accepts the result/error payloads as-is; the specific shape
-    // varies by workflow type (intake vs agenda). We cast to `any` here
+    // varies by workflow type (intake vs agenda). We cast to unknown first
     // because the Zod schema already validates the input structure.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await apiClient.updateWorkflowStatus(input.workflowRunId, {
       status: input.status,
       result: input.result,
       error: input.error,
-    } as any);
+    } as Parameters<typeof apiClient.updateWorkflowStatus>[1]);
     return { updated: true };
   },
 });

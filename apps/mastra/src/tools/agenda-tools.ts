@@ -7,8 +7,11 @@
  * @see Feature 20 — Agenda Agent
  */
 import { createTool } from '@mastra/core/tools';
+import type { ToolExecutionContext } from '@mastra/core/tools';
 import { z } from 'zod';
 import { getApiClient } from '../api-client.js';
+import { extractToken } from '../mcp-tools/helpers/extract-token.js';
+import { createUserApiClient } from '../mcp-tools/helpers/create-user-api-client.js';
 
 // ── saveDraftAgendaTool ─────────────────────────────────────────────────────
 
@@ -31,8 +34,9 @@ export const saveDraftAgendaTool = createTool({
     'Save the generated Running Notes document as a draft agenda for a client.',
   inputSchema: saveDraftAgendaInputSchema,
   outputSchema: saveDraftAgendaOutputSchema,
-  execute: async (input) => {
-    const apiClient = getApiClient();
+  execute: async (input, context: ToolExecutionContext) => {
+    const userToken = extractToken(context);
+    const apiClient = userToken ? createUserApiClient(userToken) : getApiClient();
     const response = await apiClient.createAgenda(input.clientId, {
       clientId: input.clientId,
       content: input.content,
@@ -78,8 +82,9 @@ export const getAgenda = createTool({
   description: 'Retrieves a single agenda document by its ID.',
   inputSchema: getAgendaInputSchema,
   outputSchema: getAgendaOutputSchema,
-  execute: async (input) => {
-    const apiClient = getApiClient();
+  execute: async (input, context: ToolExecutionContext) => {
+    const userToken = extractToken(context);
+    const apiClient = userToken ? createUserApiClient(userToken) : getApiClient();
     const response = await apiClient.getAgenda(input.agendaId);
     return { agenda: response.agenda };
   },

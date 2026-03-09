@@ -6,8 +6,11 @@
  * @see Feature 19 — Intake Agent
  */
 import { createTool } from '@mastra/core/tools';
+import type { ToolExecutionContext } from '@mastra/core/tools';
 import { z } from 'zod';
 import { getApiClient } from '../api-client.js';
+import { extractToken } from '../mcp-tools/helpers/extract-token.js';
+import { createUserApiClient } from '../mcp-tools/helpers/create-user-api-client.js';
 
 // ── Shared sub-schemas ────────────────────────────────────────────────────────
 
@@ -48,8 +51,9 @@ export const getTranscript = createTool({
   description: 'Retrieves a single transcript by its ID.',
   inputSchema: getTranscriptInputSchema,
   outputSchema: getTranscriptOutputSchema,
-  execute: async (input) => {
-    const apiClient = getApiClient();
+  execute: async (input, context: ToolExecutionContext) => {
+    const userToken = extractToken(context);
+    const apiClient = userToken ? createUserApiClient(userToken) : getApiClient();
     const response = await apiClient.getTranscript(input.transcriptId);
     // The API returns GetTranscriptResponse — we need to return a NormalizedTranscript-like shape.
     // The transcript data includes the normalized fields.
@@ -85,8 +89,9 @@ export const listTranscriptsForClient = createTool({
     'Lists transcripts for a specific client, with optional meeting type filter.',
   inputSchema: listTranscriptsForClientInputSchema,
   outputSchema: listTranscriptsForClientOutputSchema,
-  execute: async (input) => {
-    const apiClient = getApiClient();
+  execute: async (input, context: ToolExecutionContext) => {
+    const userToken = extractToken(context);
+    const apiClient = userToken ? createUserApiClient(userToken) : getApiClient();
     const response = await apiClient.listTranscripts(input.clientId, {
       limit: input.limit,
     });
