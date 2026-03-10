@@ -1,0 +1,42 @@
+// CreateClientModal -- form layout for creating a new client.
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-4;
+}
+
+.error {
+  padding: tokens.$space-3;
+  background-color: tokens.$color-danger-light;
+  color: tokens.$color-danger;
+  border-radius: tokens.$radius-md;
+  font-size: tokens.$text-sm;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-2;
+}
+
+.label {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-secondary;
+}
+
+.nameInput {
+  padding: tokens.$space-2 tokens.$space-3;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  font-size: tokens.$text-sm;
+  font-family: tokens.$font-family-sans;
+  width: 100%;
+
+  &:focus {
+    outline: 2px solid tokens.$color-border-focus;
+    outline-offset: -1px;
+    border-color: tokens.$color-border-focus;
+  }
+}

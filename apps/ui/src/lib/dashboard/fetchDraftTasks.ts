@@ -21,13 +21,18 @@ export async function fetchDraftTasks(
         .listTasks(client.id, { status: 'draft' as TaskStatus })
         .then((response) =>
           response.data.map(
-            (task): DashboardDraftTask => ({
-              shortId: task.shortId as string,
-              clientId: task.clientId,
-              clientName: client.name,
-              title: task.title,
-              estimatedMinutes: parseIsoDurationToMinutes(task.estimatedTime),
-            })
+            (task): DashboardDraftTask => {
+              const t = task as unknown as Record<string, unknown>;
+              return {
+                shortId: ((t.shortId ?? t.short_id) as string) || '',
+                clientId: (t.clientId ?? t.client_id) as string,
+                clientName: client.name,
+                title: t.title as string,
+                estimatedMinutes: parseIsoDurationToMinutes(
+                  ((t.estimatedTime ?? t.estimated_time) as string) || null
+                ),
+              };
+            }
           )
         )
     )
@@ -45,7 +50,7 @@ export async function fetchDraftTasks(
   }
 
   // Sort by short_id ascending (lexicographic on the string works for TSK-NNNN)
-  tasks.sort((a, b) => a.shortId.localeCompare(b.shortId));
+  tasks.sort((a, b) => (a.shortId ?? '').localeCompare(b.shortId ?? ''));
 
   return { tasks, hadErrors };
 }

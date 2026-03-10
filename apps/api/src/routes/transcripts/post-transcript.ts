@@ -22,6 +22,7 @@ import { normalizeGrainTranscript, GrainNormalizerError } from '../../normalizer
 import { insertTranscript } from '../../repositories/transcript-repository';
 import { buildTranscriptAuditMetadata } from '../../services/transcript-types';
 import type { MeetingType } from '@iexcel/shared-types';
+import type { WorkflowService } from '../../services/workflow.service';
 
 // ---------------------------------------------------------------------------
 // Error factories
@@ -85,7 +86,8 @@ type MultipartPart = MultipartField | MultipartFile;
 
 export function registerPostTranscript(
   fastify: FastifyInstance,
-  db: DbClient
+  db: DbClient,
+  workflowService: WorkflowService
 ): void {
   fastify.post(
     '/clients/:clientId/transcripts',
@@ -337,7 +339,23 @@ export function registerPostTranscript(
         );
       });
 
-      // 11. Return created record
+      // 11. Auto-trigger intake workflow (fire-and-forget)
+      workflowService
+        .triggerIntake(user.id, clientId, record.id)
+        .then((run) => {
+          request.log.info(
+            { workflowRunId: run.id, clientId, transcriptId: record.id },
+            'Auto-triggered intake workflow after transcript submission'
+          );
+        })
+        .catch((err: unknown) => {
+          request.log.warn(
+            { clientId, transcriptId: record.id, error: String(err) },
+            'Failed to auto-trigger intake workflow (non-fatal)'
+          );
+        });
+
+      // 12. Return created record
       void reply.status(201).send(record);
     }
   );

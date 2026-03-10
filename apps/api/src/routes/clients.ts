@@ -4,12 +4,15 @@ import { ApiError, ForbiddenError } from '../errors/api-errors';
 import {
   isValidUuid,
   patchClientBodySchema,
+  createClientBodySchema,
   listClientsQuerySchema,
   type PatchClientBody,
+  type CreateClientBody,
 } from '../validators/client-validators';
 import {
   listClients,
   getClientById,
+  createClient,
   updateClient,
   getClientTaskCounts,
   getMostRecentAgenda,
@@ -17,6 +20,7 @@ import {
   computeChangedFields,
   type ClientStatusResult,
 } from '../services/client-service';
+import { requireRole } from '../middleware/require-role';
 
 // ---------------------------------------------------------------------------
 // Error factories
@@ -56,6 +60,7 @@ interface ClientRouteOptions {
  * All routes run inside the protected scope (authenticate + loadUser hooks).
  *
  * - GET    /clients          - List clients (paginated, role-scoped)
+ * - POST   /clients          - Create a new client (admin, account_manager)
  * - GET    /clients/:id      - Get client detail
  * - PATCH  /clients/:id      - Update client configuration
  * - GET    /clients/:id/status - Get client status overview
@@ -98,6 +103,43 @@ export async function clientRoutes(
           total_pages: totalPages,
         },
       });
+    }
+  );
+
+  // -------------------------------------------------------------------------
+  // POST /clients
+  // -------------------------------------------------------------------------
+  fastify.post(
+    '/clients',
+    {
+      preHandler: [requireRole('admin', 'account_manager')],
+    },
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const user = request.user!;
+
+      // Validate body
+      const bodyResult = createClientBodySchema.safeParse(request.body);
+      if (!bodyResult.success) {
+        const firstIssue = bodyResult.error.issues[0];
+        throw invalidBodyError(
+          firstIssue?.message ?? 'Invalid request body'
+        );
+      }
+      const body: CreateClientBody = bodyResult.data;
+
+      const client = await createClient(db, body);
+
+      // Write audit log
+      await writeAuditLog(db, {
+        userId: user.id,
+        action: 'client.created',
+        entityType: 'client',
+        entityId: client.id,
+        metadata: { name: body.name },
+        source: 'ui',
+      });
+
+      void reply.status(201).send(client);
     }
   );
 

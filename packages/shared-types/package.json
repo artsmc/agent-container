@@ -2,6 +2,7 @@
   "name": "@iexcel/shared-types",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "description": "Shared TypeScript types for the iExcel automation system",
   "types": "./src/index.ts",
   "exports": {

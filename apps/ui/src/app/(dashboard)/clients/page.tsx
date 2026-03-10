@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { ClientCardsGrid } from '@/components/ClientCardsGrid'
 import { ClientCardsSkeleton } from '@/components/DashboardSkeleton'
+import { CreateClientButton } from '@/features/clients/components/CreateClientButton'
 import styles from './clients.module.scss'
 
 export const metadata = {
@@ -14,7 +15,10 @@ export const metadata = {
 export default function ClientsPage() {
   return (
     <div className={styles.page} data-testid="clients-page">
-      <h1 className={styles.pageTitle}>Clients</h1>
+      <div className={styles.pageHeader}>
+        <h1 className={styles.pageTitle}>Clients</h1>
+        <CreateClientButton />
+      </div>
       <Suspense fallback={<ClientCardsSkeleton count={6} />}>
         <ClientCardsGrid />
       </Suspense>

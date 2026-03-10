@@ -1,6 +1,6 @@
 import type { NormalizedTask, TaskVersion, TaskStatus, CreateTaskRequest, UpdateTaskRequest } from './task';
 import type { Agenda, AgendaVersion, CreateAgendaRequest, UpdateAgendaRequest } from './agenda';
-import type { Client, EmailRecipients } from './client';
+import type { Client, EmailRecipients, CreateClientRequest } from './client';
 import type { ProductUser } from './auth';
 import type { MeetingType } from './transcript';
 
@@ -31,6 +31,13 @@ export enum ApiErrorCode {
   ImportRecordReadOnly = 'IMPORT_RECORD_READ_ONLY',
   ImportInProgress = 'IMPORT_IN_PROGRESS',
   ImportJobNotFound = 'IMPORT_JOB_NOT_FOUND',
+
+  // Integration error codes
+  IntegrationNotFound = 'INTEGRATION_NOT_FOUND',
+  IntegrationAlreadyExists = 'INTEGRATION_ALREADY_EXISTS',
+  IntegrationCredentialInvalid = 'INTEGRATION_CREDENTIAL_INVALID',
+  IntegrationPlatformError = 'INTEGRATION_PLATFORM_ERROR',
+  WebhookVerificationFailed = 'WEBHOOK_VERIFICATION_FAILED',
 }
 
 export interface ApiError {
@@ -136,6 +143,31 @@ export interface GetTranscriptResponse {
   createdAt: string;
 }
 
+/** Summary row returned by the global transcript listing endpoint. */
+export interface TranscriptListItem {
+  id: string;
+  client_id: string | null;
+  grain_call_id: string | null;
+  call_type: string;
+  call_date: string;
+  processed_at: string | null;
+  created_at: string;
+  client_name: string | null;
+  source_platform: string | null;
+  is_imported: boolean;
+}
+
+/** Response shape for GET /transcripts (global listing). */
+export interface ListAllTranscriptsResponse {
+  data: TranscriptListItem[];
+  pagination: {
+    page: number;
+    per_page: number;
+    total: number;
+    total_pages: number;
+  };
+}
+
 // --- Workflow Contracts ---
 
 export interface TriggerIntakeWorkflowRequest {
@@ -168,4 +200,4 @@ export interface GetCurrentUserResponse {
 }
 
 // Re-export client types for convenience
-export type { Client };
+export type { Client, CreateClientRequest };

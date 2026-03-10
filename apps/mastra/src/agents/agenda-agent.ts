@@ -28,6 +28,7 @@
  * @see Feature 20 — Agenda Agent
  */
 import { Agent } from '@mastra/core/agent';
+import { Memory } from '@mastra/memory';
 import { AGENDA_AGENT_INSTRUCTIONS } from '../prompts/agenda-instructions.js';
 import { env } from '../config/env.js';
 import { getReconciledTasksTool, saveDraftAgendaTool } from '../tools/index.js';
@@ -42,6 +43,11 @@ export const agendaAgent = new Agent({
   model: {
     id: `${env.LLM_PROVIDER}/${env.LLM_MODEL}` as `${string}/${string}`,
   },
+  memory: new Memory({
+    options: {
+      lastMessages: 20,
+    },
+  }),
   tools: {
     getReconciledTasksTool,
     saveDraftAgendaTool,

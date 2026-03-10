@@ -1,16 +1,208 @@
+// Tasks listing page styles.
+// tokens namespace is injected globally via next.config.ts sassOptions.
+
 .page {
   padding: tokens.$space-6;
 }
 
-.pageTitle {
-  margin-bottom: tokens.$space-4;
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: tokens.$space-6;
 }
 
-.emptyState {
-  background: tokens.$color-surface-default;
-  border: 1px solid tokens.$color-border-default;
-  border-radius: tokens.$radius-md;
-  padding: tokens.$space-8;
-  text-align: center;
+.pageTitle {
+  margin: 0;
+  font-size: tokens.$text-2xl;
+  font-weight: tokens.$font-weight-bold;
+  color: tokens.$color-text-primary;
+}
+
+.subtitle {
+  margin: tokens.$space-1 0 0;
+  font-size: tokens.$text-sm;
   color: tokens.$color-text-secondary;
+}
+
+// Table
+.tableWrapper {
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-lg;
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableHead {
+  background-color: tokens.$color-gray-50;
+}
+
+.th {
+  padding: tokens.$space-3 tokens.$space-4;
+  text-align: left;
+  font-size: tokens.$text-xs;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid tokens.$color-border-default;
+}
+
+.tr {
+  border-bottom: 1px solid tokens.$color-border-default;
+  transition: background-color 150ms ease;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background-color: tokens.$color-gray-50;
+  }
+}
+
+.td {
+  padding: tokens.$space-3 tokens.$space-4;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-primary;
+  vertical-align: middle;
+}
+
+.taskLink {
+  color: tokens.$color-primary;
+  text-decoration: none;
+  font-weight: tokens.$font-weight-semibold;
+  font-family: monospace;
+  font-size: tokens.$text-xs;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.taskTitle {
+  font-weight: tokens.$font-weight-medium;
+}
+
+.clientLink {
+  color: tokens.$color-primary;
+  text-decoration: none;
+  font-weight: tokens.$font-weight-medium;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.assignee {
+  color: tokens.$color-text-secondary;
+}
+
+.time {
+  color: tokens.$color-text-secondary;
+  font-size: tokens.$text-xs;
+  font-family: monospace;
+}
+
+// Action button (for empty state CTA)
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: tokens.$space-2;
+  padding: tokens.$space-2 tokens.$space-4;
+  border-radius: tokens.$radius-lg;
+  background-color: tokens.$color-primary;
+  color: tokens.$color-text-inverse;
+  font-weight: tokens.$font-weight-medium;
+  font-size: tokens.$text-sm;
+  text-decoration: none;
+  transition: background-color 150ms ease;
+
+  &:hover {
+    background-color: tokens.$color-primary-dark;
+  }
+}
+
+// Empty state
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: tokens.$space-16 tokens.$space-6;
+  text-align: center;
+  border: 1px dashed tokens.$color-border-default;
+  border-radius: tokens.$radius-lg;
+}
+
+.emptyTitle {
+  margin: 0 0 tokens.$space-2;
+  font-size: tokens.$text-lg;
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-text-primary;
+}
+
+.emptyDescription {
+  margin: 0 0 tokens.$space-4;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+  max-width: 400px;
+}
+
+// Error / warning banners
+.errorBanner {
+  padding: tokens.$space-4;
+  background-color: tokens.$color-danger-light;
+  border: 1px solid tokens.$color-danger;
+  border-radius: tokens.$radius-lg;
+  color: tokens.$color-danger;
+  font-size: tokens.$text-sm;
+}
+
+.warningBanner {
+  padding: tokens.$space-3 tokens.$space-4;
+  margin-bottom: tokens.$space-4;
+  background-color: tokens.$color-warning-light;
+  border: 1px solid tokens.$color-warning;
+  border-radius: tokens.$radius-lg;
+  color: tokens.$color-warning;
+  font-size: tokens.$text-sm;
+}
+
+// Pagination
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: tokens.$space-4;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+}
+
+.paginationInfo {
+  margin: 0;
+}
+
+// Skeleton loader
+.skeletonRow {
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeletonCell {
+  height: 14px;
+  border-radius: tokens.$radius-sm;
+  background-color: tokens.$color-gray-200;
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }

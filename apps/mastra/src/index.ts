@@ -23,11 +23,13 @@ import { env } from './config/env.js';
 
 import { Mastra } from '@mastra/core';
 import { createLogger, LogLevel } from '@mastra/core/logger';
+import { LibSQLStore } from '@mastra/libsql';
 
 import { ServiceTokenManager } from './auth/service-token.js';
 import { initializeApiClient } from './api-client.js';
 import { intakeAgent, agendaAgent } from './agents/index.js';
 import { mcpTools } from './mcp-tools/index.js';
+import { invokeRoute, invokeSyncRoute } from './routes/invoke.js';
 
 // Step 2 — Initialise service token manager.
 const serviceTokenManager = new ServiceTokenManager({
@@ -51,12 +53,17 @@ export const mastra = new Mastra({
     intakeAgent,
     agendaAgent,
   },
+  storage: new LibSQLStore({
+    id: 'mastra-storage',
+    url: 'file:./mastra.db',
+  }),
   tools: {
     ...mcpTools,
   },
   server: {
     port: env.MASTRA_PORT,
     host: env.MASTRA_HOST,
+    apiRoutes: [invokeRoute, invokeSyncRoute],
   },
   logger: createLogger({
     name: env.OTEL_SERVICE_NAME,

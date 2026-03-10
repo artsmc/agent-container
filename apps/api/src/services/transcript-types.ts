@@ -7,7 +7,7 @@ import type { CallTypeValue } from '../validators/transcript-validators';
 
 export interface TranscriptRecord {
   id: string;
-  client_id: string;
+  client_id: string | null;
   grain_call_id: string | null;
   call_type: CallTypeValue;
   call_date: string;
@@ -23,7 +23,7 @@ export interface TranscriptRecord {
 
 export interface TranscriptSummary {
   id: string;
-  client_id: string;
+  client_id: string | null;
   grain_call_id: string | null;
   call_type: CallTypeValue;
   call_date: string;
@@ -45,7 +45,7 @@ export interface ListTranscriptsResult {
 // ---------------------------------------------------------------------------
 
 export interface InsertTranscriptParams {
-  clientId: string;
+  clientId: string | null;
   callType: CallTypeValue;
   callDate: string;
   rawTranscript: string;
@@ -64,6 +64,31 @@ export interface ListTranscriptsParams {
   toDate?: string;
   page: number;
   perPage: number;
+}
+
+// ---------------------------------------------------------------------------
+// Global list (all transcripts across clients)
+// ---------------------------------------------------------------------------
+
+export interface ListAllTranscriptsParams {
+  userId: string;
+  userRole: string;
+  callType?: CallTypeValue;
+  fromDate?: string;
+  toDate?: string;
+  page: number;
+  perPage: number;
+}
+
+export interface TranscriptSummaryWithClient extends TranscriptSummary {
+  client_name: string | null;
+  source_platform: string | null;
+  is_imported: boolean;
+}
+
+export interface ListAllTranscriptsResult {
+  rows: TranscriptSummaryWithClient[];
+  total: number;
 }
 
 // ---------------------------------------------------------------------------

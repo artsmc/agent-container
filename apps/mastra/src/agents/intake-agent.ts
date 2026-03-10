@@ -21,6 +21,7 @@
  * @see Feature 19 — Workflow A: Intake Agent
  */
 import { Agent } from '@mastra/core/agent';
+import { Memory } from '@mastra/memory';
 import { z } from 'zod';
 import { env } from '../config/env.js';
 import { INTAKE_AGENT_INSTRUCTIONS } from '../prompts/intake-instructions.js';
@@ -32,6 +33,14 @@ import {
   getTask,
   listTasksForClient,
   updateWorkflowStatusTool,
+  listClients,
+  ingestTranscript,
+  listRecordings,
+  importFromUrl,
+  importRecordings,
+  checkIntegrationStatus,
+  connectPlatform,
+  checkSessionStatus,
 } from '../tools/index.js';
 import {
   buildIntakePrompt,
@@ -94,6 +103,11 @@ export const intakeAgent = new Agent({
   model: {
     id: `${env.LLM_PROVIDER}/${env.LLM_MODEL}` as `${string}/${string}`,
   },
+  memory: new Memory({
+    options: {
+      lastMessages: 20,
+    },
+  }),
   tools: {
     saveTasksTool,
     getTranscript,
@@ -102,6 +116,29 @@ export const intakeAgent = new Agent({
     getTask,
     listTasksForClient,
     updateWorkflowStatusTool,
+    listClients,
+    ingestTranscript,
+    listRecordings,
+    importFromUrl,
+    importRecordings,
+    checkIntegrationStatus,
+    connectPlatform,
+    checkSessionStatus,
+  },
+});
+
+/**
+ * Lightweight agent for structured output generation only.
+ * Uses the same model and instructions but without tools, avoiding
+ * OpenAI schema validation errors on optional tool parameters.
+ */
+const intakeGeneratorAgent = new Agent({
+  id: 'intake-generator',
+  name: 'Intake Generator',
+  description: 'Extracts structured tasks from transcripts.',
+  instructions: INTAKE_AGENT_INSTRUCTIONS,
+  model: {
+    id: `${env.LLM_PROVIDER}/${env.LLM_MODEL}` as `${string}/${string}`,
   },
 });
 
@@ -191,8 +228,23 @@ export async function runIntakeAgent(
     return;
   }
 
-  // Map the API response to a NormalizedTranscript-compatible shape
-  const transcript = transcriptResponse as unknown as NormalizedTranscript;
+  // Map the API response to a NormalizedTranscript-compatible shape.
+  // The API returns snake_case with the NormalizedTranscript nested inside
+  // `normalized_segments`. Extract and merge so `clientId` resolves correctly.
+  const rawResponse = transcriptResponse as unknown as Record<string, unknown>;
+  const normalizedSegments = (rawResponse.normalized_segments ?? rawResponse.normalizedSegments ?? {}) as Record<string, unknown>;
+  const transcript: NormalizedTranscript = {
+    source: (normalizedSegments.source ?? 'manual') as NormalizedTranscript['source'],
+    sourceId: (normalizedSegments.sourceId ?? '') as string,
+    meetingDate: (normalizedSegments.meetingDate ?? rawResponse.call_date ?? rawResponse.callDate ?? '') as string,
+    clientId: (normalizedSegments.clientId || rawResponse.client_id || rawResponse.clientId || '') as string,
+    meetingType: (normalizedSegments.meetingType ?? rawResponse.call_type ?? rawResponse.callType ?? 'intake') as MeetingType,
+    participants: (normalizedSegments.participants ?? []) as string[],
+    durationSeconds: (normalizedSegments.durationSeconds ?? 0) as number,
+    segments: (normalizedSegments.segments ?? []) as NormalizedTranscript['segments'],
+    summary: (normalizedSegments.summary ?? null) as string | null,
+    highlights: (normalizedSegments.highlights ?? null) as string[] | null,
+  };
 
   // Log: Transcript retrieved
   logger.debug('Transcript retrieved', {
@@ -276,7 +328,7 @@ export async function runIntakeAgent(
     logger.debug('LLM call', { workflowRunId, attempt });
 
     try {
-      const result = await intakeAgent.generate(
+      const result = await intakeGeneratorAgent.generate(
         attempt === 1
           ? userPrompt
           : `${userPrompt}\n\nIMPORTANT: Your previous response did not conform to the required JSON schema. Please return only the JSON object as specified.`,
@@ -364,53 +416,62 @@ export async function runIntakeAgent(
     return;
   }
 
-  // ── Step 7: Save tasks (per-task error handling) ──────────────────────────
+  // ── Step 7: Save tasks (batch creation) ─────────────────────────────────
 
   logger.debug('Task creation started', {
     workflowRunId,
     taskCount: llmOutput.tasks.length,
   });
 
-  let tasksAttempted = 0;
+  let tasksAttempted = llmOutput.tasks.length;
   let tasksCreated = 0;
   let tasksFailed = 0;
   const taskShortIds: string[] = [];
 
-  for (const task of llmOutput.tasks) {
-    tasksAttempted++;
+  // Convert ISO 8601 duration (PT2H30M) to HH:MM format for the API
+  function durationToHHMM(iso: string | null): string | undefined {
+    if (!iso) return undefined;
+    const match = iso.match(/^PT(?:(\d+)H)?(?:(\d+)M)?$/);
+    if (!match) return undefined;
+    const h = String(match[1] || '0').padStart(2, '0');
+    const m = String(match[2] || '0').padStart(2, '0');
+    return `${h}:${m}`;
+  }
 
-    try {
-      const results = await apiClient.createTasks(clientId, {
-        clientId,
-        transcriptId,
-        title: task.title,
-        description: task.description,
-        assignee: task.assignee ?? undefined,
-        estimatedTime:
-          convertEstimatedTimeToDuration(task.estimatedTime) ?? undefined,
-        scrumStage: task.scrumStage,
-        tags: task.tags,
-        priority: 'medium' as any,
-      });
+  // Build batch request body matching API's createTasksBodySchema (snake_case)
+  const batchBody = {
+    transcript_id: transcriptId,
+    source: 'agent' as const,
+    tasks: llmOutput.tasks.map((task) => ({
+      title: task.title,
+      description: task.description,
+      assignee: task.assignee ?? undefined,
+      estimated_time: durationToHHMM(task.estimatedTime),
+      scrum_stage: task.scrumStage,
+    })),
+  };
 
-      const savedTask = Array.isArray(results) ? results[0] : results;
-      tasksCreated++;
-      taskShortIds.push(savedTask.shortId);
-
-      // Log: Task saved (title truncated to 60 chars)
-      logger.debug('Task saved', {
-        workflowRunId,
-        shortId: savedTask.shortId,
-        title: task.title.substring(0, 60),
-      });
-    } catch (err) {
-      tasksFailed++;
-      logger.warn('Task save failed', {
-        workflowRunId,
-        taskTitle: task.title.substring(0, 60),
-        error: err instanceof Error ? err.message : String(err),
-      });
+  try {
+    const results = await apiClient.createTasks(clientId, batchBody as any);
+    // The API returns { data: [...] } envelope; unwrap if needed
+    const rawData = (results as any)?.data ?? results;
+    const savedTasks = Array.isArray(rawData) ? rawData : [rawData];
+    tasksCreated = savedTasks.length;
+    for (const saved of savedTasks) {
+      const shortId = (saved as any).shortId ?? (saved as any).short_id;
+      if (shortId) taskShortIds.push(shortId);
     }
+
+    logger.debug('Tasks saved', {
+      workflowRunId,
+      tasksCreated,
+    });
+  } catch (err) {
+    tasksFailed = tasksAttempted;
+    logger.warn('Batch task creation failed', {
+      workflowRunId,
+      error: err instanceof Error ? err.message : String(err),
+    });
   }
 
   // ── Step 8: Update workflow status to completed/failed ────────────────────

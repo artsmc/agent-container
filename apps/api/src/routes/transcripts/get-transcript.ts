@@ -50,13 +50,18 @@ export function registerGetTranscript(
       }
 
       // 3. Access check on the transcript's client (existence hiding)
-      const client = await getClientById(
-        db,
-        transcript.client_id,
-        user.id,
-        user.role
-      );
-      if (!client) {
+      // Transcripts with no client_id are accessible to admins only.
+      if (transcript.client_id) {
+        const client = await getClientById(
+          db,
+          transcript.client_id,
+          user.id,
+          user.role
+        );
+        if (!client) {
+          throw transcriptNotFoundError();
+        }
+      } else if (user.role !== 'admin') {
         throw transcriptNotFoundError();
       }
 

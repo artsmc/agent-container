@@ -83,12 +83,15 @@ export default function TranscriptsTab({ clientId, enabled }: TranscriptsTabProp
           </tr>
         </thead>
         <tbody>
-          {transcripts.map((transcript) => {
-            const status = getProcessingStatus(transcript.processedAt)
+          {transcripts.map((transcript: Record<string, unknown>) => {
+            const callDate = (transcript.callDate ?? transcript.call_date ?? '') as string
+            const callType = (transcript.callType ?? transcript.call_type ?? '') as string
+            const processedAt = (transcript.processedAt ?? transcript.processed_at ?? null) as string | null
+            const status = getProcessingStatus(processedAt)
             return (
-              <tr key={transcript.id} className={styles.row}>
-                <td className={styles.td}>{formatCallDate(transcript.callDate)}</td>
-                <td className={styles.td}>{formatCallType(transcript.callType)}</td>
+              <tr key={transcript.id as string} className={styles.row}>
+                <td className={styles.td}>{callDate ? formatCallDate(callDate) : '--'}</td>
+                <td className={styles.td}>{callType ? formatCallType(callType) : '--'}</td>
                 <td className={styles.td}>
                   <Badge variant={status.variant} aria-label={`Status: ${status.label}`}>
                     {status.label}

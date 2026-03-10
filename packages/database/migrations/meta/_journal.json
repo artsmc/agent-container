@@ -8,6 +8,34 @@
       "when": 1772700884431,
       "tag": "0000_equal_rage",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1772972243436,
+      "tag": "0001_icy_the_santerians",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1772973618497,
+      "tag": "0002_heavy_blue_shield",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1773042395458,
+      "tag": "0003_special_captain_marvel",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1773042559154,
+      "tag": "0004_crazy_princess_powerful",
+      "breakpoints": true
     }
   ]
 }

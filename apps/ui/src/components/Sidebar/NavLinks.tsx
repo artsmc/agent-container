@@ -7,9 +7,11 @@ import styles from './Sidebar.module.scss'
 const NAV_ITEMS = [
   { href: '/', label: 'Dashboard' },
   { href: '/clients', label: 'Clients' },
+  { href: '/transcripts', label: 'Transcripts' },
   { href: '/tasks', label: 'Tasks' },
   { href: '/agendas', label: 'Agendas' },
   { href: '/workflows', label: 'Workflows' },
+  { href: '/integrations', label: 'Integrations' },
   { href: '/settings', label: 'Settings' },
 ] as const
 

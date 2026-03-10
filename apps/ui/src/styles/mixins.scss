@@ -1,7 +1,7 @@
 // =============================================================================
 // SCSS Mixins
 // =============================================================================
-// Token variables are auto-injected via next.config.ts additionalData as `tokens.*`
+@use '../../../../packages/ui-tokens/index.scss' as tokens;
 
 // Responsive breakpoint wrapper
 // Usage: @include respond-to(md) { ... }

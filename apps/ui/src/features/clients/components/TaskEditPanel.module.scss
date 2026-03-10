@@ -1,0 +1,113 @@
+// TaskEditPanel -- SlideOver content for editing a single task.
+@use '@/styles/mixins' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-5;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-4;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-1;
+}
+
+.label {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-primary;
+}
+
+.input {
+  padding: tokens.$space-2 tokens.$space-3;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-primary;
+  background-color: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+    border-color: tokens.$color-border-focus;
+    box-shadow: 0 0 0 1px tokens.$color-border-focus;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.textarea {
+  composes: input;
+  min-height: 80px;
+  resize: vertical;
+  line-height: tokens.$leading-normal;
+}
+
+.select {
+  composes: input;
+  cursor: pointer;
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-3;
+  padding: tokens.$space-2 0;
+}
+
+.statusLabel {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-secondary;
+}
+
+// ---------- Footer ----------
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-3;
+  padding-top: tokens.$space-4;
+  border-top: 1px solid tokens.$color-border-default;
+}
+
+.actionButtons {
+  display: flex;
+  gap: tokens.$space-2;
+}
+
+.saveRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: tokens.$space-3;
+}
+
+.errorMessage {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-danger;
+  margin: 0;
+}
+
+.successMessage {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-success;
+  margin: 0;
+}
+
+.readonlyHint {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+  font-style: italic;
+}

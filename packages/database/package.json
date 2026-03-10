@@ -2,6 +2,7 @@
   "name": "@iexcel/database",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "description": "Product database schema, migrations, and client for the iExcel automation system",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

@@ -36,3 +36,11 @@ export interface UpdateClientRequest {
   defaultAsanaProjectId?: string;
   emailRecipients?: EmailRecipients;
 }
+
+export interface CreateClientRequest {
+  name: string;
+  grainPlaylistId?: string | null;
+  defaultAsanaWorkspaceId?: string | null;
+  defaultAsanaProjectId?: string | null;
+  emailRecipients?: EmailRecipients;
+}

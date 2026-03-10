@@ -39,3 +39,16 @@ export function getApiClient(): ApiClient {
   }
   return _apiClient;
 }
+
+/**
+ * Returns the current service token for direct API calls.
+ * Throws if not yet initialized.
+ */
+export async function getServiceToken(): Promise<string> {
+  if (!_serviceTokenManager) {
+    throw new Error(
+      'Service token manager not initialized. Call initializeApiClient() during boot.'
+    );
+  }
+  return _serviceTokenManager.getToken();
+}

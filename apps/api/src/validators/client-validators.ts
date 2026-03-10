@@ -69,6 +69,50 @@ export const patchClientBodySchema = z
 export type PatchClientBody = z.infer<typeof patchClientBodySchema>;
 
 // ---------------------------------------------------------------------------
+// POST /clients body schema
+// ---------------------------------------------------------------------------
+
+/**
+ * Zod schema for the POST /clients request body.
+ *
+ * Rules:
+ * - `name` is required, non-empty, max 255 characters.
+ * - All other fields are optional.
+ * - Unknown fields are rejected (strict mode).
+ * - Nullable string fields accept string or null.
+ * - `email_recipients` max 50 items, each with valid name + email.
+ */
+export const createClientBodySchema = z
+  .object({
+    name: z
+      .string()
+      .min(1, 'name must not be empty')
+      .max(255, 'name must be at most 255 characters'),
+    grain_playlist_id: z
+      .string()
+      .max(500, 'grain_playlist_id must be at most 500 characters')
+      .nullable()
+      .optional(),
+    default_asana_workspace_id: z
+      .string()
+      .max(500, 'default_asana_workspace_id must be at most 500 characters')
+      .nullable()
+      .optional(),
+    default_asana_project_id: z
+      .string()
+      .max(500, 'default_asana_project_id must be at most 500 characters')
+      .nullable()
+      .optional(),
+    email_recipients: z
+      .array(emailRecipientSchema)
+      .max(50, 'email_recipients must have at most 50 items')
+      .optional(),
+  })
+  .strict();
+
+export type CreateClientBody = z.infer<typeof createClientBodySchema>;
+
+// ---------------------------------------------------------------------------
 // GET /clients query params schema
 // ---------------------------------------------------------------------------
 

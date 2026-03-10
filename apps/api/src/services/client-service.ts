@@ -7,7 +7,7 @@ import {
   auditLog,
 } from '@iexcel/database/schema';
 import type { DbClient } from '../db/client';
-import type { PatchClientBody } from '../validators/client-validators';
+import type { PatchClientBody, CreateClientBody } from '../validators/client-validators';
 import type {
   ClientRecord,
   EmailRecipientRecord,
@@ -149,6 +149,32 @@ export async function getClientById(
       .limit(1);
 
     if (assignment.length === 0) return null;
+  }
+
+  return mapClientRow(row);
+}
+
+/**
+ * Creates a new client record and returns the mapped result.
+ */
+export async function createClient(
+  db: DbClient,
+  body: CreateClientBody
+): Promise<ClientRecord> {
+  const inserted = await db
+    .insert(clients)
+    .values({
+      name: body.name,
+      grainPlaylistId: body.grain_playlist_id ?? null,
+      defaultAsanaWorkspaceId: body.default_asana_workspace_id ?? null,
+      defaultAsanaProjectId: body.default_asana_project_id ?? null,
+      emailRecipients: body.email_recipients ?? [],
+    })
+    .returning();
+
+  const row = inserted[0];
+  if (!row) {
+    throw new Error('Failed to insert client');
   }
 
   return mapClientRow(row);

@@ -1,0 +1,388 @@
+.page {
+  padding: tokens.$space-6;
+  max-width: 1400px;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: tokens.$space-5;
+  align-items: start;
+
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.leftCol {
+  min-width: 0;
+}
+
+.rightCol {
+  position: sticky;
+  top: tokens.$space-6;
+  max-height: calc(100vh - tokens.$space-6 * 2);
+  overflow-y: auto;
+  min-width: 0;
+
+  @media (max-width: 960px) {
+    position: static;
+    max-height: none;
+  }
+}
+
+.header {
+  margin-bottom: tokens.$space-6;
+}
+
+.backLink {
+  display: inline-block;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-primary;
+  text-decoration: none;
+  margin-bottom: tokens.$space-3;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.titleRow {
+  display: flex;
+  align-items: baseline;
+  gap: tokens.$space-3;
+  margin-bottom: tokens.$space-3;
+}
+
+.title {
+  font-size: tokens.$text-xl;
+  font-weight: tokens.$font-weight-semibold;
+  margin: 0;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-4;
+  flex-wrap: wrap;
+}
+
+.metaItem {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-secondary;
+}
+
+// ---------- Sections ----------
+
+.section {
+  background: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  padding: tokens.$space-5;
+  margin-bottom: tokens.$space-4;
+}
+
+.sectionTitle {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: tokens.$color-text-secondary;
+  margin: 0 0 tokens.$space-3 0;
+}
+
+.sectionBody {
+  font-size: tokens.$text-sm;
+  line-height: 1.6;
+  color: tokens.$color-text-primary;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+// ---------- Client Assignment ----------
+
+.assignRow {
+  display: flex;
+  align-items: center;
+  gap: tokens.$space-3;
+  flex-wrap: wrap;
+}
+
+.clientSelect {
+  padding: tokens.$space-2 tokens.$space-3;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-primary;
+  background-color: tokens.$color-surface-default;
+  border: 1px solid tokens.$color-border-default;
+  border-radius: tokens.$radius-md;
+  font-family: inherit;
+  min-width: 240px;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: tokens.$color-border-focus;
+    box-shadow: 0 0 0 1px tokens.$color-border-focus;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.errorMessage {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-danger;
+  margin: tokens.$space-2 0 0;
+}
+
+.successMessage {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-success;
+  margin: tokens.$space-2 0 0;
+}
+
+// ---------- Progress Tracker ----------
+
+.progressCard {
+  background: tokens.$color-surface-default;
+  border: 2px solid tokens.$color-primary;
+  border-radius: tokens.$radius-md;
+  padding: tokens.$space-5;
+  margin-bottom: tokens.$space-4;
+}
+
+.progressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: tokens.$space-4;
+}
+
+.progressHeader .sectionTitle {
+  margin: 0;
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: tokens.$space-3;
+  padding: tokens.$space-3 0;
+  position: relative;
+
+  // Vertical connector line
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: calc(tokens.$space-3 + 22px);
+    bottom: 0;
+    width: 2px;
+    background-color: tokens.$color-gray-200;
+  }
+}
+
+.step_done:not(:last-child)::after {
+  background-color: tokens.$color-success;
+}
+
+.step_active:not(:last-child)::after {
+  background-color: tokens.$color-primary;
+}
+
+.step_error:not(:last-child)::after {
+  background-color: tokens.$color-danger;
+}
+
+.stepIcon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid tokens.$color-gray-200;
+  border-top-color: tokens.$color-primary;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.checkmark {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: tokens.$color-success;
+  color: white;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: tokens.$font-weight-bold;
+  line-height: 1;
+}
+
+.crossmark {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: tokens.$color-danger;
+  color: white;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: tokens.$font-weight-bold;
+  line-height: 1;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background-color: tokens.$color-gray-300;
+  border-radius: 50%;
+}
+
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 2px;
+}
+
+.stepLabel {
+  font-size: tokens.$text-sm;
+  font-weight: tokens.$font-weight-medium;
+  color: tokens.$color-text-primary;
+}
+
+.step_waiting .stepLabel {
+  color: tokens.$color-text-disabled;
+}
+
+.step_active .stepLabel {
+  color: tokens.$color-primary;
+  font-weight: tokens.$font-weight-semibold;
+}
+
+.step_error .stepLabel {
+  color: tokens.$color-danger;
+}
+
+.stepDetail {
+  font-size: tokens.$text-xs;
+  color: tokens.$color-text-secondary;
+}
+
+.progressResult {
+  margin-top: tokens.$space-3;
+  padding: tokens.$space-3;
+  background-color: #f0fdf4;
+  border: 1px solid tokens.$color-success;
+  border-radius: tokens.$radius-md;
+}
+
+.progressNote {
+  font-size: tokens.$text-sm;
+  color: tokens.$color-text-primary;
+  margin: 0;
+
+  a {
+    color: tokens.$color-primary;
+    font-weight: tokens.$font-weight-medium;
+    text-decoration: none;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+.progressError {
+  margin-top: tokens.$space-3;
+  padding: tokens.$space-3;
+  background-color: #fef2f2;
+  border: 1px solid tokens.$color-danger;
+  border-radius: tokens.$radius-md;
+  font-size: tokens.$text-sm;
+  color: tokens.$color-danger;
+}
+
+// ---------- Segments ----------
+
+.segmentList {
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-3;
+}
+
+.segment {
+  display: flex;
+  gap: tokens.$space-3;
+  font-size: tokens.$text-sm;
+  line-height: 1.6;
+}
+
+.segmentSpeaker {
+  font-weight: tokens.$font-weight-semibold;
+  color: tokens.$color-primary;
+  white-space: nowrap;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.segmentTime {
+  font-family: tokens.$font-family-mono;
+  font-size: tokens.$text-xs;
+  color: tokens.$color-text-disabled;
+  white-space: nowrap;
+  min-width: 48px;
+  flex-shrink: 0;
+}
+
+.segmentText {
+  color: tokens.$color-text-primary;
+}
+
+// ---------- Highlights ----------
+
+.highlightList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: tokens.$space-2;
+}
+
+.highlightItem {
+  font-size: tokens.$text-sm;
+  line-height: 1.5;
+  color: tokens.$color-text-primary;
+  padding-left: tokens.$space-4;
+  position: relative;
+
+  &::before {
+    content: '\2022';
+    position: absolute;
+    left: 0;
+    color: tokens.$color-primary;
+    font-weight: tokens.$font-weight-bold;
+  }
+}

@@ -17,6 +17,12 @@ import { importRoutes } from './routes/import';
 import { agendaRoutes } from './routes/agendas';
 import { sharedRoutes } from './routes/shared';
 import { workflowRoutes } from './routes/workflows';
+import { integrationRoutes } from './routes/integrations';
+import { ingestRoutes } from './routes/ingest';
+import { transcriptSubmitRoutes } from './routes/transcript-submit';
+import { webhookRoutes } from './routes/webhooks';
+import { connectSessionRoutes } from './routes/connect-session';
+import { deviceAuthPublicRoutes, deviceAuthProtectedRoutes } from './routes/device-auth';
 import { NotFoundError } from './errors/api-errors';
 import { AsanaOutputAdapter } from './adapters/asana';
 import { setOutputNormalizer } from './services/output-normalizer';
@@ -65,6 +71,7 @@ export async function createApp(deps: AppDependencies): Promise<FastifyInstance>
   await app.register(cors, {
     origin: corsOrigins,
     credentials: true,
+    methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   });
 
   await app.register(helmet, {
@@ -102,11 +109,20 @@ export async function createApp(deps: AppDependencies): Promise<FastifyInstance>
   // Public shared agenda endpoint (no JWT middleware)
   await app.register(sharedRoutes, { db });
 
+  // Public webhook endpoints (platform-verified, not JWT)
+  await app.register(webhookRoutes, { db, config });
+
+  // Public connect-session endpoints (session-ID-gated, not JWT)
+  await app.register(connectSessionRoutes, { db, config });
+
+  // Public device-auth endpoints (session-ID-gated, not JWT)
+  await app.register(deviceAuthPublicRoutes, { db, config });
+
   // ---------------------------------------------------------------------------
   // Protected route scope
   // ---------------------------------------------------------------------------
 
-  const authenticate = buildAuthMiddleware(tokenValidator);
+  const authenticate = buildAuthMiddleware(tokenValidator, db);
   const loadUser = buildUserLoader(db);
 
   await app.register(
@@ -115,15 +131,7 @@ export async function createApp(deps: AppDependencies): Promise<FastifyInstance>
       scope.addHook('preHandler', authenticate);
       scope.addHook('preHandler', loadUser);
 
-      // Register protected routes
-      await scope.register(meRoutes);
-      await scope.register(clientRoutes, { db });
-      await scope.register(transcriptRoutes, { db });
-      await scope.register(taskRoutes, { db });
-      await scope.register(importRoutes, { db });
-      await scope.register(agendaRoutes, { db });
-
-      // Workflow orchestration (Feature 17)
+      // Workflow orchestration (Feature 17) — created first so ingest routes can use it
       const mastraAdapter = config.MASTRA_BASE_URL
         ? new MastraAdapter(
             config.MASTRA_BASE_URL,
@@ -136,7 +144,19 @@ export async function createApp(deps: AppDependencies): Promise<FastifyInstance>
         mastraAdapter,
         null // ReconciliationService — wired when Feature 13 is fully integrated
       );
+
+      // Register protected routes
+      await scope.register(meRoutes);
+      await scope.register(clientRoutes, { db });
+      await scope.register(transcriptRoutes, { db, workflowService });
+      await scope.register(taskRoutes, { db });
+      await scope.register(importRoutes, { db });
+      await scope.register(agendaRoutes, { db });
+      await scope.register(integrationRoutes, { db, config });
+      await scope.register(ingestRoutes, { db, config, workflowService });
+      await scope.register(transcriptSubmitRoutes, { db, config, workflowService });
       await scope.register(workflowRoutes, { db, workflowService });
+      await scope.register(deviceAuthProtectedRoutes, { db });
     }
   );
 

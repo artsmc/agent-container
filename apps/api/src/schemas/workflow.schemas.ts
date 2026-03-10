@@ -13,6 +13,10 @@ export const TriggerAgendaSchema = z.object({
 
 export const WorkflowResultSchema = z.object({
   task_short_ids: z.array(z.string()).optional(),
+  tasks_attempted: z.number().optional(),
+  tasks_created: z.number().optional(),
+  tasks_failed: z.number().optional(),
+  explanation: z.string().optional(),
   agenda_short_id: z.string().optional(),
 });
 
@@ -23,8 +27,8 @@ export const WorkflowErrorSchema = z.object({
 
 export const UpdateStatusSchema = z.object({
   status: z.enum(['running', 'completed', 'failed']),
-  result: WorkflowResultSchema.optional(),
-  error: WorkflowErrorSchema.optional(),
+  result: WorkflowResultSchema.nullable().optional(),
+  error: WorkflowErrorSchema.nullable().optional(),
 }).refine(
   (data) => data.status !== 'failed' || data.error !== undefined,
   { message: 'error is required when status is failed', path: ['error'] }

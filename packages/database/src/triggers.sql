@@ -33,6 +33,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_tasks_short_id_insert ON tasks;
 CREATE TRIGGER trg_tasks_short_id_insert
   BEFORE INSERT ON tasks
   FOR EACH ROW
@@ -52,6 +53,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_tasks_short_id_update ON tasks;
 CREATE TRIGGER trg_tasks_short_id_update
   BEFORE UPDATE ON tasks
   FOR EACH ROW
@@ -70,6 +72,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_agendas_short_id_insert ON agendas;
 CREATE TRIGGER trg_agendas_short_id_insert
   BEFORE INSERT ON agendas
   FOR EACH ROW
@@ -89,6 +92,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_agendas_short_id_update ON agendas;
 CREATE TRIGGER trg_agendas_short_id_update
   BEFORE UPDATE ON agendas
   FOR EACH ROW

@@ -335,6 +335,7 @@ export const connectPlatform = createTool({
   outputSchema: z.object({
     success: z.boolean(),
     method: z.enum(['direct', 'session_url']).optional(),
+    sessionId: z.string().optional(),
     browserUrl: z.string().optional(),
     expiresAt: z.string().optional(),
     error: z.string().optional(),
@@ -382,6 +383,7 @@ export const connectPlatform = createTool({
       return {
         success: true,
         method: 'session_url' as const,
+        sessionId: data.sessionId,
         browserUrl: data.browserUrl,
         expiresAt: data.expiresAt,
       };

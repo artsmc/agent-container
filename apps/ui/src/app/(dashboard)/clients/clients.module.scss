@@ -2,6 +2,13 @@
   padding: tokens.$space-6;
 }
 
-.pageTitle {
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: tokens.$space-4;
+}
+
+.pageTitle {
+  margin: 0;
 }

@@ -2,6 +2,7 @@ import type {
   Client,
   PaginationParams,
   PaginatedResponse,
+  CreateClientRequest,
   UpdateClientRequest,
 } from '@iexcel/shared-types';
 import type { HttpTransport } from '../core/http';
@@ -21,6 +22,18 @@ export function createClientEndpoints(http: HttpTransport) {
         method: 'GET',
         path: '/clients',
         params: params as Record<string, string | number | boolean | undefined | null>,
+      });
+    },
+
+    /**
+     * Create a new client.
+     * POST /clients
+     */
+    createClient(body: CreateClientRequest): Promise<Client> {
+      return http.request({
+        method: 'POST',
+        path: '/clients',
+        body,
       });
     },
 

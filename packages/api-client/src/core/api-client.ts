@@ -50,14 +50,18 @@ export class ApiClient
 
   // Clients
   public readonly listClients: ClientEndpoints['listClients'];
+  public readonly createClient: ClientEndpoints['createClient'];
   public readonly getClient: ClientEndpoints['getClient'];
   public readonly updateClient: ClientEndpoints['updateClient'];
   public readonly getClientStatus: ClientEndpoints['getClientStatus'];
 
   // Transcripts
   public readonly listTranscripts: TranscriptEndpoints['listTranscripts'];
+  public readonly listAllTranscripts: TranscriptEndpoints['listAllTranscripts'];
   public readonly submitTranscript: TranscriptEndpoints['submitTranscript'];
   public readonly getTranscript: TranscriptEndpoints['getTranscript'];
+  public readonly updateTranscript: TranscriptEndpoints['updateTranscript'];
+  public readonly parseTranscript: TranscriptEndpoints['parseTranscript'];
 
   // Tasks
   public readonly listTasks: TaskEndpoints['listTasks'];
@@ -122,14 +126,18 @@ export class ApiClient
 
     // Clients
     this.listClients = clients.listClients;
+    this.createClient = clients.createClient;
     this.getClient = clients.getClient;
     this.updateClient = clients.updateClient;
     this.getClientStatus = clients.getClientStatus;
 
     // Transcripts
     this.listTranscripts = transcripts.listTranscripts;
+    this.listAllTranscripts = transcripts.listAllTranscripts;
     this.submitTranscript = transcripts.submitTranscript;
     this.getTranscript = transcripts.getTranscript;
+    this.updateTranscript = transcripts.updateTranscript;
+    this.parseTranscript = transcripts.parseTranscript;
 
     // Tasks
     this.listTasks = tasks.listTasks;

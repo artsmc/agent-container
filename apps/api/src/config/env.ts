@@ -51,6 +51,25 @@ const envSchema = z.object({
 
   /** Admin user UUID fallback for system-triggered workflow runs. */
   ADMIN_OWNER: z.string().uuid().optional(),
+
+  /** 32-byte hex-encoded key for AES-256-GCM integration credential encryption. */
+  INTEGRATION_ENCRYPTION_KEY: z
+    .string()
+    .length(64, 'INTEGRATION_ENCRYPTION_KEY must be 64 hex characters (32 bytes)')
+    .regex(/^[0-9a-fA-F]+$/, 'INTEGRATION_ENCRYPTION_KEY must be hex-encoded')
+    .optional(),
+
+  /** LLM enrichment model name (default: gpt5-nano). */
+  LLM_ENRICHMENT_MODEL: z.string().default('gpt5-nano'),
+
+  /** API key for LLM enrichment service. */
+  LLM_API_KEY: z.string().optional(),
+
+  /** Base URL for OpenAI-compatible LLM API (default: OpenAI). */
+  LLM_BASE_URL: z.string().url().optional(),
+
+  /** Shared secret for verifying webhook signatures from platforms. */
+  WEBHOOK_SIGNING_SECRET: z.string().min(16).optional(),
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;

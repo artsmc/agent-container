@@ -278,8 +278,8 @@ export async function editTask(
     });
   }
 
-  if (task.status !== 'draft' && task.status !== 'rejected') {
-    throw new BusinessError(422, 'TASK_NOT_EDITABLE', 'Task cannot be edited in its current status', {
+  if (task.status === 'pushed' || task.status === 'completed') {
+    throw new BusinessError(422, 'TASK_NOT_EDITABLE', 'Task cannot be edited after it has been pushed', {
       current_status: task.status,
     });
   }

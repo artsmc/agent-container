@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import type { GetAgendasResponse } from '@iexcel/shared-types'
 import { getBrowserApiClient } from '@/lib/api-client-browser'
 
@@ -14,14 +14,11 @@ export function useClientAgendas(clientId: string, enabled: boolean) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
   const [fetchCount, setFetchCount] = useState(0)
-  const hasFetched = useRef(false)
 
   useEffect(() => {
     if (!enabled) return
-    if (hasFetched.current && fetchCount === 0) return
 
     let cancelled = false
-    hasFetched.current = true
 
     async function doFetch() {
       setLoading(true)
@@ -44,7 +41,6 @@ export function useClientAgendas(clientId: string, enabled: boolean) {
   }, [clientId, enabled, fetchCount])
 
   const retry = useCallback(() => {
-    hasFetched.current = false
     setFetchCount((c) => c + 1)
   }, [])
 

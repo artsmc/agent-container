@@ -30,7 +30,17 @@ import {
   uniqueIndex,
   index,
   check,
+  customType,
 } from 'drizzle-orm/pg-core';
+
+/**
+ * Custom bytea column type for storing binary data (e.g., encrypted credentials).
+ */
+const bytea = customType<{ data: Buffer; driverData: Buffer }>({
+  dataType() {
+    return 'bytea';
+  },
+});
 
 // ---------------------------------------------------------------------------
 // Enums
@@ -87,6 +97,64 @@ export const editSourceEnum = pgEnum('edit_source', [
   'agent',
   'ui',
   'terminal',
+]);
+
+/**
+ * Supported transcript ingestion platforms.
+ */
+export const integrationPlatformEnum = pgEnum('integration_platform', [
+  'fireflies',
+  'grain',
+]);
+
+/**
+ * Lifecycle status of a platform integration connection.
+ */
+export const integrationStatusEnum = pgEnum('integration_status', [
+  'connected',
+  'expired',
+  'disconnected',
+]);
+
+/**
+ * Status of an integration credential session (browser-based entry flow).
+ */
+export const integrationSessionStatusEnum = pgEnum('integration_session_status', [
+  'pending',
+  'complete',
+  'expired',
+]);
+
+export const deviceSessionStatusEnum = pgEnum('device_session_status', [
+  'pending',
+  'complete',
+  'expired',
+]);
+
+/**
+ * Detected format of raw transcript text.
+ */
+export const transcriptFormatEnum = pgEnum('transcript_format', [
+  'srt',
+  'turnbased',
+  'raw',
+]);
+
+/**
+ * Status of LLM enrichment processing for a transcript version.
+ */
+export const enrichmentStatusEnum = pgEnum('enrichment_status', [
+  'pending',
+  'complete',
+  'failed',
+]);
+
+/**
+ * Whether an auto-ingested transcript was matched to a client.
+ */
+export const clientMatchStatusEnum = pgEnum('client_match_status', [
+  'matched',
+  'unmatched',
 ]);
 
 // ---------------------------------------------------------------------------
@@ -183,8 +251,8 @@ export const clientUsers = pgTable('client_users', {
  */
 export const transcripts = pgTable('transcripts', {
   id: uuid('id').primaryKey().defaultRandom(),
+  /** Nullable for auto-ingested transcripts awaiting client matching. */
   clientId: uuid('client_id')
-    .notNull()
     .references(() => clients.id, { onDelete: 'restrict' }),
   grainCallId: varchar('grain_call_id', { length: 255 }),
   callType: callTypeEnum('call_type').notNull(),
@@ -195,12 +263,23 @@ export const transcripts = pgTable('transcripts', {
   isImported: boolean('is_imported').notNull().default(false),
   importedAt: timestamp('imported_at', { withTimezone: true }),
   importSource: varchar('import_source', { length: 255 }),
+  /** Platform that provided the transcript (null for manual submissions). */
+  sourcePlatform: varchar('source_platform', { length: 50 }),
+  /** Recording/meeting ID on the source platform. */
+  platformRecordingId: varchar('platform_recording_id', { length: 255 }),
+  /** Whether this transcript was auto-matched to a client or flagged unmatched. */
+  clientMatchStatus: clientMatchStatusEnum('client_match_status'),
+  /** Current active version ID. Null until versioning is used. */
+  currentVersionId: uuid('current_version_id'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 }, (table) => [
   index('idx_transcripts_client_date').on(table.clientId, table.callDate),
   index('idx_transcripts_client_grain_imported')
     .on(table.clientId, table.grainCallId)
     .where(sql`${table.isImported} = true`),
+  index('idx_transcripts_platform_recording')
+    .on(table.sourcePlatform, table.platformRecordingId)
+    .where(sql`${table.sourcePlatform} IS NOT NULL`),
 ]);
 
 /**
@@ -428,6 +507,139 @@ export const importJobErrors = pgTable('import_job_errors', {
 ]);
 
 // ---------------------------------------------------------------------------
+// Integration tables
+// ---------------------------------------------------------------------------
+
+/**
+ * Platform integration connections.
+ * Stores encrypted credentials (AES-256-GCM) for external transcript platforms.
+ * One integration per user per platform.
+ *
+ * credentials_encrypted: AES-256-GCM ciphertext + auth tag.
+ * credentials_iv: 12-byte initialization vector for decryption.
+ */
+export const integrations = pgTable('integrations', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'restrict' }),
+  platform: integrationPlatformEnum('platform').notNull(),
+  label: varchar('label', { length: 255 }),
+  credentialsEncrypted: bytea('credentials_encrypted').notNull(),
+  credentialsIv: bytea('credentials_iv').notNull(),
+  status: integrationStatusEnum('status').notNull().default('connected'),
+  webhookId: varchar('webhook_id', { length: 255 }),
+  webhookUrl: varchar('webhook_url', { length: 500 }),
+  lastSyncAt: timestamp('last_sync_at', { withTimezone: true }),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  uniqueIndex('uq_integrations_user_platform').on(table.userId, table.platform),
+  index('idx_integrations_user_id').on(table.userId),
+  index('idx_integrations_status').on(table.status),
+]);
+
+/**
+ * Temporary sessions for browser-based credential entry.
+ * Terminal initiates a session, user completes in browser, session expires.
+ */
+export const integrationSessions = pgTable('integration_sessions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'restrict' }),
+  platform: integrationPlatformEnum('platform').notNull(),
+  status: integrationSessionStatusEnum('status').notNull().default('pending'),
+  expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index('idx_integration_sessions_user_status')
+    .on(table.userId, table.status)
+    .where(sql`${table.status} = 'pending'`),
+]);
+
+// ---------------------------------------------------------------------------
+// Device authentication tables
+// ---------------------------------------------------------------------------
+
+/**
+ * Long-lived API tokens for terminal and agent access.
+ * Tokens are stored as SHA-256 hashes — the plaintext is shown once at creation.
+ * Device fingerprint binding ensures tokens are machine-specific.
+ */
+export const deviceTokens = pgTable('device_tokens', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: uuid('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  tokenHash: varchar('token_hash', { length: 64 }).notNull().unique(),
+  tokenPrefix: varchar('token_prefix', { length: 12 }).notNull(),
+  deviceFingerprint: varchar('device_fingerprint', { length: 64 }),
+  label: varchar('label', { length: 255 }),
+  lastUsedAt: timestamp('last_used_at', { withTimezone: true }),
+  expiresAt: timestamp('expires_at', { withTimezone: true }),
+  revokedAt: timestamp('revoked_at', { withTimezone: true }),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index('idx_device_tokens_user_id').on(table.userId),
+  index('idx_device_tokens_token_hash').on(table.tokenHash),
+]);
+
+/**
+ * Temporary sessions for device authentication flow.
+ * Terminal initiates session → user approves in browser → token is generated.
+ * Similar pattern to integration_sessions but for auth tokens.
+ */
+export const deviceSessions = pgTable('device_sessions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  deviceFingerprint: varchar('device_fingerprint', { length: 64 }).notNull(),
+  userCode: varchar('user_code', { length: 8 }).notNull(),
+  status: deviceSessionStatusEnum('status').notNull().default('pending'),
+  userId: uuid('user_id')
+    .references(() => users.id, { onDelete: 'cascade' }),
+  tokenId: uuid('token_id')
+    .references(() => deviceTokens.id, { onDelete: 'set null' }),
+  /** Temporary plaintext token storage — cleared after first retrieval by the polling terminal. */
+  plaintextToken: text('plaintext_token'),
+  expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index('idx_device_sessions_status')
+    .on(table.status)
+    .where(sql`${table.status} = 'pending'`),
+  index('idx_device_sessions_user_code').on(table.userCode),
+]);
+
+/**
+ * Versioned snapshots of transcript processing state.
+ * A new version is created on re-ingest (duplicate handling = version, not reject).
+ * Version 1 is the initial ingest.
+ */
+export const transcriptVersions = pgTable('transcript_versions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  transcriptId: uuid('transcript_id')
+    .notNull()
+    .references(() => transcripts.id, { onDelete: 'cascade' }),
+  version: integer('version').notNull(),
+  rawText: text('raw_text'),
+  format: transcriptFormatEnum('format'),
+  normalized: jsonb('normalized'),
+  enrichmentStatus: enrichmentStatusEnum('enrichment_status').notNull().default('pending'),
+  /** Agent-generated summary. Null until enrichment completes. */
+  summary: text('summary'),
+  /** Key highlights extracted by LLM. JSONB array of strings. */
+  highlights: jsonb('highlights'),
+  /** Action items extracted by LLM. JSONB array of strings. */
+  actionItems: jsonb('action_items'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  uniqueIndex('uq_transcript_versions_transcript_version').on(table.transcriptId, table.version),
+  index('idx_transcript_versions_enrichment')
+    .on(table.enrichmentStatus)
+    .where(sql`${table.enrichmentStatus} IN ('pending', 'failed')`),
+]);
+
+// ---------------------------------------------------------------------------
 // Relations (Drizzle relation declarations for query builder)
 // ---------------------------------------------------------------------------
 
@@ -438,6 +650,9 @@ export const usersRelations = relations(users, ({ many }) => ({
   editedAgendaVersions: many(agendaVersions),
   finalizedAgendas: many(agendas, { relationName: 'finalizedBy' }),
   auditEntries: many(auditLog),
+  integrations: many(integrations),
+  integrationSessions: many(integrationSessions),
+  deviceTokens: many(deviceTokens),
 }));
 
 export const clientsRelations = relations(clients, ({ many }) => ({
@@ -465,6 +680,7 @@ export const transcriptsRelations = relations(transcripts, ({ one, many }) => ({
     references: [clients.id],
   }),
   tasks: many(tasks),
+  versions: many(transcriptVersions),
 }));
 
 export const tasksRelations = relations(tasks, ({ one, many }) => ({
@@ -542,6 +758,45 @@ export const importJobErrorsRelations = relations(importJobErrors, ({ one }) => 
   job: one(importJobs, {
     fields: [importJobErrors.jobId],
     references: [importJobs.id],
+  }),
+}));
+
+export const integrationsRelations = relations(integrations, ({ one }) => ({
+  user: one(users, {
+    fields: [integrations.userId],
+    references: [users.id],
+  }),
+}));
+
+export const integrationSessionsRelations = relations(integrationSessions, ({ one }) => ({
+  user: one(users, {
+    fields: [integrationSessions.userId],
+    references: [users.id],
+  }),
+}));
+
+export const deviceTokensRelations = relations(deviceTokens, ({ one }) => ({
+  user: one(users, {
+    fields: [deviceTokens.userId],
+    references: [users.id],
+  }),
+}));
+
+export const deviceSessionsRelations = relations(deviceSessions, ({ one }) => ({
+  user: one(users, {
+    fields: [deviceSessions.userId],
+    references: [users.id],
+  }),
+  token: one(deviceTokens, {
+    fields: [deviceSessions.tokenId],
+    references: [deviceTokens.id],
+  }),
+}));
+
+export const transcriptVersionsRelations = relations(transcriptVersions, ({ one }) => ({
+  transcript: one(transcripts, {
+    fields: [transcriptVersions.transcriptId],
+    references: [transcripts.id],
   }),
 }));
 

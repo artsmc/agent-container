@@ -23,6 +23,12 @@ export { editTaskTool } from './edit-task.js';
 export { rejectTaskTool } from './reject-task.js';
 export { approveTasksTool } from './approve-tasks.js';
 
+// Transcript ingestion tools
+export { ingestFromUrlTool } from './ingest-from-url.js';
+export { ingestFromTextTool } from './ingest-from-text.js';
+export { listRecordingsTool } from './list-recordings.js';
+export { importRecordingsTool } from './import-recordings.js';
+
 // Re-import for combined record
 import { listClientsTool } from './list-clients.js';
 import { getClientStatusTool } from './get-client-status.js';
@@ -34,9 +40,13 @@ import { triggerAgendaTool } from './trigger-agenda.js';
 import { editTaskTool } from './edit-task.js';
 import { rejectTaskTool } from './reject-task.js';
 import { approveTasksTool } from './approve-tasks.js';
+import { ingestFromUrlTool } from './ingest-from-url.js';
+import { ingestFromTextTool } from './ingest-from-text.js';
+import { listRecordingsTool } from './list-recordings.js';
+import { importRecordingsTool } from './import-recordings.js';
 
 /**
- * All 10 MCP tools keyed by their tool ID.
+ * All 14 MCP tools keyed by their tool ID.
  * This record is passed to the Mastra `tools` config.
  */
 export const mcpTools = {
@@ -50,4 +60,8 @@ export const mcpTools = {
   edit_task: editTaskTool,
   reject_task: rejectTaskTool,
   approve_tasks: approveTasksTool,
+  ingest_from_url: ingestFromUrlTool,
+  ingest_from_text: ingestFromTextTool,
+  list_recordings: listRecordingsTool,
+  import_recordings: importRecordingsTool,
 } as const;

@@ -20,3 +20,6 @@ export type {
 
 // Workflow types
 export type { UpdateWorkflowStatusRequest } from './endpoints/workflows';
+
+// Transcript types
+export type { ListAllTranscriptsParams } from './endpoints/transcripts';

@@ -50,7 +50,8 @@ export class HttpTransport {
     // Normalise trailing slash
     this.baseUrl = baseUrl.replace(/\/+$/, '');
     this.tokenProvider = tokenProvider;
-    this.fetchImpl = fetchImpl;
+    // Bind fetch to its original context to avoid "Illegal invocation" in browsers
+    this.fetchImpl = fetchImpl.bind(globalThis);
   }
 
   /**
@@ -58,7 +59,8 @@ export class HttpTransport {
    */
   async request<T>(options: RequestOptions): Promise<T> {
     const url = this.buildUrl(options.path, options.params);
-    const headers = await this.buildHeaders(options.skipAuth);
+    const hasBody = options.body !== undefined;
+    const headers = await this.buildHeaders(options.skipAuth, hasBody);
     const init: RequestInit = {
       method: options.method,
       headers,
@@ -148,11 +150,13 @@ export class HttpTransport {
   /**
    * Build request headers with Content-Type, Accept, and optional Authorization.
    */
-  private async buildHeaders(skipAuth?: boolean): Promise<Headers> {
+  private async buildHeaders(skipAuth?: boolean, hasBody?: boolean): Promise<Headers> {
     const headers = new Headers({
-      'Content-Type': 'application/json',
       'Accept': 'application/json',
     });
+    if (hasBody) {
+      headers.set('Content-Type', 'application/json');
+    }
 
     if (!skipAuth) {
       const token = await this.tokenProvider.getAccessToken();

@@ -43,14 +43,23 @@ export function buildUserLoader(db: DbClient) {
     let userRecord = existingUsers[0];
 
     if (!userRecord) {
-      // JIT provisioning: create a new product user
+      // Determine role: service accounts (client_credentials) get admin
+      const mastraClientId = process.env['MASTRA_CLIENT_ID'] ?? 'mastra-agent';
+      const isServiceAccount = authUserId === mastraClientId;
+      const defaultRole = isServiceAccount ? 'admin' : 'team_member';
+
+      // JIT provisioning: upsert to handle concurrent requests
       const inserted = await db
         .insert(users)
         .values({
           authUserId,
           email,
           name,
-          role: 'team_member',
+          role: defaultRole,
+        })
+        .onConflictDoUpdate({
+          target: users.authUserId,
+          set: { email, name, updatedAt: new Date() },
         })
         .returning();
 
